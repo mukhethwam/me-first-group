@@ -1,4 +1,3 @@
-
 import React from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
@@ -23,7 +22,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">Location</h4>
-                  <p className="text-transport-gray">123 Transport Avenue, Mining District, South Africa</p>
+                  <p className="text-transport-gray">6 Marlu Road, Selcourt, Springs, 1559, South Africa</p>
                 </div>
               </div>
               
@@ -33,7 +32,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">Phone</h4>
-                  <p className="text-transport-gray">+27 12 345 6789</p>
+                  <p className="text-transport-gray">078 171 7615 / 072 018 8078</p>
                 </div>
               </div>
               
@@ -43,7 +42,7 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">Email</h4>
-                  <p className="text-transport-gray">info@mefirstgroup.com</p>
+                  <p className="text-transport-gray">mefirstgp@gmail.com</p>
                 </div>
               </div>
               

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
@@ -71,10 +70,10 @@ const Footer = () => {
           <div>
             <h4 className="text-xl font-semibold mb-4">Contact Info</h4>
             <address className="not-italic">
-              <p className="mb-2">123 Transport Avenue</p>
-              <p className="mb-2">Mining District, South Africa</p>
-              <p className="mb-2">Phone: +27 12 345 6789</p>
-              <p>Email: info@mefirstgroup.com</p>
+              <p className="mb-2">6 Marlu Road, Selcourt</p>
+              <p className="mb-2">Springs, 1559, South Africa</p>
+              <p className="mb-2">Phone: 078 171 7615 / 072 018 8078</p>
+              <p>Email: mefirstgp@gmail.com</p>
             </address>
           </div>
         </div>
