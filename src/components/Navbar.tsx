@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -21,11 +20,10 @@ const Navbar = () => {
                 alt="Me First Group Logo" 
                 className="h-10 w-auto"
               />
-              <span className="text-2xl font-bold text-[#ea384c]">Me First Group</span>
+              <span className="text-2xl font-bold text-transport-orange">Me First Group</span>
             </Link>
           </div>
 
-          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-transport-gray hover:text-transport-orange font-medium transition-colors">
               Home
@@ -44,7 +42,6 @@ const Navbar = () => {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
@@ -55,7 +52,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="flex flex-col space-y-4 px-4 py-6 bg-white border-t">
