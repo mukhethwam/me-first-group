@@ -1,5 +1,6 @@
+
 import React, { useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -14,13 +15,12 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center">
               <img 
-                src="/lovable-uploads/30ff2778-31e9-4cd9-9b9b-35a85416a46c.png" 
-                alt="Me First Group Logo" 
-                className="h-10 w-auto"
+                src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png" 
+                alt="Me First Group" 
+                className="h-12 w-auto"
               />
-              <span className="text-2xl font-bold text-transport-orange">Me First Group</span>
             </Link>
           </div>
 
