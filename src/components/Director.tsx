@@ -12,7 +12,11 @@ const Director = () => {
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             <div className="w-full md:w-1/3 flex justify-center">
               <Avatar className="h-48 w-48 border-4 border-transport-blue shadow-lg">
-                <AvatarImage src="/placeholder.svg" alt="Mr. M.E Masevhe" />
+                <AvatarImage 
+                  src="/lovable-uploads/44daee58-b83d-47b2-8e46-79cdb9b9ab5d.png" 
+                  alt="Mr. M.E Masevhe" 
+                  className="object-cover"
+                />
                 <AvatarFallback className="text-4xl bg-transport-blue text-white">ME</AvatarFallback>
               </Avatar>
             </div>
