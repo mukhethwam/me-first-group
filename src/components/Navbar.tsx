@@ -15,11 +15,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <img 
-                src="/lovable-uploads/94d25282-75f5-4605-a16a-cc1b3762d547.png" 
-                alt="Me First Group Logo" 
-                className="h-12 w-auto"
-              />
+              <span className="text-2xl font-bold text-transport-blue">Me First Group</span>
             </Link>
           </div>
 
