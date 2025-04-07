@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -14,6 +15,10 @@ export default {
 			center: true,
 			padding: '2rem',
 			screens: {
+				'sm': '640px',
+				'md': '768px',
+				'lg': '1024px',
+				'xl': '1280px',
 				'2xl': '1400px'
 			}
 		},
@@ -51,6 +56,12 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				transport: {
+					blue: "#1A3A5D",
+					orange: "#E85D04",
+					gray: "#505A5B",
+					silver: "#C0C0C0"
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
