@@ -7,6 +7,7 @@ import Fleet from "@/components/Fleet";
 import MiningCommodities from "@/components/MiningCommodities";
 import AboutUs from "@/components/AboutUs";
 import ContactSection from "@/components/ContactSection";
+import LocationMap from "@/components/LocationMap";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -19,6 +20,7 @@ const Index = () => {
       <MiningCommodities />
       <AboutUs />
       <ContactSection />
+      <LocationMap />
       <Footer />
     </div>
   );
