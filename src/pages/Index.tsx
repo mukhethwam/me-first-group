@@ -6,6 +6,7 @@ import Services from "@/components/Services";
 import Fleet from "@/components/Fleet";
 import MiningCommodities from "@/components/MiningCommodities";
 import AboutUs from "@/components/AboutUs";
+import Director from "@/components/Director";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
@@ -18,6 +19,7 @@ const Index = () => {
       <Fleet />
       <MiningCommodities />
       <AboutUs />
+      <Director />
       <ContactSection />
       <Footer />
     </div>
