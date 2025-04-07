@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -16,7 +15,11 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-transport-blue">Me First Group</span>
+              <img 
+                src="/lovable-uploads/94d25282-75f5-4605-a16a-cc1b3762d547.png" 
+                alt="Me First Group Logo" 
+                className="h-12 w-auto"
+              />
             </Link>
           </div>
 
