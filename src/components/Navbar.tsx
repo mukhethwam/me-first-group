@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -19,7 +18,7 @@ const Navbar = () => {
               <img 
                 src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png" 
                 alt="Me First Group" 
-                className="h-12 w-auto"
+                className="h-12 w-auto filter brightness-0 saturate-100 invert-[33%] sepia-[74%] saturate-[6332%] hue-rotate-[359deg] brightness-[93%] contrast-[119%]"
               />
             </Link>
           </div>
