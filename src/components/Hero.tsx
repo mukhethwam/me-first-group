@@ -1,6 +1,6 @@
 
 import React from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, PhoneForwarded } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -13,8 +13,8 @@ const Hero = () => {
         }}
       ></div>
       
-      <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
-        <div className="max-w-3xl">
+      <div className="container mx-auto px-4 py-28 md:py-36 relative z-10">
+        <div className="max-w-3xl animate-fade-in">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
             Heavy Duty Transport for Mining Industries
           </h1>
@@ -24,20 +24,23 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <a 
               href="#services" 
-              className="bg-transport-orange text-white px-6 py-3 rounded-md font-medium text-lg inline-flex items-center justify-center hover:bg-opacity-90 transition-colors"
+              className="bg-transport-orange text-white px-6 py-3 rounded-md font-medium text-lg inline-flex items-center justify-center hover:bg-opacity-90 transition-colors transform hover:scale-105 duration-300"
             >
               Our Services
               <ArrowRight className="ml-2" size={20} />
             </a>
             <a 
               href="#contact" 
-              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-md font-medium text-lg inline-flex items-center justify-center hover:bg-white hover:text-transport-blue transition-colors"
+              className="bg-transparent border-2 border-white text-white px-6 py-3 rounded-md font-medium text-lg inline-flex items-center justify-center hover:bg-white hover:text-transport-blue transition-colors transform hover:scale-105 duration-300"
             >
               Request a Quote
+              <PhoneForwarded className="ml-2" size={20} />
             </a>
           </div>
         </div>
       </div>
+      
+      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-transport-blue to-transparent"></div>
     </div>
   );
 };
