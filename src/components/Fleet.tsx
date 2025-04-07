@@ -1,6 +1,13 @@
 
 import React from "react";
 import { CheckCircle } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Fleet = () => {
   const fleetFeatures = [
@@ -12,16 +19,58 @@ const Fleet = () => {
     "Safety compliance certified"
   ];
 
+  const fleetImages = [
+    {
+      src: "/lovable-uploads/8a8be9f2-4251-4d4f-b750-185a58c1a8c4.png",
+      alt: "Scania truck with yellow side tipper trailers"
+    },
+    {
+      src: "/lovable-uploads/6b48b9ca-bd91-402a-bf6c-26413a7b352b.png",
+      alt: "Scania R460 truck front view"
+    },
+    {
+      src: "/lovable-uploads/1bfdabae-d742-41b9-800e-e4283a78d3d3.png",
+      alt: "Scania truck with yellow side tipper trailers - side view"
+    },
+    {
+      src: "/lovable-uploads/8e13c4aa-2284-46e7-b2b2-c082e90e76d3.png",
+      alt: "Scania truck front angle view"
+    },
+    {
+      src: "/lovable-uploads/bd74459c-115b-47bf-a4a7-971bb0062c85.png",
+      alt: "Scania truck with license plate DM60RV GP"
+    },
+    {
+      src: "/lovable-uploads/34e441d6-ef82-4a45-ae53-8f78580a000a.png",
+      alt: "Scania truck on the highway with side tipper"
+    },
+    {
+      src: "/lovable-uploads/7400796f-9949-4aa9-9bd2-26704ff3877f.png",
+      alt: "Scania truck with red side tipper trailer"
+    },
+    {
+      src: "/lovable-uploads/2b8f60f4-f018-43a3-87af-503038b14d75.png",
+      alt: "Scania truck in sandy area"
+    }
+  ];
+
   return (
     <section id="fleet" className="section-padding">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="text-center mb-12">
+          <h2 className="section-title">Our Premium Fleet</h2>
+          <p className="text-lg max-w-3xl mx-auto text-transport-gray">
+            Me First Group operates a fleet of specialized 34-ton side tipper trucks designed 
+            specifically for the challenges of mining commodity transport.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-12">
           <div>
-            <h2 className="section-title">Our Premium Fleet</h2>
+            <h3 className="text-2xl font-bold mb-6">Fleet Specifications</h3>
             <p className="text-lg mb-6 text-transport-gray">
-              Me First Group operates a fleet of specialized 34-ton side tipper trucks designed 
-              specifically for the challenges of mining commodity transport. Our vehicles are 
-              regularly maintained to ensure maximum reliability and efficiency.
+              Our vehicles are regularly maintained to ensure maximum reliability and efficiency
+              for all your transport needs.
             </p>
             
             <div className="space-y-3 mb-8">
@@ -44,8 +93,8 @@ const Fleet = () => {
           <div className="relative">
             <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-xl">
               <img 
-                src="https://images.unsplash.com/photo-1506306405858-83e0a4a3d8de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-                alt="Me First Group Tipper Truck" 
+                src={fleetImages[0].src}
+                alt={fleetImages[0].alt}
                 className="object-cover w-full h-full"
               />
             </div>
@@ -53,6 +102,31 @@ const Fleet = () => {
               <p className="text-2xl font-bold">34-TON</p>
               <p>Side Tipper Capacity</p>
             </div>
+          </div>
+        </div>
+
+        <div className="mt-16">
+          <h3 className="text-2xl font-bold mb-8 text-center">Explore Our Fleet</h3>
+          <div className="px-4 md:px-12">
+            <Carousel className="w-full">
+              <CarouselContent>
+                {fleetImages.map((image, index) => (
+                  <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="p-2">
+                      <div className="rounded-lg overflow-hidden shadow-lg aspect-w-16 aspect-h-12 bg-white">
+                        <img 
+                          src={image.src} 
+                          alt={image.alt}
+                          className="object-cover w-full h-full" 
+                        />
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="absolute left-0 md:-left-4" />
+              <CarouselNext className="absolute right-0 md:-right-4" />
+            </Carousel>
           </div>
         </div>
       </div>
