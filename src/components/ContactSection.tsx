@@ -1,7 +1,78 @@
-import React from "react";
+
+import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 const ContactSection = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [id]: value
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Validate form
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive"
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast({
+        title: "Error",
+        description: "Please enter a valid email address",
+        variant: "destructive"
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // mailto link
+    const mailtoLink = `mailto:mefirstgp@gmail.com?subject=${encodeURIComponent(
+      formData.subject
+    )}&body=${encodeURIComponent(
+      `Name: ${formData.name}\nEmail: ${formData.email}\n\n${formData.message}`
+    )}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+    
+    // Show success message
+    toast({
+      title: "Message sent",
+      description: "Thank you for your message. We'll get back to you soon!"
+    });
+    
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      subject: "",
+      message: ""
+    });
+    setIsSubmitting(false);
+  };
+
   return (
     <section id="contact" className="section-padding bg-white">
       <div className="container mx-auto">
@@ -61,15 +132,18 @@ const ContactSection = () => {
           
           <div>
             <h3 className="section-subtitle">Send Us a Message</h3>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-transport-gray mb-1">Name</label>
                   <input 
                     type="text" 
                     id="name" 
+                    value={formData.name}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-transport-blue focus:border-transparent"
                     placeholder="Your name"
+                    required
                   />
                 </div>
                 <div>
@@ -77,8 +151,11 @@ const ContactSection = () => {
                   <input 
                     type="email" 
                     id="email" 
+                    value={formData.email}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-transport-blue focus:border-transparent"
                     placeholder="Your email"
+                    required
                   />
                 </div>
               </div>
@@ -88,8 +165,11 @@ const ContactSection = () => {
                 <input 
                   type="text" 
                   id="subject" 
+                  value={formData.subject}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-transport-blue focus:border-transparent"
                   placeholder="Subject"
+                  required
                 />
               </div>
               
@@ -98,16 +178,20 @@ const ContactSection = () => {
                 <textarea 
                   id="message" 
                   rows={5} 
+                  value={formData.message}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-transport-blue focus:border-transparent"
                   placeholder="Your message"
+                  required
                 ></textarea>
               </div>
               
               <button 
                 type="submit" 
-                className="bg-transport-orange text-white px-6 py-3 rounded-md font-medium w-full md:w-auto hover:bg-opacity-90 transition-colors"
+                className="bg-transport-orange text-white px-6 py-3 rounded-md font-medium w-full md:w-auto hover:bg-opacity-90 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                disabled={isSubmitting}
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
