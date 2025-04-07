@@ -1,7 +1,7 @@
 
 import React from "react";
 import { User, Briefcase, Handshake, UserRound } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Director = () => {
   return (
@@ -11,11 +11,11 @@ const Director = () => {
           <h2 className="section-title">Our Director</h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-8">
             <div className="w-full md:w-1/3 flex justify-center">
-              <Avatar className="h-48 w-48 border-4 border-transport-blue shadow-lg">
+              <Avatar className="h-64 w-64 border-4 border-transport-blue shadow-lg">
                 <AvatarImage 
                   src="/lovable-uploads/44daee58-b83d-47b2-8e46-79cdb9b9ab5d.png" 
                   alt="Mr. M.E Masevhe" 
-                  className="object-cover"
+                  className="object-cover object-top h-full w-full"
                 />
                 <AvatarFallback className="text-4xl bg-transport-blue text-white">ME</AvatarFallback>
               </Avatar>
