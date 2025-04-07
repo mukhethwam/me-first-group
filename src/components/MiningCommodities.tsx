@@ -30,7 +30,7 @@ const MiningCommodities = () => {
     },
     {
       name: "Chrome",
-      image: "/lovable-uploads/a568f39e-bf53-460c-a1bc-a71db58516ef.png",
+      image: "/lovable-uploads/a1d1d01d-9c70-4406-9545-f3204082fdcd.png",
       description: "Used in stainless steel and metal plating, chrome requires careful handling during transport."
     },
     {
