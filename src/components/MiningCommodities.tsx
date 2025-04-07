@@ -35,7 +35,7 @@ const MiningCommodities = () => {
     },
     {
       name: "Coal",
-      image: "/lovable-uploads/798fefeb-1943-40bb-9e5f-3b9130a3f02a.png",
+      image: "/lovable-uploads/2699f7ba-cc91-4c5b-bcfa-28f66e3c834d.png",
       description: "A primary energy source requiring efficient bulk transportation solutions for power generation."
     }
   ];
