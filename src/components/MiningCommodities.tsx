@@ -25,7 +25,7 @@ const MiningCommodities = () => {
   const commodities = [
     {
       name: "Manganese",
-      image: "/lovable-uploads/74ca0feb-afab-43d9-9ff1-a16e8d2e6d24.png",
+      image: "/lovable-uploads/14958783-fe80-43b1-b0d6-7dac2a26f2f8.png",
       description: "Essential in steel production and batteries, requiring specialized transport due to its density and weight."
     },
     {
