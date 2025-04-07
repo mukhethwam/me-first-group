@@ -25,17 +25,17 @@ const MiningCommodities = () => {
   const commodities = [
     {
       name: "Manganese",
-      image: "https://images.unsplash.com/photo-1560691023-ca1f295a5173?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80",
+      image: "/lovable-uploads/74ca0feb-afab-43d9-9ff1-a16e8d2e6d24.png",
       description: "Essential in steel production and batteries, requiring specialized transport due to its density and weight."
     },
     {
       name: "Chrome",
-      image: "https://images.unsplash.com/photo-1578500351529-69eacb578dcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+      image: "/lovable-uploads/a568f39e-bf53-460c-a1bc-a71db58516ef.png",
       description: "Used in stainless steel and metal plating, chrome requires careful handling during transport."
     },
     {
       name: "Coal",
-      image: "https://images.unsplash.com/photo-1581271137595-20701447fa98?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1973&q=80",
+      image: "/lovable-uploads/798fefeb-1943-40bb-9e5f-3b9130a3f02a.png",
       description: "A primary energy source requiring efficient bulk transportation solutions for power generation."
     }
   ];
