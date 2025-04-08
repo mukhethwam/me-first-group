@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, Phone, MapPin, Truck } from "lucide-react";
+import { Menu, X, Phone, MapPin, Truck, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -92,12 +92,13 @@ const Navbar = () => {
             >
               About Us
             </button>
-            <button 
-              onClick={() => scrollToSection('director')} 
-              className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
+            <Link 
+              to="/director" 
+              className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
             >
+              <User size={16} className="mr-1" />
               Our Director
-            </button>
+            </Link>
             <button 
               onClick={() => scrollToSection('contact')} 
               className="bg-transport-orange text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors flex items-center"
@@ -155,12 +156,14 @@ const Navbar = () => {
               >
                 About Us
               </button>
-              <button 
-                onClick={() => scrollToSection('director')} 
-                className="text-transport-gray hover:text-transport-orange font-medium text-left"
+              <Link 
+                to="/director" 
+                className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
+                onClick={() => setIsMenuOpen(false)}
               >
+                <User size={16} className="mr-1" />
                 Our Director
-              </button>
+              </Link>
               <button 
                 onClick={() => scrollToSection('contact')} 
                 className="bg-transport-orange text-white px-4 py-2 rounded text-center flex items-center justify-center"
