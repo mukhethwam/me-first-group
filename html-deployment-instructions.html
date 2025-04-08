@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Me First Group - HTML Deployment Instructions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #0056b3;
+      margin-top: 30px;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .note {
+      background: #ffffcc;
+      padding: 10px;
+      border-left: 4px solid #ffcc00;
+      margin: 20px 0;
+    }
+    .warning {
+      background: #ffeeee;
+      padding: 10px;
+      border-left: 4px solid #ff0000;
+      margin: 20px 0;
+    }
+    ol li, ul li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Me First Group Website - HTML Deployment Instructions</h1>
+  
+  <div class="note">
+    <strong>Note:</strong> This website has been specifically built to work with standard HTML hosting that doesn't support Node.js or server-side processing.
+  </div>
+  
+  <h2>Building the Website for HTML Hosting</h2>
+  <ol>
+    <li>Make sure you have Node.js installed on your development computer (only needed for building, not for hosting)</li>
+    <li>Open a terminal in the project folder</li>
+    <li>Run the build command:
+      <pre>npm run build</pre>
+    </li>
+    <li>This will create a <code>dist</code> folder with all the static HTML, CSS, and JavaScript files</li>
+  </ol>
+
+  <h2>Uploading to Standard HTML Web Hosting</h2>
+  <ol>
+    <li><strong>Upload all files</strong> from the <code>dist</code> folder to your web hosting service</li>
+    <li>Use FTP, cPanel File Manager, or any upload tool provided by your hosting service</li>
+    <li>Maintain the exact folder structure as it appears in the <code>dist</code> folder</li>
+    <li>Make sure to upload all files, including:
+      <ul>
+        <li><code>index.html</code> (main HTML file)</li>
+        <li>All folders (<code>assets</code>, etc.)</li>
+        <li>All JavaScript and CSS files</li>
+        <li>All images and other assets</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="warning">
+    <strong>Important!</strong> Do not rename any files or change the folder structure. All paths are relative and must be maintained exactly as they are.
+  </div>
+
+  <h2>Google Maps Integration</h2>
+  <p>If you're using the Google Maps component:</p>
+  <ol>
+    <li>Obtain a Google Maps API key from <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">Google Cloud Platform</a></li>
+    <li>Open the <code>index.html</code> file in the root of your uploaded website</li>
+    <li>Find the following section:
+      <pre>&lt;script&gt;
+  window.GOOGLE_MAPS_API_KEY = ''; // Add your Google Maps API key between the quotes
+&lt;/script&gt;</pre>
+    </li>
+    <li>Add your API key between the quotes</li>
+    <li>Save the file and re-upload it to your hosting</li>
+  </ol>
+
+  <h2>Testing Your Website</h2>
+  <p>After uploading all files:</p>
+  <ol>
+    <li>Navigate to your website's URL</li>
+    <li>Verify that the homepage loads correctly</li>
+    <li>Test navigation between all pages</li>
+    <li>Test the contact form and other interactive elements</li>
+    <li>Check that the Google Maps displays correctly (if you've added your API key)</li>
+    <li>Test on mobile devices to ensure responsive design works properly</li>
+  </ol>
+
+  <h2>Troubleshooting Common Issues</h2>
+  <ul>
+    <li><strong>White screen or 404 errors:</strong> Ensure all files were uploaded correctly and the folder structure is maintained</li>
+    <li><strong>Missing images:</strong> Verify that all image files were uploaded</li>
+    <li><strong>Navigation issues:</strong> This site uses a hash router (#) for compatibility with static hosting. Ensure you didn't modify the URL structure</li>
+    <li><strong>Google Maps not displaying:</strong> Check that you've added your Google Maps API key to the index.html file</li>
+  </ul>
+
+  <div class="note">
+    <p><strong>Contact information for technical assistance:</strong></p>
+    <p>If you encounter any issues with your website after deployment, please contact your web development team for support.</p>
+  </div>
+</body>
+</html>

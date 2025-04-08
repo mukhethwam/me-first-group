@@ -1,6 +1,7 @@
 
 import React from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { ExternalLink } from "lucide-react";
 
 const containerStyle = {
   width: '100%',
@@ -17,10 +18,9 @@ const LocationMap = () => {
   // Check if we're in a browser environment
   const isBrowser = typeof window !== 'undefined';
   
-  // Look for API key in window object (can be set in index.html for production)
+  // Look for API key in window object (set in index.html for production)
   const apiKey = isBrowser ? 
     (window as any).GOOGLE_MAPS_API_KEY || 
-    process.env.VITE_GOOGLE_MAPS_API_KEY || 
     "" : "";
   
   const { isLoaded } = useJsApiLoader({
@@ -41,7 +41,7 @@ const LocationMap = () => {
   // Fallback display when Google Maps isn't loaded
   const fallbackDisplay = (
     <div className="rounded-lg overflow-hidden shadow-lg bg-gray-100 h-[400px] flex flex-col items-center justify-center p-4">
-      <p className="text-lg text-transport-gray mb-4">Map loading unavailable</p>
+      <p className="text-lg text-transport-gray mb-4">Google Maps not available</p>
       <div className="text-center">
         <p className="font-semibold mb-2">Me First Group</p>
         <p>6 Marlu Road, Selcourt</p>
@@ -50,9 +50,10 @@ const LocationMap = () => {
           href="https://maps.google.com/?q=-26.185869,28.449944" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="mt-4 inline-block bg-transport-blue text-white px-4 py-2 rounded hover:bg-opacity-90"
+          className="mt-4 inline-flex items-center bg-transport-blue text-white px-4 py-2 rounded hover:bg-opacity-90"
         >
-          View on Google Maps
+          <span>View on Google Maps</span>
+          <ExternalLink size={16} className="ml-2" />
         </a>
       </div>
     </div>
@@ -68,7 +69,7 @@ const LocationMap = () => {
           </p>
         </div>
         <div className="rounded-lg overflow-hidden shadow-lg">
-          {isLoaded ? (
+          {isLoaded && apiKey ? (
             <GoogleMap
               mapContainerStyle={containerStyle}
               center={center}
@@ -80,6 +81,13 @@ const LocationMap = () => {
             </GoogleMap>
           ) : fallbackDisplay}
         </div>
+        {isLoaded && !apiKey && (
+          <div className="text-center mt-4 p-4 bg-yellow-50 text-yellow-800 rounded">
+            <p className="text-sm">
+              Note for site administrator: Please add your Google Maps API key in the index.html file.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
