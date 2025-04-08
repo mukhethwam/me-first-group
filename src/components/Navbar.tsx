@@ -86,12 +86,12 @@ const Navbar = () => {
               <MapPin size={16} className="mr-1" />
               Footprint
             </Link>
-            <button 
-              onClick={() => scrollToSection('about')} 
+            <Link 
+              to="/about" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
             >
               About Us
-            </button>
+            </Link>
             <Link 
               to="/director" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
@@ -150,12 +150,13 @@ const Navbar = () => {
                 <MapPin size={16} className="mr-1" />
                 Footprint
               </Link>
-              <button 
-                onClick={() => scrollToSection('about')} 
+              <Link 
+                to="/about" 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left"
+                onClick={() => setIsMenuOpen(false)}
               >
                 About Us
-              </button>
+              </Link>
               <Link 
                 to="/director" 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
