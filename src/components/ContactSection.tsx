@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Globe } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
 const ContactSection = () => {
@@ -125,6 +124,23 @@ const ContactSection = () => {
                   <h4 className="font-semibold text-lg">Operating Hours</h4>
                   <p className="text-transport-gray">Monday - Friday: 7:00 AM - 6:00 PM</p>
                   <p className="text-transport-gray">Saturday: 8:00 AM - 2:00 PM</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start">
+                <div className="bg-transport-blue bg-opacity-10 p-3 rounded-full mr-4 text-transport-blue">
+                  <Globe size={24} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-lg">Website</h4>
+                  <a 
+                    href="https://www.mefirstgroup.co.za" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-transport-gray hover:text-transport-orange transition-colors"
+                  >
+                    www.mefirstgroup.co.za
+                  </a>
                 </div>
               </div>
             </div>
