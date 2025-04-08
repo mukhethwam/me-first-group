@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, Phone, MapPin, Truck, User } from "lucide-react";
+import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -96,8 +96,8 @@ const Navbar = () => {
               to="/director" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
             >
-              <User size={16} className="mr-1" />
-              Our Director
+              <Users size={16} className="mr-1" />
+              Our Team
             </Link>
             <button 
               onClick={() => scrollToSection('contact')} 
@@ -162,8 +162,8 @@ const Navbar = () => {
                 className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <User size={16} className="mr-1" />
-                Our Director
+                <Users size={16} className="mr-1" />
+                Our Team
               </Link>
               <button 
                 onClick={() => scrollToSection('contact')} 
@@ -181,3 +181,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
