@@ -10,6 +10,7 @@ import ServicesPage from "./pages/Services";
 import DirectorPage from "./pages/Director";
 import Contact from "./pages/Contact";
 import Footprint from "./pages/Footprint";
+import PremiumFleet from "./pages/PremiumFleet";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/director" element={<DirectorPage />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/footprint" element={<Footprint />} />
+          <Route path="/fleet" element={<PremiumFleet />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
