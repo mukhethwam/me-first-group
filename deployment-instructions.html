@@ -57,6 +57,7 @@
   <ol>
     <li>Use FTP or the hosting provider's file manager to upload all files</li>
     <li>Make sure the <code>index.html</code> file is in the root directory</li>
+    <li>Upload all folders (assets, images, etc.) to maintain the correct relative paths</li>
     <li>No server-side configuration is needed as this is a static site</li>
   </ol>
 
@@ -82,7 +83,7 @@
   </ol>
 
   <div class="note">
-    <strong>Note:</strong> If you're using the Google Maps component, you'll need to set your Google Maps API key in your hosting environment. For static HTML hosting, you can add a script tag to your index.html before the main.js script:
+    <strong>Note:</strong> If you're using the Google Maps component, you'll need to set your Google Maps API key. Open the index.html file and uncomment the script tag, then replace 'YOUR_API_KEY_HERE' with your actual Google Maps API key:
     <pre>&lt;script&gt;
   window.GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY_HERE';
 &lt;/script&gt;</pre>

@@ -16,7 +16,12 @@ const center = {
 const LocationMap = () => {
   // Check if we're in a browser environment
   const isBrowser = typeof window !== 'undefined';
-  const apiKey = isBrowser ? (window as any).GOOGLE_MAPS_API_KEY || "" : "";
+  
+  // Look for API key in window object (can be set in index.html for production)
+  const apiKey = isBrowser ? 
+    (window as any).GOOGLE_MAPS_API_KEY || 
+    process.env.VITE_GOOGLE_MAPS_API_KEY || 
+    "" : "";
   
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',

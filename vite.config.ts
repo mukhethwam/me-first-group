@@ -28,5 +28,6 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
     }
-  }
+  },
+  base: "./" // Use relative paths for assets
 }));
