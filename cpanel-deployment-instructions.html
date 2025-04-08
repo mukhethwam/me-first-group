@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Me First Group - cPanel Deployment Instructions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #0056b3;
+      margin-top: 30px;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .note {
+      background: #ffffcc;
+      padding: 10px;
+      border-left: 4px solid #ffcc00;
+      margin: 20px 0;
+    }
+    .warning {
+      background: #ffeeee;
+      padding: 10px;
+      border-left: 4px solid #ff0000;
+      margin: 20px 0;
+    }
+    ol li, ul li {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Me First Group Website - cPanel Deployment Instructions</h1>
+  
+  <div class="note">
+    <strong>Note:</strong> This website has been specifically built to work with cPanel hosting.
+  </div>
+  
+  <h2>Method 1: Manual Upload via File Manager</h2>
+  <ol>
+    <li>Run the build command on your development computer:
+      <pre>npm run build</pre>
+    </li>
+    <li>This will create a <code>dist</code> folder with all the static files for your website</li>
+    <li>Log in to your cPanel account</li>
+    <li>Navigate to the <strong>File Manager</strong></li>
+    <li>Go to the <code>public_html</code> directory (or your desired subdomain directory)</li>
+    <li>Click on the <strong>Upload</strong> button</li>
+    <li>Upload all files and folders from your local <code>dist</code> folder</li>
+    <li>Make sure the <code>index.html</code> file is in the root of your target directory</li>
+  </ol>
+
+  <h2>Method 2: Using Git Version Control in cPanel</h2>
+  <ol>
+    <li>Log in to cPanel</li>
+    <li>Look for the <strong>Git Version Control</strong> feature</li>
+    <li>Click <strong>Create</strong> to set up a new Git repository</li>
+    <li>Set the repository path to your desired directory (e.g., <code>public_html</code>)</li>
+    <li>After creating the repository, get the clone URL</li>
+    <li>On your development machine, add this as a remote to your Git repository:
+      <pre>git remote add cpanel YOUR_CPANEL_REPO_URL</pre>
+    </li>
+    <li>When you're ready to deploy, run the build command:
+      <pre>npm run build</pre>
+    </li>
+    <li>Copy all files from the <code>dist</code> folder to your main repository folder</li>
+    <li>Commit these changes:
+      <pre>git add .
+git commit -m "Update for deployment"</pre>
+    </li>
+    <li>Push to your cPanel repository:
+      <pre>git push cpanel master</pre>
+    </li>
+  </ol>
+
+  <h2>Method 3: Automated Deployment via .cpanel.yml</h2>
+  <ol>
+    <li>Create a <code>.cpanel.yml</code> file in the root of your repository with the following content:
+      <pre>---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/username/public_html
+    - /bin/mkdir -p $DEPLOYPATH
+    - /bin/cp -R dist/* $DEPLOYPATH</pre>
+    </li>
+    <li>Replace <code>username</code> with your actual cPanel username</li>
+    <li>Commit this file to your repository</li>
+    <li>Set up the Git repository in cPanel as described in Method 2</li>
+    <li>When you push changes to this repository, the deployment will automatically copy files from the <code>dist</code> directory to your <code>public_html</code></li>
+  </ol>
+
+  <div class="warning">
+    <strong>Important!</strong> Do not rename any files or change the folder structure. All paths are relative and must be maintained exactly as they are.
+  </div>
+
+  <h2>Google Maps Integration</h2>
+  <p>If you're using the Google Maps component:</p>
+  <ol>
+    <li>Obtain a Google Maps API key from <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank">Google Cloud Platform</a></li>
+    <li>Open the <code>index.html</code> file on your server</li>
+    <li>Find the following section:
+      <pre>&lt;script&gt;
+  window.GOOGLE_MAPS_API_KEY = ''; // Add your Google Maps API key between the quotes
+&lt;/script&gt;</pre>
+    </li>
+    <li>Add your API key between the quotes</li>
+    <li>Save the file</li>
+  </ol>
+
+  <h2>Troubleshooting</h2>
+  <ul>
+    <li><strong>404 Errors:</strong> Make sure all files from the <code>dist</code> folder were uploaded and the folder structure was maintained</li>
+    <li><strong>Blank page:</strong> Check your browser's console for errors (F12)</li>
+    <li><strong>Routes not working:</strong> This site uses a hash router (#) which is compatible with standard hosting. If changing URL results in a 404, ensure you're not using .htaccess to rewrite URLs</li>
+    <li><strong>Permissions issues:</strong> Ensure files have correct permissions (typically 644 for files and 755 for directories)</li>
+  </ul>
+</body>
+</html>
