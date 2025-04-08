@@ -13,10 +13,11 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="bg-gray-50 py-12">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-12 text-transport-blue">
+      <div className="bg-gray-50 py-8">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-transport-blue relative inline-block pb-2">
             About Me First Group
+            <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-transport-orange"></span>
           </h1>
         </div>
       </div>
