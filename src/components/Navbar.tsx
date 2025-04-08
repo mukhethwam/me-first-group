@@ -1,11 +1,13 @@
+
 import React, { useState, useEffect } from "react";
 import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,7 +29,7 @@ const Navbar = () => {
   const scrollToSection = (sectionId: string) => {
     setIsMenuOpen(false);
     
-    if (window.location.hash !== '#/') {
+    if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
         const element = document.getElementById(sectionId);
@@ -70,6 +72,7 @@ const Navbar = () => {
             <Link 
               to="/fleet" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
+              onClick={() => window.scrollTo(0, 0)}
             >
               <Truck size={16} className="mr-1" />
               Our Fleet
@@ -77,6 +80,7 @@ const Navbar = () => {
             <Link 
               to="/footprint" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
+              onClick={() => window.scrollTo(0, 0)}
             >
               <MapPin size={16} className="mr-1" />
               Footprint
@@ -84,12 +88,14 @@ const Navbar = () => {
             <Link 
               to="/about" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
+              onClick={() => window.scrollTo(0, 0)}
             >
               About Us
             </Link>
             <Link 
               to="/director" 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
+              onClick={() => window.scrollTo(0, 0)}
             >
               <Users size={16} className="mr-1" />
               Our Team
@@ -132,7 +138,10 @@ const Navbar = () => {
               <Link 
                 to="/fleet" 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
               >
                 <Truck size={16} className="mr-1" />
                 Our Fleet
@@ -140,7 +149,10 @@ const Navbar = () => {
               <Link 
                 to="/footprint" 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
               >
                 <MapPin size={16} className="mr-1" />
                 Footprint
@@ -148,14 +160,20 @@ const Navbar = () => {
               <Link 
                 to="/about" 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
               >
                 About Us
               </Link>
               <Link 
                 to="/director" 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  window.scrollTo(0, 0);
+                }}
               >
                 <Users size={16} className="mr-1" />
                 Our Team
