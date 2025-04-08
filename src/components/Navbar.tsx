@@ -1,11 +1,12 @@
 
 import React, { useState, useEffect } from "react";
 import { Menu, X, Phone } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +23,29 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Function to handle smooth scrolling to sections
+  const scrollToSection = (sectionId: string) => {
+    setIsMenuOpen(false);
+    
+    // First navigate to home if not already there
+    if (window.location.hash !== '#/') {
+      navigate('/');
+      // Wait for navigation to complete before scrolling
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Already on home page, just scroll
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   return (
@@ -42,22 +66,37 @@ const Navbar = () => {
             <Link to="/" className="text-transport-gray hover:text-transport-orange font-medium transition-colors">
               Home
             </Link>
-            <a href="#services" className="text-transport-gray hover:text-transport-orange font-medium transition-colors">
+            <button 
+              onClick={() => scrollToSection('services')} 
+              className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
+            >
               Services
-            </a>
-            <a href="#fleet" className="text-transport-gray hover:text-transport-orange font-medium transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection('fleet')} 
+              className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
+            >
               Our Fleet
-            </a>
-            <a href="#about" className="text-transport-gray hover:text-transport-orange font-medium transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection('about')} 
+              className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
+            >
               About Us
-            </a>
-            <a href="#director" className="text-transport-gray hover:text-transport-orange font-medium transition-colors">
+            </button>
+            <button 
+              onClick={() => scrollToSection('director')} 
+              className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
+            >
               Our Director
-            </a>
-            <a href="#contact" className="bg-transport-orange text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors flex items-center">
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')} 
+              className="bg-transport-orange text-white px-4 py-2 rounded hover:bg-opacity-90 transition-colors flex items-center"
+            >
               <Phone size={16} className="mr-2" />
               Contact Us
-            </a>
+            </button>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -80,42 +119,37 @@ const Navbar = () => {
               >
                 Home
               </Link>
-              <a 
-                href="#services" 
-                className="text-transport-gray hover:text-transport-orange font-medium"
-                onClick={() => setIsMenuOpen(false)}
+              <button 
+                onClick={() => scrollToSection('services')} 
+                className="text-transport-gray hover:text-transport-orange font-medium text-left"
               >
                 Services
-              </a>
-              <a 
-                href="#fleet" 
-                className="text-transport-gray hover:text-transport-orange font-medium"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('fleet')} 
+                className="text-transport-gray hover:text-transport-orange font-medium text-left"
               >
                 Our Fleet
-              </a>
-              <a 
-                href="#about" 
-                className="text-transport-gray hover:text-transport-orange font-medium"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('about')} 
+                className="text-transport-gray hover:text-transport-orange font-medium text-left"
               >
                 About Us
-              </a>
-              <a 
-                href="#director" 
-                className="text-transport-gray hover:text-transport-orange font-medium"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => scrollToSection('director')} 
+                className="text-transport-gray hover:text-transport-orange font-medium text-left"
               >
                 Our Director
-              </a>
-              <a 
-                href="#contact" 
+              </button>
+              <button 
+                onClick={() => scrollToSection('contact')} 
                 className="bg-transport-orange text-white px-4 py-2 rounded text-center flex items-center justify-center"
-                onClick={() => setIsMenuOpen(false)}
               >
                 <Phone size={16} className="mr-2" />
                 Contact Us
-              </a>
+              </button>
             </div>
           </div>
         )}
