@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from "react";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, MapPin } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -78,6 +78,13 @@ const Navbar = () => {
             >
               Our Fleet
             </button>
+            <Link 
+              to="/footprint" 
+              className="text-transport-gray hover:text-transport-orange font-medium transition-colors flex items-center"
+            >
+              <MapPin size={16} className="mr-1" />
+              Footprint
+            </Link>
             <button 
               onClick={() => scrollToSection('about')} 
               className="text-transport-gray hover:text-transport-orange font-medium transition-colors"
@@ -131,6 +138,14 @@ const Navbar = () => {
               >
                 Our Fleet
               </button>
+              <Link 
+                to="/footprint" 
+                className="text-transport-gray hover:text-transport-orange font-medium text-left flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <MapPin size={16} className="mr-1" />
+                Footprint
+              </Link>
               <button 
                 onClick={() => scrollToSection('about')} 
                 className="text-transport-gray hover:text-transport-orange font-medium text-left"
