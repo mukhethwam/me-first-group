@@ -43,14 +43,11 @@ const AboutUs = () => {
     <section id="about" className="section-padding bg-gray-50">
       <div className="container mx-auto">
         <div className="text-center mb-12">
+          <h2 className="section-title">About Me First Group</h2>
           <p className="text-lg text-transport-gray max-w-3xl mx-auto mb-6">
             Me First Group is a leading transport company specializing in mining commodity logistics. 
             We've built our reputation on reliability, safety, and efficiency in the transport of 
             manganese, chrome, coal, and other mining materials.
-          </p>
-          <p className="text-lg text-transport-gray max-w-3xl mx-auto">
-            With our fleet of 34-ton side tipper trucks and experienced team, we provide comprehensive 
-            transport solutions tailored to the unique needs of the mining industry.
           </p>
         </div>
 
@@ -70,4 +67,3 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
-
