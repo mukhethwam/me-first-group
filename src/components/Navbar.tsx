@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -25,14 +24,11 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Function to handle smooth scrolling to sections
   const scrollToSection = (sectionId: string) => {
     setIsMenuOpen(false);
     
-    // First navigate to home if not already there
     if (window.location.hash !== '#/') {
       navigate('/');
-      // Wait for navigation to complete before scrolling
       setTimeout(() => {
         const element = document.getElementById(sectionId);
         if (element) {
@@ -40,7 +36,6 @@ const Navbar = () => {
         }
       }, 100);
     } else {
-      // Already on home page, just scroll
       const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -181,4 +176,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
