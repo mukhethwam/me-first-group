@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
@@ -32,7 +33,7 @@ const Footer = () => {
             <h4 className="text-xl font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="hover:text-transport-orange transition-colors">Home</Link>
+                <a href="#/" className="hover:text-transport-orange transition-colors">Home</a>
               </li>
               <li>
                 <a href="#services" className="hover:text-transport-orange transition-colors">Services</a>
@@ -81,8 +82,8 @@ const Footer = () => {
         <div className="border-t border-white border-opacity-20 mt-8 pt-8 text-center md:flex md:justify-between md:text-left">
           <p>&copy; {new Date().getFullYear()} Me First Group. All rights reserved.</p>
           <div className="mt-4 md:mt-0">
-            <a href="#" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Privacy Policy</a>
-            <a href="#" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Terms of Service</a>
+            <a href="#privacy" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Privacy Policy</a>
+            <a href="#terms" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Terms of Service</a>
           </div>
         </div>
       </div>

@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Me First Group - Deployment Instructions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      border-bottom: 2px solid #333;
+      padding-bottom: 10px;
+    }
+    code {
+      background: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .note {
+      background: #ffffcc;
+      padding: 10px;
+      border-left: 4px solid #ffcc00;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Me First Group Website - Deployment Instructions</h1>
+  
+  <h2>Building the Website</h2>
+  <ol>
+    <li>Make sure all your changes are saved</li>
+    <li>Run the build command:
+      <pre>npm run build</pre>
+    </li>
+    <li>This will create a <code>dist</code> folder with all the static files for your website</li>
+  </ol>
+
+  <h2>Hosting Options</h2>
+  
+  <h3>Option 1: Standard Web Hosting</h3>
+  <p>You can upload the contents of the <code>dist</code> folder to any standard web hosting service:</p>
+  <ol>
+    <li>Use FTP or the hosting provider's file manager to upload all files</li>
+    <li>Make sure the <code>index.html</code> file is in the root directory</li>
+    <li>No server-side configuration is needed as this is a static site</li>
+  </ol>
+
+  <h3>Option 2: GitHub Pages</h3>
+  <ol>
+    <li>Create a GitHub repository</li>
+    <li>Push your code to the repository</li>
+    <li>Enable GitHub Pages in the repository settings</li>
+    <li>Set the source to the <code>dist</code> folder or main branch</li>
+  </ol>
+
+  <h3>Option 3: Netlify, Vercel, or similar</h3>
+  <ol>
+    <li>Create an account on Netlify, Vercel, or similar service</li>
+    <li>Connect your GitHub repository</li>
+    <li>Configure the build settings:
+      <ul>
+        <li>Build command: <code>npm run build</code></li>
+        <li>Publish directory: <code>dist</code></li>
+      </ul>
+    </li>
+    <li>Deploy the site</li>
+  </ol>
+
+  <div class="note">
+    <strong>Note:</strong> If you're using the Google Maps component, you'll need to set your Google Maps API key in your hosting environment. For static HTML hosting, you can add a script tag to your index.html before the main.js script:
+    <pre>&lt;script&gt;
+  window.GOOGLE_MAPS_API_KEY = 'YOUR_API_KEY_HERE';
+&lt;/script&gt;</pre>
+  </div>
+
+  <h2>Domain Configuration</h2>
+  <p>Once your site is hosted, you can connect your custom domain (mefirstgroup.co.za):</p>
+  <ol>
+    <li>Purchase the domain if you haven't already</li>
+    <li>In your domain registrar's settings, point the domain to your hosting provider</li>
+    <li>If using a service like Netlify or Vercel, follow their instructions for adding a custom domain</li>
+    <li>Configure SSL for secure HTTPS access</li>
+  </ol>
+
+  <h2>Post-Deployment Checklist</h2>
+  <ul>
+    <li>Verify all pages load correctly</li>
+    <li>Check that all links work properly</li>
+    <li>Test the website on different devices and browsers</li>
+    <li>Verify that the contact form works (if applicable)</li>
+    <li>Check that Google Maps loads correctly (if API key is set)</li>
+  </ul>
+</body>
+</html>
