@@ -1,7 +1,6 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Globe } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -74,7 +73,18 @@ const Footer = () => {
               <p className="mb-2">6 Marlu Road, Selcourt</p>
               <p className="mb-2">Springs, 1559, South Africa</p>
               <p className="mb-2">Phone: 078 171 7615 / 072 018 8078</p>
-              <p>Email: mefirstgp@gmail.com</p>
+              <p className="mb-2">Email: mefirstgp@gmail.com</p>
+              <div className="flex items-center">
+                <Globe size={16} className="mr-2" />
+                <a 
+                  href="https://www.mefirstgroup.co.za" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="hover:text-transport-orange transition-colors"
+                >
+                  www.mefirstgroup.co.za
+                </a>
+              </div>
             </address>
           </div>
         </div>
