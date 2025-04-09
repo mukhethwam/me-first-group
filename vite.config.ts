@@ -34,5 +34,5 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  base: "./" // Use relative paths for assets
+  base: '' // Using empty string for relative paths (instead of "./")
 }));
