@@ -32,7 +32,9 @@ export default defineConfig(({ mode }) => ({
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]'
       }
-    }
+    },
+    // Add sourcemap for better debugging
+    sourcemap: true,
   },
   base: '' // Using empty string for relative paths (instead of "./")
 }));

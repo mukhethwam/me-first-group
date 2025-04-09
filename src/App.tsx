@@ -13,6 +13,7 @@ import Footprint from "./pages/Footprint";
 import PremiumFleet from "./pages/PremiumFleet";
 import NotFound from "./pages/NotFound";
 
+// Create a client
 const queryClient = new QueryClient();
 
 const App = () => (

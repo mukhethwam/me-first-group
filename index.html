@@ -29,6 +29,27 @@
     <script>
       window.BASE_URL = window.location.origin;
     </script>
+    
+    <!-- Deployment error detection -->
+    <script>
+      window.addEventListener('error', function(e) {
+        console.error('Global error caught:', e.error || e.message);
+        
+        // Only show error UI if page is blank (no content in body yet)
+        if (document.body.children.length <= 1) {
+          document.body.innerHTML += `
+            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
+              <h2>Loading Issue Detected</h2>
+              <p>There was a problem loading the website resources.</p>
+              <p>Try clearing your browser cache or refreshing the page.</p>
+              <button onclick="window.location.reload(true)" style="padding: 10px 20px; margin-top: 20px; cursor: pointer;">
+                Refresh Page
+              </button>
+            </div>
+          `;
+        }
+      }, true);
+    </script>
   </head>
 
   <body>
