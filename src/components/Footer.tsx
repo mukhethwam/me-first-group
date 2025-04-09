@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Linkedin, Globe } from "lucide-react";
@@ -32,19 +33,19 @@ const Footer = () => {
             <h4 className="text-xl font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#/" className="hover:text-transport-orange transition-colors">Home</a>
+                <Link to="/" className="hover:text-transport-orange transition-colors">Home</Link>
               </li>
               <li>
-                <a href="#services" className="hover:text-transport-orange transition-colors">Services</a>
+                <Link to="/#services" className="hover:text-transport-orange transition-colors">Services</Link>
               </li>
               <li>
-                <a href="#fleet" className="hover:text-transport-orange transition-colors">Our Fleet</a>
+                <Link to="/fleet" className="hover:text-transport-orange transition-colors">Our Fleet</Link>
               </li>
               <li>
-                <a href="#about" className="hover:text-transport-orange transition-colors">About Us</a>
+                <Link to="/about" className="hover:text-transport-orange transition-colors">About Us</Link>
               </li>
               <li>
-                <a href="#contact" className="hover:text-transport-orange transition-colors">Contact</a>
+                <Link to="/contact" className="hover:text-transport-orange transition-colors">Contact</Link>
               </li>
             </ul>
           </div>
@@ -53,16 +54,16 @@ const Footer = () => {
             <h4 className="text-xl font-semibold mb-4">Our Services</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#services" className="hover:text-transport-orange transition-colors">Mining Commodity Transport</a>
+                <Link to="/services" className="hover:text-transport-orange transition-colors">Mining Commodity Transport</Link>
               </li>
               <li>
-                <a href="#services" className="hover:text-transport-orange transition-colors">Bulk Material Haulage</a>
+                <Link to="/services" className="hover:text-transport-orange transition-colors">Bulk Material Haulage</Link>
               </li>
               <li>
-                <a href="#services" className="hover:text-transport-orange transition-colors">Custom Logistics Solutions</a>
+                <Link to="/services" className="hover:text-transport-orange transition-colors">Custom Logistics Solutions</Link>
               </li>
               <li>
-                <a href="#services" className="hover:text-transport-orange transition-colors">Time-Sensitive Deliveries</a>
+                <Link to="/services" className="hover:text-transport-orange transition-colors">Time-Sensitive Deliveries</Link>
               </li>
             </ul>
           </div>
@@ -92,8 +93,8 @@ const Footer = () => {
         <div className="border-t border-white border-opacity-20 mt-8 pt-8 text-center md:flex md:justify-between md:text-left">
           <p>&copy; {new Date().getFullYear()} Me First Group. All rights reserved.</p>
           <div className="mt-4 md:mt-0">
-            <a href="#privacy" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Privacy Policy</a>
-            <a href="#terms" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Terms of Service</a>
+            <Link to="/privacy-policy" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-transport-orange transition-colors mx-3 md:ml-6 md:mr-0">Terms of Service</Link>
           </div>
         </div>
       </div>
