@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import ContactSection from '../components/ContactSection';
-import LocationMap from '../components/LocationMap';
 import Footer from '../components/Footer';
 
 const Contact = () => {
@@ -14,7 +13,6 @@ const Contact = () => {
     <>
       <Navbar />
       <ContactSection />
-      <LocationMap />
       <Footer />
     </>
   );
