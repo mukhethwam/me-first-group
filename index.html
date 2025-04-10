@@ -30,63 +30,45 @@
     <div id="root"></div>
     <!-- Required Lovable script for new features -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <!-- Main application script - direct reference to build output -->
-    <script type="module" src="./main.js"></script>
+    <!-- Main application script - specify exact path -->
+    <script type="module" src="./assets/main.js"></script>
     
-    <!-- Enhanced fallback script with comprehensive error handling -->
+    <!-- Improved fallback script with better error handling -->
     <script>
       window.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
-            console.error('Main script failed to load. Attempting alternative paths...');
+            console.error('Main script failed to load. Trying fallback paths...');
             
-            // Create a loading indicator
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingIndicator.innerHTML = '<p>Loading application resources...</p>';
-            root.appendChild(loadingIndicator);
-            
-            // Comprehensive list of possible paths to try
+            // Try various fallback paths
             const possiblePaths = [
-              './assets/main.js',
-              './assets/index.js',
               './main.js',
               './index.js',
-              './src/main.js',
-              '/main.js',
-              '/assets/main.js',
-              '/index.js'
+              './assets/main.js',
+              './assets/index.js',
+              './dist/assets/main.js'
             ];
             
-            let loadAttempts = 0;
-            
-            // Try each path sequentially
-            function tryNextScript(index) {
-              if (index >= possiblePaths.length) {
-                loadingIndicator.innerHTML = '<p>Unable to load application resources. Please try refreshing the page.</p>';
-                return;
+            for (const path of possiblePaths) {
+              try {
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = path;
+                document.body.appendChild(script);
+                console.log('Trying script path:', path);
+              } catch (e) {
+                console.error('Error loading fallback script:', path, e);
               }
-              
-              loadAttempts++;
-              loadingIndicator.innerHTML = '<p>Trying alternative resource loading method (' + loadAttempts + '/' + possiblePaths.length + ')...</p>';
-              
-              const script = document.createElement('script');
-              script.type = 'module';
-              script.src = possiblePaths[index];
-              script.onerror = function() {
-                console.error('Failed to load script from: ' + possiblePaths[index]);
-                setTimeout(function() {
-                  tryNextScript(index + 1);
-                }, 500);
-              };
-              document.body.appendChild(script);
-              console.log('Trying script path:', possiblePaths[index]);
             }
             
-            tryNextScript(0);
+            // Add loading message
+            const loadingMsg = document.createElement('div');
+            loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
+            loadingMsg.innerHTML = '<p>Loading application resources...</p>';
+            root.appendChild(loadingMsg);
           }
-        }, 1500);
+        }, 2000);
       });
     </script>
   </body>

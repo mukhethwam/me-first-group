@@ -10,16 +10,11 @@ RewriteRule ^(.*)$ index.html [L,QSA]
 # Set correct MIME types
 AddType text/javascript .js
 AddType application/javascript .mjs
-AddType application/javascript .js
 AddType text/css .css
 
 # Allow Cross Origin
 <IfModule mod_headers.c>
   Header set Access-Control-Allow-Origin "*"
-  # Ensure JavaScript files are served with correct content type
-  <FilesMatch "\.(js)$">
-    Header set Content-Type "application/javascript"
-  </FilesMatch>
 </IfModule>
 
 # Enable compression
