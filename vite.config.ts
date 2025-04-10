@@ -35,6 +35,10 @@ export default defineConfig(({ mode }) => ({
           if (name && /\.css$/.test(name)) {
             return 'assets/style.[ext]';
           }
+          // Remove extensions for JSON files
+          if (name && /\.json$/.test(name)) {
+            return 'assets/[name].[hash]';
+          }
           return 'assets/[name].[hash].[ext]';
         },
         format: 'es',
