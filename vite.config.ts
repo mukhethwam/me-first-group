@@ -39,6 +39,6 @@ export default defineConfig(({ mode }) => ({
     // Generate ES module code for better browser compatibility
     target: 'es2015',
   },
-  // Use empty string for base path to enable proper static hosting
-  base: '/',
+  // Use relative base path for proper asset loading
+  base: './',
 }));

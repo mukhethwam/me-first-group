@@ -33,7 +33,7 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
     <!-- Main application script -->
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx"></script>
     
     <!-- Fallback loading message -->
     <script>
@@ -51,9 +51,11 @@
             
             // Try alternative script paths
             const alternativePaths = [
-              './assets/main.js',
+              './main.js',
               './index.js',
               './src/main.js',
+              './dist/main.js',
+              './assets/main.js',
               './src/main.tsx',
               './app.js',
               './bundle.js'
