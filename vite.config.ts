@@ -28,13 +28,27 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        entryFileNames: 'assets/app.[hash].js',
+        chunkFileNames: 'assets/chunk.[hash].js',
+        assetFileNames: ({ name }) => {
+          // Don't hash CSS files to simplify loading
+          if (name && /\.css$/.test(name)) {
+            return 'assets/style.[ext]';
+          }
+          return 'assets/[name].[hash].[ext]';
+        },
+        format: 'es',
+        generatedCode: {
+          preset: 'es2015'
+        }
       }
     },
-    // Add sourcemap for better debugging
-    sourcemap: true,
+    // Enable for development only
+    sourcemap: false,
+    // Minify code for production
+    minify: true,
+    // Ensure code works in older browsers
+    target: 'es2015'
   },
-  base: '' // Using empty string for relative paths (instead of "./")
+  base: './', // Use relative paths with explicit dot
 }));
