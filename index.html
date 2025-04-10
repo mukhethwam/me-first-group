@@ -27,7 +27,13 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Fallback loading indicator that will be replaced when React loads -->
+      <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 100px; color: #333;">
+        <h2>Loading Me First Group</h2>
+        <p>Please wait while we load the application...</p>
+      </div>
+    </div>
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
@@ -36,30 +42,28 @@
     
     <!-- Fallback system -->
     <script>
-      // Monitor page load and handle potential issues
-      window.addEventListener('load', function() {
-        // Only show fallback if the app doesn't render within 5 seconds
-        const timeout = setTimeout(function() {
-          const root = document.getElementById('root');
-          if (root && (!root.children || root.children.length === 0)) {
-            console.warn('Application failed to render within timeout period');
-            
-            // Show friendly loading message
-            const loadingMsg = document.createElement('div');
-            loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingMsg.innerHTML = `
+      // Show fallback if the app doesn't render within 8 seconds
+      const loadTimeout = setTimeout(function() {
+        const root = document.getElementById('root');
+        if (root && (!root.children || root.children.length === 1)) {
+          console.warn('Application may have failed to render within timeout period');
+          root.innerHTML = `
+            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
               <h2>Me First Group</h2>
-              <p>Loading application resources...</p>
-              <p style="font-size: 14px; color: #666;">If this message persists, please try refreshing the page.</p>
-            `;
-            root.appendChild(loadingMsg);
-          }
-        }, 5000);
-        
-        // Clear timeout if app loads successfully
-        window.addEventListener('app-loaded', function() {
-          clearTimeout(timeout);
-        });
+              <p>Having trouble loading the application.</p>
+              <p>Please try refreshing the page or check your internet connection.</p>
+              <button onclick="window.location.reload()" style="padding: 10px 20px; margin-top: 20px; background-color: #0056b3; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Refresh Page
+              </button>
+            </div>
+          `;
+        }
+      }, 8000);
+      
+      // Clear timeout if app loads successfully
+      window.addEventListener('app-loaded', function() {
+        clearTimeout(loadTimeout);
+        console.log('Application loaded successfully, cleared fallback timer');
       });
     </script>
   </body>

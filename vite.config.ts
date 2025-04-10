@@ -41,5 +41,9 @@ export default defineConfig(({ mode }) => ({
   },
   // Important: Use relative paths for assets in production builds
   base: './',
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom'],
+    force: true
+  },
   logLevel: 'info',
 }));
