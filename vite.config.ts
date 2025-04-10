@@ -9,7 +9,8 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    historyApiFallback: true, // Ensure history API fallback is enabled for SPA routing
+    // Add history fallback to support SPA routing
+    historyApiFallback: true,
   },
   plugins: [
     react(),
@@ -29,21 +30,14 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        // Ensure correct asset paths
-        entryFileNames: 'assets/[name].[hash].js',
+        entryFileNames: '[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     sourcemap: true,
     target: 'es2015',
-    minify: true,
   },
-  // Important: Use relative paths for assets in production builds
   base: './',
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    force: true
-  },
-  logLevel: 'info',
 }));
+
