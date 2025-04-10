@@ -31,47 +31,55 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script -->
+    <!-- Main application script with correct path -->
     <script type="module" src="./src/main.tsx"></script>
     
-    <!-- Fallback loading message -->
+    <!-- Enhanced fallback system -->
     <script>
-      window.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
+      // Monitor page load and handle potential issues
+      window.addEventListener('load', function() {
+        // If app doesn't render within 2 seconds, show fallback message
+        const timeout = setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script not loaded. Setting up fallback and adding loading message...');
+            console.warn('Application failed to render within timeout period');
             
-            // Add loading message
+            // Show friendly loading message
             const loadingMsg = document.createElement('div');
             loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingMsg.innerHTML = '<h2>Me First Group</h2><p>Loading application resources...</p>';
+            loadingMsg.innerHTML = `
+              <h2>Me First Group</h2>
+              <p>Loading application resources...</p>
+              <p style="font-size: 14px; color: #666;">If this message persists, please try refreshing the page.</p>
+            `;
             root.appendChild(loadingMsg);
             
-            // Try alternative script paths
-            const alternativePaths = [
+            // Attempt to load alternative script paths
+            console.log('Attempting alternative script paths...');
+            [
               './main.js',
-              './index.js',
               './dist/main.js',
               './assets/main.js',
               './bundle.js',
+              './index.js',
               './src/main.js'
-            ];
-            
-            // Attempt to load from alternative paths
-            for (const path of alternativePaths) {
+            ].forEach(path => {
               try {
-                console.log('Trying script path:', path);
                 const script = document.createElement('script');
                 script.type = 'module';
                 script.src = path;
                 document.body.appendChild(script);
               } catch (e) {
-                console.error('Error loading alternative script:', path, e);
+                console.error('Failed to load alternative script:', path);
               }
-            }
+            });
           }
-        }, 1000);
+        }, 2000);
+        
+        // Clear timeout if app loads successfully
+        window.addEventListener('app-loaded', function() {
+          clearTimeout(timeout);
+        });
       });
     </script>
   </body>

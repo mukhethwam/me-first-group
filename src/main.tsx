@@ -10,37 +10,46 @@ const renderApp = () => {
     const rootElement = document.getElementById("root");
     
     if (!rootElement) {
-      console.error("Failed to find the root element - DOM may not be fully loaded");
+      console.error("Critical error: Root element not found");
       document.body.innerHTML = `
         <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
           <h1>Loading Error</h1>
-          <p>Unable to find root element. Please check browser console for details.</p>
+          <p>Unable to find root element. Please try refreshing the page.</p>
         </div>
       `;
       return;
     }
     
-    // Create root before rendering
+    // Create root and render with error boundary
     const root = createRoot(rootElement);
     
-    // Render the app
-    root.render(<App />);
-    console.log("App successfully rendered");
+    // Wrap rendering in a try block for error catching
+    try {
+      root.render(<App />);
+      console.log("App successfully rendered");
+    } catch (renderError) {
+      console.error("Render error:", renderError);
+      root.render(
+        <div style={{fontFamily: 'Arial', padding: '20px', textAlign: 'center'}}>
+          <h2>Something went wrong</h2>
+          <p>We're sorry, but there was an error rendering the application.</p>
+        </div>
+      );
+    }
   } catch (error) {
-    console.error("Critical rendering error:", error);
+    console.error("Critical initialization error:", error);
     
     // Display a fallback error message for users
     document.body.innerHTML = `
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
         <h1>Something went wrong</h1>
         <p>We're sorry, but there was an error loading the site. Please try refreshing the page.</p>
-        <p style="color: #777; font-size: 14px;">Error details have been logged to the console.</p>
       </div>
     `;
   }
 };
 
-// Execute with a check to ensure DOM is ready
+// Check if DOM is loaded and ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
