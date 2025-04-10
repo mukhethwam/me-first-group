@@ -32,8 +32,8 @@
     <!-- Required Lovable script for new features -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script - direct reference to entry point -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- Main application script -->
+    <script type="module" src="./main.js"></script>
     
     <!-- Fallback loading message -->
     <script>
@@ -51,12 +51,12 @@
             
             // Try alternative script paths
             const alternativePaths = [
-              '/src/main.tsx',
-              '/assets/main.js',
-              '/main.js',
+              './assets/main.js',
+              './index.js',
+              './src/main.js',
               './src/main.tsx',
-              './main.js',
-              './index.js'
+              './app.js',
+              './bundle.js'
             ];
             
             // Attempt to load from alternative paths

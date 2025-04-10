@@ -6,5 +6,4 @@ deployment:
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R dist/* $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
-    - /bin/cp index.html $DEPLOYPATH
     - echo "Deployment completed at $(date)"
