@@ -28,9 +28,10 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
+        // Use hash in filenames for cache busting
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     },
     // Add sourcemap for better debugging
@@ -38,6 +39,6 @@ export default defineConfig(({ mode }) => ({
     // Generate ES module code for better browser compatibility
     target: 'es2015',
   },
-  // Use empty string for relative paths (enables proper functionality with HashRouter)
+  // Use empty string for base path to enable proper static hosting
   base: '',
 }));

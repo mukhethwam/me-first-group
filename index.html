@@ -23,52 +23,56 @@
     <meta name="twitter:url" content="https://www.mefirstgroup.co.za" />
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
   </head>
 
   <body>
     <div id="root"></div>
+    
     <!-- Required Lovable script for new features -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <!-- Main application script -->
-    <script type="module" src="./assets/main.js"></script>
     
-    <!-- Fallback script for static deployments -->
+    <!-- Main application script - direct reference to entry point -->
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Fallback loading message -->
     <script>
       window.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
-            console.error('Main script failed to load. Trying fallback...');
-            
-            // Try various fallback paths
-            const possiblePaths = [
-              './src/main.tsx',
-              './assets/main.js',
-              './assets/index.js',
-              './main.js',
-              './index.js'
-            ];
-            
-            for (const path of possiblePaths) {
-              try {
-                const script = document.createElement('script');
-                script.type = 'module';
-                script.src = path;
-                document.body.appendChild(script);
-                console.log('Trying script path:', path);
-              } catch (e) {
-                console.error('Error loading fallback script:', path, e);
-              }
-            }
+            console.log('Main script not loaded. Setting up fallback and adding loading message...');
             
             // Add loading message
             const loadingMsg = document.createElement('div');
             loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingMsg.innerHTML = '<p>Loading application resources...</p>';
+            loadingMsg.innerHTML = '<h2>Me First Group</h2><p>Loading application resources...</p>';
             root.appendChild(loadingMsg);
+            
+            // Try alternative script paths
+            const alternativePaths = [
+              '/src/main.tsx',
+              '/assets/main.js',
+              '/main.js',
+              './src/main.tsx',
+              './main.js',
+              './index.js'
+            ];
+            
+            // Attempt to load from alternative paths
+            for (const path of alternativePaths) {
+              try {
+                console.log('Trying script path:', path);
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = path;
+                document.body.appendChild(script);
+              } catch (e) {
+                console.error('Error loading alternative script:', path, e);
+              }
+            }
           }
-        }, 2000);
+        }, 1000);
       });
     </script>
   </body>

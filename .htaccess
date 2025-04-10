@@ -10,6 +10,8 @@ RewriteRule ^(.*)$ index.html [L,QSA]
 # Set correct MIME types
 AddType text/javascript .js
 AddType application/javascript .mjs
+AddType text/javascript .tsx
+AddType text/javascript .ts
 AddType text/css .css
 
 # Allow Cross Origin
@@ -34,3 +36,10 @@ AddType text/css .css
   ExpiresByType text/javascript "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
 </IfModule>
+
+# Prevent caching of index.html to ensure latest app is loaded
+<FilesMatch "index\.html$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</FilesMatch>
