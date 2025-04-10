@@ -27,12 +27,16 @@ const renderApp = () => {
     try {
       root.render(<App />);
       console.log("App successfully rendered");
+      
+      // Dispatch event to notify that app has loaded successfully
+      window.dispatchEvent(new Event('app-loaded'));
     } catch (renderError) {
       console.error("Render error:", renderError);
       root.render(
         <div style={{fontFamily: 'Arial', padding: '20px', textAlign: 'center'}}>
           <h2>Something went wrong</h2>
           <p>We're sorry, but there was an error rendering the application.</p>
+          <p>Error details: {String(renderError)}</p>
         </div>
       );
     }
@@ -44,6 +48,7 @@ const renderApp = () => {
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
         <h1>Something went wrong</h1>
         <p>We're sorry, but there was an error loading the site. Please try refreshing the page.</p>
+        <p style="font-size: 14px; color: #666;">Technical details: ${String(error)}</p>
       </div>
     `;
   }

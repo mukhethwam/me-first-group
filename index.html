@@ -23,7 +23,7 @@
     <meta name="twitter:url" content="https://www.mefirstgroup.co.za" />
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
   </head>
 
   <body>
@@ -31,14 +31,14 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script with correct path -->
-    <script type="module" src="./src/main.tsx"></script>
+    <!-- Main application script -->
+    <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Enhanced fallback system -->
+    <!-- Fallback system -->
     <script>
       // Monitor page load and handle potential issues
       window.addEventListener('load', function() {
-        // If app doesn't render within 2 seconds, show fallback message
+        // Only show fallback if the app doesn't render within 5 seconds
         const timeout = setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
@@ -53,28 +53,8 @@
               <p style="font-size: 14px; color: #666;">If this message persists, please try refreshing the page.</p>
             `;
             root.appendChild(loadingMsg);
-            
-            // Attempt to load alternative script paths
-            console.log('Attempting alternative script paths...');
-            [
-              './main.js',
-              './dist/main.js',
-              './assets/main.js',
-              './bundle.js',
-              './index.js',
-              './src/main.js'
-            ].forEach(path => {
-              try {
-                const script = document.createElement('script');
-                script.type = 'module';
-                script.src = path;
-                document.body.appendChild(script);
-              } catch (e) {
-                console.error('Failed to load alternative script:', path);
-              }
-            });
           }
-        }, 2000);
+        }, 5000);
         
         // Clear timeout if app loads successfully
         window.addEventListener('app-loaded', function() {

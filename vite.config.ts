@@ -9,8 +9,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // Ensure history API fallback is enabled for SPA routing
-    historyApiFallback: true,
+    historyApiFallback: true, // Ensure history API fallback is enabled for SPA routing
   },
   plugins: [
     react(),
@@ -38,11 +37,9 @@ export default defineConfig(({ mode }) => ({
     },
     sourcemap: true,
     target: 'es2015',
-    // Enable minification for production
     minify: true,
   },
-  // Use relative paths for assets
+  // Important: Use relative paths for assets in production builds
   base: './',
-  // Improve error handling
   logLevel: 'info',
 }));
