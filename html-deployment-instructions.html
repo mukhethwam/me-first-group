@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,16 +76,14 @@
       <ul>
         <li><code>index.html</code> (main HTML file)</li>
         <li>All folders (<code>assets</code>, etc.)</li>
-        <li>All JavaScript (<code>.js</code>) files - ensure they have proper extensions</li>
-        <li>All CSS (<code>.css</code>) files - ensure they have proper extensions</li>
+        <li>All JavaScript and CSS files</li>
         <li>All images and other assets</li>
-        <li>The <code>.htaccess</code> file (may be hidden in your file browser)</li>
       </ul>
     </li>
   </ol>
 
   <div class="warning">
-    <strong>Important!</strong> Do not rename any files or change the folder structure. All paths are relative and must be maintained exactly as they are. Ensure all JavaScript files have proper <code>.js</code> extensions and CSS files have <code>.css</code> extensions.
+    <strong>Important!</strong> Do not rename any files or change the folder structure. All paths are relative and must be maintained exactly as they are.
   </div>
 
   <h2>Testing Your Website</h2>
@@ -97,13 +94,11 @@
     <li>Test navigation between all pages</li>
     <li>Test the contact form and other interactive elements</li>
     <li>Test on mobile devices to ensure responsive design works properly</li>
-    <li>If you see a blank page, check your browser's console (F12) for specific error messages</li>
   </ol>
 
   <h2>Troubleshooting Common Issues</h2>
   <ul>
-    <li><strong>White/blank screen:</strong> This is often caused by JavaScript files not loading correctly. Check that all files were uploaded with their proper extensions (.js, .css)</li>
-    <li><strong>404 errors for JavaScript files:</strong> Make sure the server is correctly recognizing JS file MIME types - the included .htaccess file should handle this</li>
+    <li><strong>White screen or 404 errors:</strong> Ensure all files were uploaded correctly and the folder structure is maintained</li>
     <li><strong>Missing images:</strong> Verify that all image files were uploaded</li>
     <li><strong>Navigation issues:</strong> This site uses a hash router (#) for compatibility with static hosting. Ensure you didn't modify the URL structure</li>
   </ul>
