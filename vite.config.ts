@@ -28,13 +28,13 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
+        entryFileNames: '[name].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     // Add sourcemap for better debugging
-    sourcemap: true,
+    sourcemap: mode === 'development',
     // Generate ES module code for better browser compatibility
     target: 'es2015',
   },
