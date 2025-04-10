@@ -27,18 +27,10 @@ export default defineConfig(({ mode }) => ({
       input: {
         main: path.resolve(__dirname, 'index.html'),
       },
-      output: {
-        // Simpler asset names with no hashes for easier reference
-        entryFileNames: 'main.js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
-      }
     },
     // Add sourcemap for better debugging
     sourcemap: true,
     // Generate ES module code for better browser compatibility
     target: 'es2015',
   },
-  // Use empty string for base path to enable proper static hosting
-  base: '',
 }));
