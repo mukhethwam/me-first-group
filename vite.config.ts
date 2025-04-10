@@ -28,8 +28,8 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        // Static file names without hashes for HTML hosting
-        entryFileNames: 'assets/[name].js',
+        // Simpler asset names with no hashes for easier reference
+        entryFileNames: 'main.js',
         chunkFileNames: 'assets/[name].js',
         assetFileNames: 'assets/[name].[ext]'
       }
@@ -39,6 +39,6 @@ export default defineConfig(({ mode }) => ({
     // Generate ES module code for better browser compatibility
     target: 'es2015',
   },
-  // Empty base path for HTML hosting
+  // Use empty string for base path to enable proper static hosting
   base: '',
 }));
