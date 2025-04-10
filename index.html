@@ -30,24 +30,24 @@
     <div id="root"></div>
     <!-- Required Lovable script for new features -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <!-- Main application script -->
+    <!-- Main application script - specify exact path -->
     <script type="module" src="./assets/main.js"></script>
     
-    <!-- Fallback script for static deployments -->
+    <!-- Improved fallback script with better error handling -->
     <script>
       window.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
-            console.error('Main script failed to load. Trying fallback...');
+            console.error('Main script failed to load. Trying fallback paths...');
             
             // Try various fallback paths
             const possiblePaths = [
-              './src/main.tsx',
+              './main.js',
+              './index.js',
               './assets/main.js',
               './assets/index.js',
-              './main.js',
-              './index.js'
+              './dist/assets/main.js'
             ];
             
             for (const path of possiblePaths) {
