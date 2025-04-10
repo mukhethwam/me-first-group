@@ -17,9 +17,9 @@ try {
   if (fs.existsSync(path.join(distPath, 'index.html'))) {
     console.log('\nVerifying build output: ✓ index.html found');
     
-    // Check for JS files
+    // Check for JS files (could be without extensions now)
     const assets = fs.readdirSync(path.join(distPath, 'assets'));
-    const jsFiles = assets.filter(file => file.endsWith('.js'));
+    const jsFiles = assets.filter(file => !file.includes('.') || file.endsWith('.js'));
     
     if (jsFiles.length > 0) {
       console.log(`\nVerifying JS files: ✓ Found ${jsFiles.length} JavaScript files`);

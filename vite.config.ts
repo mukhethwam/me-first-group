@@ -28,8 +28,8 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/app.[hash].js',
-        chunkFileNames: 'assets/chunk.[hash].js',
+        entryFileNames: 'assets/app.[hash]',
+        chunkFileNames: 'assets/chunk.[hash]',
         assetFileNames: ({ name }) => {
           // Don't hash CSS files to simplify loading
           if (name && /\.css$/.test(name)) {
