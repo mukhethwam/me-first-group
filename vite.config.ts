@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -28,16 +27,11 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/app.[hash]',
-        chunkFileNames: 'assets/chunk.[hash]',
+        entryFileNames: 'assets/app.[hash].js',
+        chunkFileNames: 'assets/chunk.[hash].js',
         assetFileNames: ({ name }) => {
-          // Don't hash CSS files to simplify loading
           if (name && /\.css$/.test(name)) {
-            return 'assets/style.[ext]';
-          }
-          // Remove extensions for JSON files
-          if (name && /\.json$/.test(name)) {
-            return 'assets/[name].[hash]';
+            return 'assets/style.css';
           }
           return 'assets/[name].[hash].[ext]';
         },
@@ -47,12 +41,9 @@ export default defineConfig(({ mode }) => ({
         }
       }
     },
-    // Enable for development only
     sourcemap: false,
-    // Minify code for production
     minify: true,
-    // Ensure code works in older browsers
     target: 'es2015'
   },
-  base: './', // Use relative paths with explicit dot
+  base: './'
 }));

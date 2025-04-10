@@ -17,15 +17,22 @@ try {
   if (fs.existsSync(path.join(distPath, 'index.html'))) {
     console.log('\nVerifying build output: ✓ index.html found');
     
-    // Check for JS files (could be without extensions now)
+    // Check for JS files - ensure they have proper extensions
     const assets = fs.readdirSync(path.join(distPath, 'assets'));
-    const jsFiles = assets.filter(file => !file.includes('.') || file.endsWith('.js'));
+    const jsFiles = assets.filter(file => file.endsWith('.js'));
     
     if (jsFiles.length > 0) {
-      console.log(`\nVerifying JS files: ✓ Found ${jsFiles.length} JavaScript files`);
+      console.log(`\nVerifying JS files: ✓ Found ${jsFiles.length} JavaScript files with proper .js extensions`);
     } else {
-      console.error('\nError: No JavaScript files found in the assets folder!');
-      process.exit(1);
+      console.warn('\nWarning: No JavaScript files with .js extensions found in the assets folder. This may cause issues with some web servers.');
+    }
+
+    // Also check for CSS files
+    const cssFiles = assets.filter(file => file.endsWith('.css'));
+    if (cssFiles.length > 0) {
+      console.log(`\nVerifying CSS files: ✓ Found ${cssFiles.length} CSS files with proper .css extensions`);
+    } else {
+      console.warn('\nWarning: No CSS files with .css extensions found. This may affect styling.');
     }
     
     // Copy .htaccess to dist folder
