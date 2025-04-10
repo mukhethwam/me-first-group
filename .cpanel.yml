@@ -4,5 +4,5 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/glades/public_html
     - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R * $DEPLOYPATH
-
+    - /bin/cp -R dist/* $DEPLOYPATH
+    - /bin/cp .htaccess $DEPLOYPATH

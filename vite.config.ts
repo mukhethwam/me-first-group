@@ -28,13 +28,16 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     // Add sourcemap for better debugging
     sourcemap: true,
+    // Generate ES module code without extension for better browser compatibility
+    target: 'es2015',
   },
-  base: '' // Using empty string for relative paths (instead of "./")
+  // Use empty string for relative paths (enables proper functionality with HashRouter)
+  base: '',
 }));
