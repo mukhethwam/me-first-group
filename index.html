@@ -24,82 +24,51 @@
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    
-    <!-- Base URL for domain compatibility -->
-    <script>
-      window.BASE_URL = window.location.origin;
-    </script>
-    
-    <!-- Enhanced deployment error detection and fallback -->
-    <script>
-      // Add robust error handling for static deployments
-      window.addEventListener('error', function(e) {
-        console.error('Global error caught:', e.error || e.message);
-        
-        // Only show error UI if page is blank (no content in body yet)
-        if (document.body.children.length <= 1) {
-          document.body.innerHTML += `
-            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
-              <h2>Loading Issue Detected</h2>
-              <p>There was a problem loading the website resources.</p>
-              <p>Try clearing your browser cache or refreshing the page.</p>
-              <p style="font-size: 14px; color: #666; margin-top: 20px;">If the problem persists, this may be due to incorrect file paths or missing files.</p>
-              <button onclick="window.location.reload(true)" style="padding: 10px 20px; margin-top: 20px; cursor: pointer; background-color: #0056b3; color: white; border: none; border-radius: 4px;">
-                Refresh Page
-              </button>
-            </div>
-          `;
-        }
-      }, true);
-
-      // Check for missing script errors
-      setTimeout(function() {
-        if (document.body.children.length <= 1) {
-          console.error('Page did not load properly within timeout period');
-          document.body.innerHTML += `
-            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
-              <h2>Page Load Timeout</h2>
-              <p>The website content failed to load properly.</p>
-              <p>This could be due to script loading issues or network problems.</p>
-              <button onclick="window.location.reload(true)" style="padding: 10px 20px; margin-top: 20px; cursor: pointer; background-color: #0056b3; color: white; border: none; border-radius: 4px;">
-                Try Again
-              </button>
-            </div>
-          `;
-        }
-      }, 10000); // 10 second timeout
-    </script>
   </head>
 
   <body>
     <div id="root"></div>
     <!-- Required Lovable script for new features -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <!-- Ensure main script path is correct for static hosting -->
-    <script type="module" src="./src/main.tsx"></script>
+    <!-- Main application script -->
+    <script type="module" src="./assets/main.js"></script>
     
-    <!-- Fallback for static deployments - try both path formats -->
+    <!-- Fallback script for static deployments -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        // Check if the application has loaded
+      window.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
-            console.warn('Application did not load with primary script path, trying fallback...');
+            console.error('Main script failed to load. Trying fallback...');
             
-            // Try alternative script path
-            const fallbackScript = document.createElement('script');
-            fallbackScript.type = 'module';
-            fallbackScript.src = '/assets/main-[hash].js'; // This will be replaced by the actual hash during build
-            document.body.appendChild(fallbackScript);
+            // Try various fallback paths
+            const possiblePaths = [
+              './src/main.tsx',
+              './assets/main.js',
+              './assets/index.js',
+              './main.js',
+              './index.js'
+            ];
             
-            // Add message
+            for (const path of possiblePaths) {
+              try {
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = path;
+                document.body.appendChild(script);
+                console.log('Trying script path:', path);
+              } catch (e) {
+                console.error('Error loading fallback script:', path, e);
+              }
+            }
+            
+            // Add loading message
             const loadingMsg = document.createElement('div');
             loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingMsg.innerHTML = '<p>Trying alternative resource loading method...</p>';
+            loadingMsg.innerHTML = '<p>Loading application resources...</p>';
             root.appendChild(loadingMsg);
           }
-        }, 3000);
+        }, 2000);
       });
     </script>
   </body>
