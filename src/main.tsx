@@ -3,16 +3,6 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// Function to notify that the app has loaded
-function notifyAppLoaded() {
-  try {
-    window.dispatchEvent(new Event('app-loaded'));
-    console.log("App loaded event dispatched");
-  } catch (error) {
-    console.error("Error dispatching app-loaded event:", error);
-  }
-}
-
 // Enhanced error handling with deployment-specific checks
 const renderApp = () => {
   try {
@@ -38,8 +28,8 @@ const renderApp = () => {
       root.render(<App />);
       console.log("App successfully rendered");
       
-      // Notify that app has loaded successfully
-      setTimeout(notifyAppLoaded, 100);
+      // Dispatch event to notify that app has loaded successfully
+      window.dispatchEvent(new Event('app-loaded'));
     } catch (renderError) {
       console.error("Render error:", renderError);
       root.render(
@@ -64,7 +54,7 @@ const renderApp = () => {
   }
 };
 
-// Ensure DOM is ready before rendering
+// Check if DOM is loaded and ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {

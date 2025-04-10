@@ -23,70 +23,42 @@
     <meta name="twitter:url" content="https://www.mefirstgroup.co.za" />
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
-    <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    
-    <!-- Preload critical assets -->
-    <link rel="preload" href="./assets/index.css" as="style">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
   </head>
 
   <body>
     <div id="root"></div>
     
-    <!-- Main application script with correct path -->
-    <script type="module" src="./assets/index.js" onerror="handleScriptError()"></script>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Fallback system with error handling -->
+    <!-- Main application script -->
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Fallback system -->
     <script>
-      // Function to handle script loading errors
-      function handleScriptError() {
-        console.error('Failed to load main script');
-        showFallbackMessage('Script loading error', 'The application script failed to load. Please refresh the page or try again later.');
-      }
-      
-      // Function to show fallback message
-      function showFallbackMessage(title, message) {
-        const root = document.getElementById('root');
-        if (root) {
-          const loadingMsg = document.createElement('div');
-          loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-          loadingMsg.innerHTML = `
-            <h2>${title}</h2>
-            <p>${message}</p>
-            <p style="font-size: 14px; color: #666;">If this message persists, please try refreshing the page.</p>
-          `;
-          root.appendChild(loadingMsg);
-        }
-      }
-      
       // Monitor page load and handle potential issues
       window.addEventListener('load', function() {
-        // Only show fallback if the app doesn't render within 3 seconds
+        // Only show fallback if the app doesn't render within 5 seconds
         const timeout = setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
             console.warn('Application failed to render within timeout period');
-            showFallbackMessage('Me First Group', 'Loading application resources...');
             
-            // Try alternative script paths as fallback
-            const alternativePaths = ['./main.js', './index.js', './src/main.js', './dist/main.js'];
-            alternativePaths.forEach(path => {
-              try {
-                const script = document.createElement('script');
-                script.type = 'module';
-                script.src = path;
-                document.body.appendChild(script);
-                console.log('Attempting to load alternative script:', path);
-              } catch (err) {
-                console.error('Error loading alternative script:', err);
-              }
-            });
+            // Show friendly loading message
+            const loadingMsg = document.createElement('div');
+            loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
+            loadingMsg.innerHTML = `
+              <h2>Me First Group</h2>
+              <p>Loading application resources...</p>
+              <p style="font-size: 14px; color: #666;">If this message persists, please try refreshing the page.</p>
+            `;
+            root.appendChild(loadingMsg);
           }
-        }, 3000);
+        }, 5000);
         
         // Clear timeout if app loads successfully
         window.addEventListener('app-loaded', function() {
           clearTimeout(timeout);
-          console.log('App loaded successfully');
         });
       });
     </script>
