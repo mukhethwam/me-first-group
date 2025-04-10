@@ -29,17 +29,17 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        // Ensure correct asset paths
-        entryFileNames: 'assets/[name].[hash].js',
-        chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]'
+        // Use simple file naming pattern for easier path resolution
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       }
     },
     sourcemap: true,
     target: 'es2015',
     minify: true,
   },
-  // Important: Use relative paths for assets in production builds
+  // Use relative paths in production builds
   base: './',
   logLevel: 'info',
 }));
