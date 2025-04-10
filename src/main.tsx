@@ -11,6 +11,10 @@ const renderApp = () => {
     if (rootElement) {
       createRoot(rootElement).render(<App />);
       console.log("App successfully rendered");
+      
+      // Dispatch event to notify that the app has loaded
+      const appLoadedEvent = new Event('app-loaded');
+      window.dispatchEvent(appLoadedEvent);
     } else {
       console.error("Failed to find the root element - DOM may not be fully loaded");
       // Try to create a visible error for debugging
