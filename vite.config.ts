@@ -28,10 +28,10 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        // Simpler asset names with no hashes for easier reference
-        entryFileNames: 'main.js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name].[ext]'
+        // Use proper asset naming for production
+        entryFileNames: '[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     // Add sourcemap for better debugging
@@ -40,5 +40,5 @@ export default defineConfig(({ mode }) => ({
     target: 'es2015',
   },
   // Use empty string for base path to enable proper static hosting
-  base: '',
+  base: '/',
 }));
