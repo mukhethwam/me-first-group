@@ -76,8 +76,8 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" defer></script>
     
-    <!-- Main application script - Changed from type="module" to defer -->
-    <script src="./src/main.tsx" defer></script>
+    <!-- Main application script using standard script tag -->
+    <script src="/src/main.js" defer></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -109,12 +109,13 @@
             
             // Try alternative script paths
             const alternativePaths = [
-              './main.js',
-              './src/main.js',
-              './dist/main.js',
-              './assets/main.js',
-              './src/main.tsx',
-              './bundle.js'
+              '/main.js',
+              '/src/main.js',
+              '/dist/main.js',
+              '/assets/main.js',
+              '/dist/assets/main.js',
+              '/index.js',
+              '/app.js'
             ];
             
             // Attempt to load from alternative paths

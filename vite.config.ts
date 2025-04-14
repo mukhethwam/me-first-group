@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   css: {
-    // Improve CSS processing
+    // Improved CSS processing
     postcss: {
       plugins: [],
     },
