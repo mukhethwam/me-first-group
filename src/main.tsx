@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-// Create a robust app initialization process
+// Create a more robust app initialization process
 const renderApp = () => {
   try {
     console.log("Initializing app rendering...");
