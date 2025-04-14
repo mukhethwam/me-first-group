@@ -1,19 +1,14 @@
 
+// This is a fallback JavaScript file that will load our React application
+// when the TypeScript version fails to load
+
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
+import App from './App';
 import './index.css';
 
-// Declare the custom event for TypeScript
-declare global {
-  interface WindowEventMap {
-    'app-loaded': CustomEvent;
-  }
-}
-
-// Create a more robust app initialization process
-const renderApp = () => {
+function renderApp() {
   try {
-    console.log("Initializing app rendering...");
+    console.log("Initializing app rendering from main.js fallback...");
     const rootElement = document.getElementById("root");
     
     if (!rootElement) {
@@ -21,17 +16,17 @@ const renderApp = () => {
       const fallbackRoot = document.createElement('div');
       fallbackRoot.id = 'root';
       document.body.appendChild(fallbackRoot);
-      createRoot(fallbackRoot).render(<App />);
+      createRoot(fallbackRoot).render(App());
     } else {
       console.log("Root element found, rendering app...");
-      createRoot(rootElement).render(<App />);
-      console.log("App successfully rendered");
+      createRoot(rootElement).render(App());
+      console.log("App successfully rendered from fallback");
       
       // Dispatch an event when the app has loaded successfully
       window.dispatchEvent(new CustomEvent('app-loaded'));
     }
   } catch (error) {
-    console.error("Critical rendering error:", error);
+    console.error("Critical rendering error in fallback:", error);
     
     // Display a fallback error message for users
     document.body.innerHTML = `
@@ -42,12 +37,11 @@ const renderApp = () => {
       </div>
     `;
   }
-};
+}
 
-// Use document.readyState to ensure DOM is ready
+// Run immediately or on DOMContentLoaded
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
-  // If DOM is already ready, render immediately
   renderApp();
 }

@@ -25,7 +25,7 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Load CSS directly instead of preloading -->
+    <!-- Direct CSS loading for better compatibility -->
     <link rel="stylesheet" href="/src/index.css">
     
     <!-- Add a loading indicator that appears before scripts load -->
@@ -62,8 +62,14 @@
       
       /* Reset conflicting browser styles */
       html {
-        display: block;
+        display: block !important;
         -webkit-locale: auto !important;
+        view-transition-name: none !important;
+      }
+      
+      body {
+        margin: 0;
+        padding: 0;
       }
     </style>
   </head>
@@ -78,8 +84,8 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Use defer instead of type="module" to avoid MIME type issues -->
-    <script defer src="/src/main.tsx"></script>
+    <!-- Use standard script tag instead of module or defer -->
+    <script src="/src/main.js"></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -113,7 +119,9 @@
             const alternativePaths = [
               '/src/main.js',
               './src/main.js',
+              '/dist/main.js',
               '/dist/assets/main.js',
+              '/assets/main.js',
               '/main.js'
             ];
             
@@ -122,7 +130,6 @@
               try {
                 console.log('Trying script path:', path);
                 const script = document.createElement('script');
-                script.defer = true;
                 script.src = path;
                 document.body.appendChild(script);
               } catch (e) {
