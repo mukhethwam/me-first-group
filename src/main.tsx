@@ -3,6 +3,13 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
+// Declare the custom event for TypeScript
+declare global {
+  interface WindowEventMap {
+    'app-loaded': CustomEvent;
+  }
+}
+
 // Create a more robust app initialization process
 const renderApp = () => {
   try {

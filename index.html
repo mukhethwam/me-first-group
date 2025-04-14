@@ -26,7 +26,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="./src/index.css" as="style">
+    <link rel="preload" href="/src/index.css" as="style">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -58,6 +58,12 @@
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+      
+      /* Reset conflicting browser styles */
+      html {
+        display: block;
+        -webkit-locale: auto !important;
       }
     </style>
   </head>
@@ -108,7 +114,8 @@
               '/src/main.tsx',
               './src/main.tsx',
               '/src/main.js',
-              './src/main.js'
+              './src/main.js',
+              '/dist/assets/main.js'
             ];
             
             // Attempt to load from alternative paths
