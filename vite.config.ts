@@ -21,7 +21,17 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'] // Ensure all extensions are properly resolved
+  },
+  css: {
+    // Improved CSS processing
+    postcss: {
+      plugins: [],
+    },
+    // Ensure CSS modules are properly processed
+    modules: {
+      scopeBehaviour: 'local',
+      localsConvention: 'camelCase',
+    }
   },
   build: {
     outDir: 'dist',
@@ -34,7 +44,7 @@ export default defineConfig(({ mode }) => ({
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]',
-        format: 'es' // Ensure ES module format
+        format: 'es'
       }
     },
     sourcemap: true,
@@ -51,7 +61,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   // Use relative base path for easier deployments
-  base: '/',
+  base: './',
   // Optimize dependencies
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

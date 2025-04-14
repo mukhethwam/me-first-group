@@ -1,9 +1,9 @@
 
-import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
-import './index.css';
+import { createRoot } from 'react-dom/client'
+import App from './App.tsx'
+import './index.css'
 
-// Create a more robust app initialization process
+// Create a robust app initialization process
 const renderApp = () => {
   try {
     console.log("Initializing app rendering...");
@@ -17,7 +17,8 @@ const renderApp = () => {
       createRoot(fallbackRoot).render(<App />);
     } else {
       console.log("Root element found, rendering app...");
-      createRoot(rootElement).render(<App />);
+      const root = createRoot(rootElement);
+      root.render(<App />);
       console.log("App successfully rendered");
       
       // Dispatch an event when the app has loaded successfully
