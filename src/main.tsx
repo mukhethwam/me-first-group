@@ -16,9 +16,7 @@ const renderApp = () => {
       document.body.appendChild(fallbackRoot);
       createRoot(fallbackRoot).render(<App />);
     } else {
-      console.log("Root element found, rendering app...");
-      const root = createRoot(rootElement);
-      root.render(<App />);
+      createRoot(rootElement).render(<App />);
       console.log("App successfully rendered");
       
       // Dispatch an event when the app has loaded successfully
@@ -43,6 +41,5 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
   // If DOM is already ready, render immediately
-  console.log("DOM already ready, rendering immediately");
   renderApp();
 }

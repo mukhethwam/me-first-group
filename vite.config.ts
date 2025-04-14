@@ -22,17 +22,6 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  css: {
-    // Improve CSS processing
-    postcss: {
-      plugins: [],
-    },
-    // Ensure CSS modules are properly processed
-    modules: {
-      scopeBehaviour: 'local',
-      localsConvention: 'camelCase',
-    }
-  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
