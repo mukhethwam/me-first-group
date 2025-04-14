@@ -9,8 +9,7 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // Add history fallback to support SPA routing
-    historyApiFallback: true,
+    historyApiFallback: true, // Ensure history API fallback is enabled for SPA routing
   },
   plugins: [
     react(),
@@ -21,7 +20,6 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'] // Ensure all extensions are properly resolved
   },
   build: {
     outDir: 'dist',
@@ -31,32 +29,21 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
+        // Ensure correct asset paths
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
-        format: 'es' // Ensure ES module format
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     sourcemap: true,
     target: 'es2015',
-    // Ensure correct script type output
-    polyfillModulePreload: true,
-    // Improve CSS handling
-    cssCodeSplit: true,
-    // Optimize dependencies
-    commonjsOptions: {
-      include: [/node_modules/],
-      extensions: ['.js', '.cjs'],
-      strictRequires: true,
-    },
+    minify: true,
   },
-  // Use relative base path for easier deployments
-  base: '/',
-  // Optimize dependencies
+  // Important: Use relative paths for assets in production builds
+  base: './',
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
-    esbuildOptions: {
-      target: 'es2020',
-    },
+    force: true
   },
+  logLevel: 'info',
 }));

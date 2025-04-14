@@ -2,7 +2,7 @@
 # Enable rewriting
 RewriteEngine On
 
-# Handle SPA routes by redirecting to index.html
+# Handle direct access to routes by redirecting to index.html for client-side routing
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.html [L,QSA]
@@ -18,13 +18,6 @@ AddType text/css .css
 # Allow Cross Origin
 <IfModule mod_headers.c>
   Header set Access-Control-Allow-Origin "*"
-  Header set X-Content-Type-Options "nosniff"
-  Header set X-Frame-Options "DENY"
-  Header set X-XSS-Protection "1; mode=block"
-  # Ensure JS files are served with the correct MIME type
-  <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
-    Header set Content-Type "text/javascript"
-  </FilesMatch>
 </IfModule>
 
 # Enable compression
@@ -32,7 +25,7 @@ AddType text/css .css
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
 </IfModule>
 
-# Set caching
+# Set caching for static assets
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType image/jpg "access plus 1 year"
@@ -51,16 +44,3 @@ AddType text/css .css
   Header set Pragma "no-cache"
   Header set Expires 0
 </FilesMatch>
-
-# Ensure correct file types for Vite assets
-<FilesMatch "\.js$">
-  Header set Content-Type "application/javascript"
-</FilesMatch>
-
-<FilesMatch "\.css$">
-  Header set Content-Type "text/css"
-</FilesMatch>
-
-# Add fallback for routes with dots but no file extension
-RewriteCond %{REQUEST_URI} ^[^.]+$
-RewriteRule (.*) $1/ [R=301,L]
