@@ -25,8 +25,8 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Explicitly load the CSS file -->
-    <link rel="stylesheet" href="./src/index.css">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./src/index.css" as="style">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -59,10 +59,6 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
-      /* Fix for potential view-transition conflicts */
-      :root {
-        view-transition-name: none !important;
-      }
     </style>
   </head>
 
@@ -74,10 +70,10 @@
     
     <div id="root"></div>
     
-    <script src="https://cdn.gpteng.co/gptengineer.js" defer></script>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script using standard script tag -->
-    <script src="/src/main.js" defer></script>
+    <!-- Main application script - using proper path and type -->
+    <script type="module" src="/src/main.tsx"></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -109,13 +105,10 @@
             
             // Try alternative script paths
             const alternativePaths = [
-              '/main.js',
+              '/src/main.tsx',
+              './src/main.tsx',
               '/src/main.js',
-              '/dist/main.js',
-              '/assets/main.js',
-              '/dist/assets/main.js',
-              '/index.js',
-              '/app.js'
+              './src/main.js'
             ];
             
             // Attempt to load from alternative paths
@@ -123,7 +116,7 @@
               try {
                 console.log('Trying script path:', path);
                 const script = document.createElement('script');
-                script.defer = true;
+                script.type = 'module';
                 script.src = path;
                 document.body.appendChild(script);
               } catch (e) {
