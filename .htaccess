@@ -2,39 +2,61 @@
 # Enable rewriting
 RewriteEngine On
 
-# Handle SPA routing
+# Handle SPA routes by redirecting to index.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*) index.html [QSA,L]
+RewriteRule ^(.*)$ index.html [L,QSA]
 
-# Set proper MIME types
-AddType application/javascript .js
-AddType application/javascript .mjs
+# Set correct MIME types
 AddType text/javascript .js
-AddType text/javascript .mjs
+AddType application/javascript .mjs
+AddType text/javascript .tsx
+AddType text/javascript .ts
+AddType application/json .json
 AddType text/css .css
 
-# Ensure fonts load correctly
-AddType font/ttf .ttf
-AddType font/otf .otf
-AddType font/woff .woff
-AddType font/woff2 .woff2
-
-# Enable Cross-Origin Resource Sharing (CORS)
+# Allow Cross Origin
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Origin "*"
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "DENY"
+  Header set X-XSS-Protection "1; mode=block"
 </IfModule>
 
-# Disable directory browsing
-Options -Indexes
+# Enable compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
+</IfModule>
 
-# Enable caching
+# Set caching
 <IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType text/css "access plus 1 year"
-    ExpiresByType application/javascript "access plus 1 year"
-    ExpiresByType text/javascript "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresActive On
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
 </IfModule>
+
+# Prevent caching of index.html to ensure latest app is loaded
+<FilesMatch "index\.html$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</FilesMatch>
+
+# Ensure correct file types for Vite assets
+<FilesMatch "\.js$">
+  Header set Content-Type "application/javascript"
+</FilesMatch>
+
+<FilesMatch "\.css$">
+  Header set Content-Type "text/css"
+</FilesMatch>
+
+# Add fallback for routes with dots but no file extension
+RewriteCond %{REQUEST_URI} ^[^.]+$
+RewriteRule (.*) $1/ [R=301,L]

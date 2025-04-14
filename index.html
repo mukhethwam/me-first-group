@@ -74,10 +74,10 @@
     
     <div id="root"></div>
     
-    <script src="https://cdn.gpteng.co/gptengineer.js" defer></script>
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script using standard script tag -->
-    <script src="/src/main.js" defer></script>
+    <!-- Main application script -->
+    <script type="module" src="./src/main.tsx"></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -109,13 +109,12 @@
             
             // Try alternative script paths
             const alternativePaths = [
-              '/main.js',
-              '/src/main.js',
-              '/dist/main.js',
-              '/assets/main.js',
-              '/dist/assets/main.js',
-              '/index.js',
-              '/app.js'
+              './main.js',
+              './src/main.js',
+              './dist/main.js',
+              './assets/main.js',
+              './src/main.tsx',
+              './bundle.js'
             ];
             
             // Attempt to load from alternative paths
@@ -123,7 +122,7 @@
               try {
                 console.log('Trying script path:', path);
                 const script = document.createElement('script');
-                script.defer = true;
+                script.type = 'module';
                 script.src = path;
                 document.body.appendChild(script);
               } catch (e) {

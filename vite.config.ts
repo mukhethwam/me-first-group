@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => ({
     },
   },
   css: {
-    // Improved CSS processing
+    // Improve CSS processing
     postcss: {
       plugins: [],
     },
@@ -43,8 +43,7 @@ export default defineConfig(({ mode }) => ({
       output: {
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
-        format: 'es'
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     sourcemap: true,
