@@ -3,16 +3,26 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// Flag to indicate app has loaded
+const markAppLoaded = () => {
+  if (typeof window.appLoaded === 'function') {
+    window.appLoaded();
+  }
+};
+
 // Enhanced error handling with deployment-specific checks
 const renderApp = () => {
   try {
     console.log("Initializing app rendering...");
     const rootElement = document.getElementById("root");
+    
     if (rootElement) {
       createRoot(rootElement).render(<App />);
       console.log("App successfully rendered");
+      markAppLoaded();
     } else {
       console.error("Failed to find the root element - DOM may not be fully loaded");
+      
       // Try to create a visible error for debugging
       document.body.innerHTML = `
         <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
@@ -39,5 +49,7 @@ const renderApp = () => {
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
+  // DOM already ready, render immediately
+  console.log("DOM already ready, rendering immediately");
   renderApp();
 }

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -26,54 +27,55 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Initial loading state that will be replaced once React loads -->
+      <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
+        <h2>Loading Me First Group</h2>
+        <p>Please wait while we load the application...</p>
+      </div>
+    </div>
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script -->
+    <!-- Main application script with type="module" -->
     <script type="module" src="./src/main.tsx"></script>
     
-    <!-- Fallback loading message -->
+    <!-- Fallback loading script -->
     <script>
-      window.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          const root = document.getElementById('root');
-          if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script not loaded. Setting up fallback and adding loading message...');
-            
-            // Add loading message
-            const loadingMsg = document.createElement('div');
-            loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingMsg.innerHTML = '<h2>Me First Group</h2><p>Loading application resources...</p>';
-            root.appendChild(loadingMsg);
-            
-            // Try alternative script paths
-            const alternativePaths = [
-              './main.js',
-              './index.js',
-              './src/main.js',
-              './dist/main.js',
-              './assets/main.js',
-              './src/main.tsx',
-              './app.js',
-              './bundle.js'
-            ];
-            
-            // Attempt to load from alternative paths
-            for (const path of alternativePaths) {
-              try {
-                console.log('Trying script path:', path);
-                const script = document.createElement('script');
-                script.type = 'module';
-                script.src = path;
-                document.body.appendChild(script);
-              } catch (e) {
-                console.error('Error loading alternative script:', path, e);
-              }
+      // Set a timer to check if the app has loaded
+      const fallbackTimer = setTimeout(function() {
+        console.log('Main script not loaded. Setting up fallback and checking alternative paths...');
+        
+        const root = document.getElementById('root');
+        if (root && root.children.length <= 1) {
+          // Try alternative script paths
+          const alternativePaths = [
+            './assets/main.js',
+            './dist/assets/main.js',
+            './main.js',
+            './dist/main.js'
+          ];
+          
+          // Attempt to load from alternative paths
+          for (const path of alternativePaths) {
+            try {
+              console.log('Trying script path:', path);
+              const script = document.createElement('script');
+              script.src = path;
+              script.type = 'text/javascript';
+              document.body.appendChild(script);
+            } catch (e) {
+              console.error('Error loading alternative script:', path, e);
             }
           }
-        }, 1000);
-      });
+        }
+      }, 3000);
+      
+      // Function to clear the fallback timer when the app loads successfully
+      window.appLoaded = function() {
+        clearTimeout(fallbackTimer);
+        console.log('Application loaded successfully, cleared fallback timer');
+      };
     </script>
   </body>
 </html>
