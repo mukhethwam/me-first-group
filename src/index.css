@@ -42,17 +42,23 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    /* Explicitly reset view transitions and localization */
+    view-transition-name: none;
+    -webkit-locale: auto;
   }
   
   /* Reset browser styles to prevent conflicts */
   html {
     box-sizing: border-box;
-    -webkit-locale: auto;
+    display: block;
+    -webkit-locale: auto !important;
     view-transition-name: none;
   }
   
   *, *:before, *:after {
     box-sizing: inherit;
+    view-transition-name: none;
   }
 }
 
