@@ -84,8 +84,8 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Use standard script tag instead of module or defer -->
-    <script src="/src/main.js"></script>
+    <!-- Load the main script as a module -->
+    <script type="module" src="/src/main.js"></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -117,6 +117,8 @@
             
             // Try alternative script paths
             const alternativePaths = [
+              '/src/main.tsx',
+              './src/main.tsx',
               '/src/main.js',
               './src/main.js',
               '/dist/main.js',
@@ -130,6 +132,7 @@
               try {
                 console.log('Trying script path:', path);
                 const script = document.createElement('script');
+                script.type = "module";  // Add type="module" to created script tags
                 script.src = path;
                 document.body.appendChild(script);
               } catch (e) {

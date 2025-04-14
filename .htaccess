@@ -28,6 +28,11 @@ AddType text/css .css
   <FilesMatch "\.css$">
     Header set Content-Type "text/css"
   </FilesMatch>
+  
+  # Ensure proper module handling
+  <FilesMatch "\.js$">
+    Header set Content-Type "application/javascript"
+  </FilesMatch>
 </IfModule>
 
 # Enable compression
