@@ -21,6 +21,10 @@ AddType text/css .css
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "DENY"
   Header set X-XSS-Protection "1; mode=block"
+  # Ensure JS files are served with the correct MIME type
+  <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
+    Header set Content-Type "text/javascript"
+  </FilesMatch>
 </IfModule>
 
 # Enable compression

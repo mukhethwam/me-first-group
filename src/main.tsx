@@ -1,7 +1,7 @@
 
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
 
 // Create a more robust app initialization process
 const renderApp = () => {
@@ -16,6 +16,7 @@ const renderApp = () => {
       document.body.appendChild(fallbackRoot);
       createRoot(fallbackRoot).render(<App />);
     } else {
+      console.log("Root element found, rendering app...");
       createRoot(rootElement).render(<App />);
       console.log("App successfully rendered");
       
@@ -41,5 +42,6 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
   // If DOM is already ready, render immediately
+  console.log("DOM already ready, rendering immediately");
   renderApp();
 }

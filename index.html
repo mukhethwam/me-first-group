@@ -72,8 +72,8 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script -->
-    <script type="module" src="./src/main.tsx"></script>
+    <!-- Main application script - using proper path and type -->
+    <script type="module" src="/src/main.tsx"></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -82,7 +82,7 @@
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
           loadingIndicator.classList.add('hidden');
-          console.warn('App load timeout reached - hiding loading indicator');
+          console.log('App load timeout reached - hiding loading indicator');
         }
       }, 5000);
       
@@ -105,12 +105,10 @@
             
             // Try alternative script paths
             const alternativePaths = [
-              './main.js',
-              './src/main.js',
-              './dist/main.js',
-              './assets/main.js',
+              '/src/main.tsx',
               './src/main.tsx',
-              './bundle.js'
+              '/src/main.js',
+              './src/main.js'
             ];
             
             // Attempt to load from alternative paths
