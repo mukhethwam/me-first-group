@@ -24,58 +24,108 @@
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./src/index.css" as="style">
+    
+    <!-- Add a loading indicator that appears before scripts load -->
+    <style>
+      #loading-indicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f9fafb;
+        z-index: 9999;
+        transition: opacity 0.3s ease-out;
+      }
+      #loading-indicator.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #e5e7eb;
+        border-top: 4px solid #1f2937;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root">
-      <!-- Initial loading state that will be replaced once React loads -->
-      <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
-        <h2>Loading Me First Group</h2>
-        <p>Please wait while we load the application...</p>
-      </div>
+    <!-- Loading indicator -->
+    <div id="loading-indicator">
+      <div class="spinner"></div>
     </div>
+    
+    <div id="root"></div>
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script with type="module" -->
-    <script type="module" src="./src/main.tsx"></script>
+    <!-- Main application script - using proper path and type -->
+    <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Fallback loading script -->
+    <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
-      // Set a timer to check if the app has loaded
-      const fallbackTimer = setTimeout(function() {
-        console.log('Main script not loaded. Setting up fallback and checking alternative paths...');
-        
-        const root = document.getElementById('root');
-        if (root && root.children.length <= 1) {
-          // Try alternative script paths
-          const alternativePaths = [
-            './assets/main.js',
-            './dist/assets/main.js',
-            './main.js',
-            './dist/main.js'
-          ];
-          
-          // Attempt to load from alternative paths
-          for (const path of alternativePaths) {
-            try {
-              console.log('Trying script path:', path);
-              const script = document.createElement('script');
-              script.src = path;
-              script.type = 'text/javascript';
-              document.body.appendChild(script);
-            } catch (e) {
-              console.error('Error loading alternative script:', path, e);
+      // Add a timeout to hide the loading indicator after app loads or after timeout
+      let loadTimeout = setTimeout(function() {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) {
+          loadingIndicator.classList.add('hidden');
+          console.log('App load timeout reached - hiding loading indicator');
+        }
+      }, 5000);
+      
+      // Hide loading indicator when app loads successfully
+      window.addEventListener('app-loaded', function() {
+        clearTimeout(loadTimeout);
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) {
+          loadingIndicator.classList.add('hidden');
+          console.log('App loaded successfully - hiding loading indicator');
+        }
+      });
+      
+      // Fallback for app load issues
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          const root = document.getElementById('root');
+          if (root && (!root.children || root.children.length === 0)) {
+            console.log('Main script not loaded. Setting up fallback and checking alternative paths...');
+            
+            // Try alternative script paths
+            const alternativePaths = [
+              '/src/main.tsx',
+              './src/main.tsx',
+              '/src/main.js',
+              './src/main.js'
+            ];
+            
+            // Attempt to load from alternative paths
+            for (const path of alternativePaths) {
+              try {
+                console.log('Trying script path:', path);
+                const script = document.createElement('script');
+                script.type = 'module';
+                script.src = path;
+                document.body.appendChild(script);
+              } catch (e) {
+                console.error('Error loading alternative script:', path, e);
+              }
             }
           }
-        }
-      }, 3000);
-      
-      // Function to clear the fallback timer when the app loads successfully
-      window.appLoaded = function() {
-        clearTimeout(fallbackTimer);
-        console.log('Application loaded successfully, cleared fallback timer');
-      };
+        }, 2000);
+      });
     </script>
   </body>
 </html>
