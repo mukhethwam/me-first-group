@@ -25,8 +25,8 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="./src/index.css" as="style">
+    <!-- Explicitly load the CSS file -->
+    <link rel="stylesheet" href="./src/index.css">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -59,6 +59,10 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+      /* Fix for potential view-transition conflicts */
+      :root {
+        view-transition-name: none !important;
+      }
     </style>
   </head>
 
@@ -82,7 +86,7 @@
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
           loadingIndicator.classList.add('hidden');
-          console.warn('App load timeout reached - hiding loading indicator');
+          console.log('App load timeout reached - hiding loading indicator');
         }
       }, 5000);
       

@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Footprint from "./pages/Footprint";
 import PremiumFleet from "./pages/PremiumFleet";
 import NotFound from "./pages/NotFound";
+import "./App.css"; // Ensure this CSS file is properly imported
 
 // Create a client
 const queryClient = new QueryClient();
