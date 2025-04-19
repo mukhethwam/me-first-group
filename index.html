@@ -114,6 +114,31 @@
     <!-- Required Lovable script - MUST be before application scripts -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
+    <!-- Workaround for JSON file support -->
+    <script>
+      // Provide fallback for JSON loading if server doesn't support it
+      window.jsonWorkaround = true;
+      window.fetchJson = async function(url) {
+        try {
+          // Try to fetch as JSON first
+          const response = await fetch(url);
+          if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.status}`);
+          return await response.json();
+        } catch (jsonError) {
+          console.warn(`JSON fetch failed for ${url}, trying as JS module...`, jsonError);
+          try {
+            // If JSON fails, try to load as a JavaScript module
+            const jsUrl = url.replace('.json', '.js');
+            const module = await import(jsUrl);
+            return module.default;
+          } catch (moduleError) {
+            console.error(`All attempts to load ${url} failed`, moduleError);
+            throw moduleError;
+          }
+        }
+      };
+    </script>
+    
     <!-- Simpler script loading approach for better cross-domain compatibility -->
     <script type="module">
       console.log("Starting application loading process...");
@@ -135,6 +160,7 @@
                 <h2>Application Failed to Load</h2>
                 <p>We're sorry, but the application is taking longer than expected to load.</p>
                 <p>Please try refreshing the page or check your connection.</p>
+                <p>Hosting environment: ${window.location.hostname}</p>
               </div>
             `;
           }
@@ -175,6 +201,7 @@
                 <h2>Application Failed to Load</h2>
                 <p>We're sorry, but there was a critical error loading the application scripts.</p>
                 <p>Please try refreshing the page or contact support.</p>
+                <p>Hosting environment: ${window.location.hostname}</p>
               </div>
             `;
             return;
@@ -214,6 +241,7 @@
             <h2>Critical Application Error</h2>
             <p>The application could not be initialized.</p>
             <p>Please try refreshing the page.</p>
+            <p>Hosting environment: ${window.location.hostname}</p>
           </div>
         `;
       }

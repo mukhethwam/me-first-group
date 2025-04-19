@@ -17,7 +17,7 @@ AddType application/javascript .js
 AddType application/javascript .mjs
 AddType application/javascript .tsx
 AddType application/javascript .ts
-AddType application/json .json
+AddType text/plain .json
 AddType text/css .css
 
 # Allow Cross Origin
@@ -31,6 +31,11 @@ AddType text/css .css
   </FilesMatch>
   <FilesMatch "\.css$">
     Header set Content-Type "text/css"
+  </FilesMatch>
+  
+  # Handle JSON files as text/plain since hosting doesn't support JSON
+  <FilesMatch "\.json$">
+    Header set Content-Type "text/plain"
   </FilesMatch>
   
   # Ensure proper module handling
@@ -54,6 +59,7 @@ AddType text/css .css
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType text/css "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/plain "access plus 1 day"
 </IfModule>
 
 # Prevent caching of index.html to ensure latest app is loaded
@@ -72,6 +78,11 @@ AddType text/css .css
 # Add fallback for routes with dots but no file extension
 RewriteCond %{REQUEST_URI} ^[^.]+$
 RewriteRule (.*) $1/ [R=301,L]
+
+# Special handling for JSON files
+<FilesMatch "\.json$">
+  ForceType text/plain
+</FilesMatch>
 
 # Fix for some hosts that don't properly handle module scripts
 <IfModule mod_rewrite.c>

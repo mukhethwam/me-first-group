@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'] // Ensure all extensions are properly resolved
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.js'] // Add .js twice to ensure it's checked even for .json imports
   },
   build: {
     outDir: 'dist',
@@ -33,7 +33,13 @@ export default defineConfig(({ mode }) => ({
       output: {
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
+        assetFileNames: ({ name }) => {
+          // Don't hash JSON files as they might be referenced directly
+          if (name && /\.json$/.test(name)) {
+            return 'assets/[name].[ext]';
+          }
+          return 'assets/[name].[hash].[ext]';
+        },
         format: 'es' // Ensure ES module format
       }
     },
