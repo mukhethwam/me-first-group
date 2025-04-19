@@ -1,6 +1,7 @@
 
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.tsx';
+import App from './App';
 import './index.css';
 
 // Declare the custom event for TypeScript
@@ -13,7 +14,7 @@ declare global {
 // Create a more robust app initialization process
 const renderApp = () => {
   try {
-    console.log("Initializing app rendering...");
+    console.log("Initializing app rendering from main.tsx...");
     const rootElement = document.getElementById("root");
     
     if (!rootElement) {
@@ -44,10 +45,5 @@ const renderApp = () => {
   }
 };
 
-// Use document.readyState to ensure DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', renderApp);
-} else {
-  // If DOM is already ready, render immediately
-  renderApp();
-}
+// Run immediately instead of waiting for DOMContentLoaded
+renderApp();

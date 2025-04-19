@@ -25,9 +25,6 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Direct CSS loading with proper type attribute -->
-    <link rel="stylesheet" href="/src/index.css" type="text/css">
-    
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
       #loading-indicator {
@@ -82,10 +79,20 @@
     
     <div id="root"></div>
     
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    
     <!-- Load the main script as a module -->
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Fallback script in case TypeScript version fails -->
+    <script type="module">
+      // Check if app loaded after a short delay
+      setTimeout(() => {
+        const root = document.getElementById('root');
+        if (root && (!root.children || root.children.length === 0)) {
+          console.log('TypeScript version not loaded, trying JavaScript version...');
+          import('/src/main.js').catch(e => console.error('Both TypeScript and JavaScript versions failed to load:', e));
+        }
+      }, 1000);
+    </script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
@@ -106,41 +113,6 @@
           loadingIndicator.classList.add('hidden');
           console.log('App loaded successfully - hiding loading indicator');
         }
-      });
-      
-      // Fallback for app load issues
-      window.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          const root = document.getElementById('root');
-          if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script not loaded. Setting up fallback and checking alternative paths...');
-            
-            // Try alternative script paths
-            const alternativePaths = [
-              '/src/main.tsx',
-              './src/main.tsx',
-              '/src/main.js',
-              './src/main.js',
-              '/dist/main.js',
-              '/dist/assets/main.js',
-              '/assets/main.js',
-              '/main.js'
-            ];
-            
-            // Attempt to load from alternative paths
-            for (const path of alternativePaths) {
-              try {
-                console.log('Trying script path:', path);
-                const script = document.createElement('script');
-                script.type = "module";  // Add type="module" to created script tags
-                script.src = path;
-                document.body.appendChild(script);
-              } catch (e) {
-                console.error('Error loading alternative script:', path, e);
-              }
-            }
-          }
-        }, 2000);
       });
     </script>
   </body>
