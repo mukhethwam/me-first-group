@@ -2,6 +2,11 @@
 # Enable rewriting
 RewriteEngine On
 
+# Allow cross-domain access
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
+
 # Handle SPA routes by redirecting to index.html
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
@@ -17,7 +22,6 @@ AddType text/css .css
 
 # Allow Cross Origin
 <IfModule mod_headers.c>
-  Header set Access-Control-Allow-Origin "*"
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "DENY"
   Header set X-XSS-Protection "1; mode=block"
@@ -59,6 +63,18 @@ AddType text/css .css
   Header set Expires 0
 </FilesMatch>
 
+# Handle various script file extensions
+<FilesMatch "\.(tsx|ts|jsx|js|mjs)$">
+  Header set Cache-Control "no-cache, must-revalidate"
+  Header set Pragma "no-cache"
+</FilesMatch>
+
 # Add fallback for routes with dots but no file extension
 RewriteCond %{REQUEST_URI} ^[^.]+$
 RewriteRule (.*) $1/ [R=301,L]
+
+# Fix for some hosts that don't properly handle module scripts
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP_USER_AGENT} !(Chrome|Firefox|Safari) [NC]
+  RewriteRule \.js$ - [T=application/javascript]
+</IfModule>

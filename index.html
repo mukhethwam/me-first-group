@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -113,7 +114,7 @@
     <!-- Required Lovable script - MUST be before application scripts -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Simpler, more direct script loading -->
+    <!-- Simpler script loading approach for better cross-domain compatibility -->
     <script type="module">
       console.log("Starting application loading process...");
       
@@ -137,7 +138,7 @@
               </div>
             `;
           }
-        }, 5000);
+        }, 10000); // Increased timeout for slower connections
       }
       
       // Hide loading indicator when app loads
@@ -152,35 +153,52 @@
       // Set up loading timeout
       const loadingTimeout = setupLoadingTimeout();
       
-      // Try to load the main application directly
+      // Try to load the main application directly with flexible path options
+      const importScript = () => {
+        const scripts = [
+          './src/main.tsx',
+          './src/main.js',
+          '/src/main.tsx',
+          '/src/main.js',
+          'src/main.tsx',
+          'src/main.js'
+        ];
+        
+        let loaded = false;
+        
+        // Try each possible script path
+        const tryNextScript = (index) => {
+          if (index >= scripts.length) {
+            console.error("Failed to load any application script");
+            document.body.innerHTML += `
+              <div class="error-fallback">
+                <h2>Application Failed to Load</h2>
+                <p>We're sorry, but there was a critical error loading the application scripts.</p>
+                <p>Please try refreshing the page or contact support.</p>
+              </div>
+            `;
+            return;
+          }
+          
+          console.log(`Attempting to load script: ${scripts[index]}`);
+          
+          import(scripts[index])
+            .then(() => {
+              console.log(`Successfully loaded: ${scripts[index]}`);
+              loaded = true;
+            })
+            .catch(error => {
+              console.warn(`Failed to load ${scripts[index]}:`, error);
+              tryNextScript(index + 1);
+            });
+        };
+        
+        tryNextScript(0);
+      };
+      
+      // Start the import process
       try {
-        // First attempt TypeScript version
-        import('./src/main.tsx')
-          .catch(error => {
-            console.error("Failed to load TypeScript version:", error);
-            console.log("Falling back to JavaScript version...");
-            
-            // Try JavaScript fallback
-            import('./src/main.js')
-              .catch(fallbackError => {
-                console.error("Critical error: Both versions failed to load:", fallbackError);
-                
-                // Show visible error message
-                document.body.innerHTML += `
-                  <div class="error-fallback">
-                    <h2>Application Failed to Load</h2>
-                    <p>We're sorry, but there was a critical error loading the application.</p>
-                    <p>Please try refreshing the page or contact support.</p>
-                  </div>
-                `;
-                
-                // Ensure loading indicator is hidden
-                const loadingIndicator = document.getElementById('loading-indicator');
-                if (loadingIndicator) {
-                  loadingIndicator.classList.add('hidden');
-                }
-              });
-          });
+        importScript();
       } catch (error) {
         console.error("Fatal initialization error:", error);
         

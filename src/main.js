@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-// Improved error reporting function
+// Improved error reporting function with domain awareness
 function logError(message, error) {
   console.error(`${message}:`, error);
   // Try to add visible error display to the page
@@ -18,6 +18,7 @@ function logError(message, error) {
       <h2>Error Loading Application</h2>
       <p>${message}</p>
       <pre>${error instanceof Error ? error.message : String(error)}</pre>
+      <p>Domain: ${window.location.hostname}</p>
     `;
     document.body.appendChild(errorContainer);
   } catch (displayError) {
@@ -26,9 +27,9 @@ function logError(message, error) {
   }
 }
 
-// Simple, direct render function
+// Cross-domain compatible render function
 function renderApp() {
-  console.log("Initializing app rendering from main.js...");
+  console.log(`Initializing app rendering from main.js on domain: ${window.location.hostname}`);
   
   try {
     const rootElement = document.getElementById('root');
@@ -45,7 +46,7 @@ function renderApp() {
       )
     );
     
-    console.log("App successfully rendered from main.js");
+    console.log(`App successfully rendered from main.js on domain: ${window.location.hostname}`);
     
     // Notify the page that the app has loaded
     window.dispatchEvent(new CustomEvent('app-loaded'));
@@ -54,6 +55,10 @@ function renderApp() {
   }
 }
 
-// Execute immediately - don't wait for DOMContentLoaded
-// The script is already at the bottom of the page
-renderApp();
+// Execute with a small delay to ensure DOM is fully loaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderApp);
+} else {
+  // If document already loaded, run immediately
+  setTimeout(renderApp, 0);
+}
