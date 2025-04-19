@@ -79,23 +79,43 @@
     
     <div id="root"></div>
     
-    <!-- Load the main script as a module -->
-    <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Fallback script in case TypeScript version fails -->
+    <!-- Load the main script directly with a shorter timeout -->
     <script type="module">
-      // Check if app loaded after a short delay
-      setTimeout(() => {
-        const root = document.getElementById('root');
-        if (root && (!root.children || root.children.length === 0)) {
-          console.log('TypeScript version not loaded, trying JavaScript version...');
-          import('/src/main.js').catch(e => console.error('Both TypeScript and JavaScript versions failed to load:', e));
-        }
-      }, 1000);
+      console.log("Starting application loading process...");
+      
+      // Attempt to load the main application
+      import('./src/main.tsx')
+        .catch(error => {
+          console.error("Failed to load TypeScript version:", error);
+          console.log("Falling back to JavaScript version...");
+          
+          // Try the JavaScript fallback
+          import('./src/main.js')
+            .catch(fallbackError => {
+              console.error("Critical error: Both TypeScript and JavaScript versions failed to load:", fallbackError);
+              
+              // Show error message if both fail
+              document.body.innerHTML += `
+                <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
+                  <h1>Application Failed to Load</h1>
+                  <p>We're sorry, but there was a critical error loading the application.</p>
+                  <p>Please try refreshing the page or contact support if the issue persists.</p>
+                </div>
+              `;
+              
+              // Hide the loading indicator
+              const loadingIndicator = document.getElementById('loading-indicator');
+              if (loadingIndicator) {
+                loadingIndicator.classList.add('hidden');
+              }
+            });
+        });
     </script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
     <script>
+      console.log("Setting up loading indicator timeout...");
+      
       // Add a timeout to hide the loading indicator after app loads or after timeout
       let loadTimeout = setTimeout(function() {
         const loadingIndicator = document.getElementById('loading-indicator');
@@ -103,7 +123,7 @@
           loadingIndicator.classList.add('hidden');
           console.log('App load timeout reached - hiding loading indicator');
         }
-      }, 5000);
+      }, 5000); // 5 second timeout
       
       // Hide loading indicator when app loads successfully
       window.addEventListener('app-loaded', function() {
@@ -114,6 +134,25 @@
           console.log('App loaded successfully - hiding loading indicator');
         }
       });
+      
+      // Additional safety check - if nothing happens after 10 seconds
+      setTimeout(function() {
+        if (document.getElementById('root').children.length === 0) {
+          console.error("Critical timeout: Application failed to render after extended period");
+          document.body.innerHTML += `
+            <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
+              <h1>Application Loading Timeout</h1>
+              <p>The application is taking longer than expected to load.</p>
+              <p>Please check your internet connection and try refreshing the page.</p>
+            </div>
+          `;
+          
+          const loadingIndicator = document.getElementById('loading-indicator');
+          if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+          }
+        }
+      }, 10000); // 10 second extended timeout
     </script>
   </body>
 </html>

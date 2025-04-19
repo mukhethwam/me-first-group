@@ -22,10 +22,18 @@ const renderApp = () => {
       const fallbackRoot = document.createElement('div');
       fallbackRoot.id = 'root';
       document.body.appendChild(fallbackRoot);
-      createRoot(fallbackRoot).render(<App />);
+      createRoot(fallbackRoot).render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
     } else {
       console.log("Root element found, rendering app...");
-      createRoot(rootElement).render(<App />);
+      createRoot(rootElement).render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
       console.log("App successfully rendered");
       
       // Dispatch an event when the app has loaded successfully
@@ -45,5 +53,10 @@ const renderApp = () => {
   }
 };
 
-// Run immediately instead of waiting for DOMContentLoaded
-renderApp();
+// Document may already be loaded, check the readyState
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderApp);
+} else {
+  // DOM already loaded, run immediately
+  renderApp();
+}

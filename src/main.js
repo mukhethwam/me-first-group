@@ -1,7 +1,4 @@
 
-// This is a fallback JavaScript file that will load our React application
-// when the TypeScript version fails to load
-
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
@@ -17,10 +14,18 @@ function renderApp() {
       const fallbackRoot = document.createElement('div');
       fallbackRoot.id = 'root';
       document.body.appendChild(fallbackRoot);
-      createRoot(fallbackRoot).render(React.createElement(App));
+      createRoot(fallbackRoot).render(
+        React.createElement(React.StrictMode, null, 
+          React.createElement(App)
+        )
+      );
     } else {
       console.log("Root element found, rendering app...");
-      createRoot(rootElement).render(React.createElement(App));
+      createRoot(rootElement).render(
+        React.createElement(React.StrictMode, null, 
+          React.createElement(App)
+        )
+      );
       console.log("App successfully rendered from fallback");
       
       // Dispatch an event when the app has loaded successfully
@@ -40,5 +45,10 @@ function renderApp() {
   }
 }
 
-// Run immediately instead of waiting for DOMContentLoaded
-renderApp();
+// Document may already be loaded, check the readyState
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderApp);
+} else {
+  // DOM already loaded, run immediately
+  renderApp();
+}
