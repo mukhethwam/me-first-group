@@ -79,48 +79,10 @@
   <body>
     <div id="root"></div>
     
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <!-- Remove the GPT Engineer script which is unnecessary -->
     
-    <!-- Main application script with enhanced error handling -->
-    <script type="module">
-      // Try to load from various possible paths
-      const scriptPaths = [
-        './src/main.tsx',
-        './main.js',
-        './assets/main.js',
-        './assets/index.js'
-      ];
-      
-      let scriptLoaded = false;
-      
-      async function tryLoadScript() {
-        for (const path of scriptPaths) {
-          try {
-            const module = await import(path);
-            console.log(`Successfully loaded app from: ${path}`);
-            scriptLoaded = true;
-            break;
-          } catch (e) {
-            console.warn(`Failed to load from ${path}, trying next option...`);
-          }
-        }
-        
-        if (!scriptLoaded) {
-          console.error("Failed to load application from any known path");
-          window.location.href = './fallback.html';
-        }
-      }
-      
-      // Wait for DOM to be ready
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-          setTimeout(tryLoadScript, 100);
-        });
-      } else {
-        // DOM already ready, run immediately
-        tryLoadScript();
-      }
-    </script>
+    <!-- Main application script with improved error handling -->
+    <script type="module" src="./src/main.tsx"></script>
     
     <!-- Fallback for older browsers or if main script fails -->
     <noscript>

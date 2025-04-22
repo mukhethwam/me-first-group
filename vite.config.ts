@@ -26,16 +26,19 @@ export default defineConfig(({ mode }) => ({
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
-      },
       output: {
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]'
+        assetFileNames: 'assets/[name].[hash].[ext]',
+        manualChunks(id) {
+          // Create a vendors chunk for node_modules
+          if (id.includes('node_modules')) {
+            return 'vendors';
+          }
+        }
       }
     },
-    sourcemap: false, // Changed from true to reduce file size
+    sourcemap: false,
     target: 'es2015',
   },
   // Support for HTML files
