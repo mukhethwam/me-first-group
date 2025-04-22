@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,7 +60,7 @@
   <h2>Method 1: Manual Upload via File Manager</h2>
   <ol>
     <li>Run the build command on your development computer:
-      <pre>node build.js</pre>
+      <pre>npm run build</pre>
     </li>
     <li>This will create a <code>dist</code> folder with all the static files for your website</li>
     <li>Log in to your cPanel account</li>
@@ -69,8 +68,7 @@
     <li>Go to the <code>public_html</code> directory (or your desired subdomain directory)</li>
     <li>Click on the <strong>Upload</strong> button</li>
     <li>Upload all files and folders from your local <code>dist</code> folder</li>
-    <li>Make sure the <code>index.html</code>, <code>index.php</code>, and <code>.htaccess</code> files are in the root of your target directory</li>
-    <li>Verify deployment by visiting <code>https://your-domain.co.za/deployment-check.php</code> to see server information</li>
+    <li>Make sure the <code>index.html</code> file is in the root of your target directory</li>
   </ol>
 
   <h2>Method 2: Using Git Version Control in cPanel</h2>
@@ -84,7 +82,7 @@
       <pre>git remote add cpanel YOUR_CPANEL_REPO_URL</pre>
     </li>
     <li>When you're ready to deploy, run the build command:
-      <pre>node build.js</pre>
+      <pre>npm run build</pre>
     </li>
     <li>Copy all files from the <code>dist</code> folder to your main repository folder</li>
     <li>Commit these changes:
@@ -104,9 +102,7 @@ deployment:
   tasks:
     - export DEPLOYPATH=/home/username/public_html
     - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R dist/* $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH
-    - echo "Deployment completed at $(date)"</pre>
+    - /bin/cp -R dist/* $DEPLOYPATH</pre>
     </li>
     <li>Replace <code>username</code> with your actual cPanel username</li>
     <li>Commit this file to your repository</li>
@@ -122,23 +118,8 @@ deployment:
   <ul>
     <li><strong>404 Errors:</strong> Make sure all files from the <code>dist</code> folder were uploaded and the folder structure was maintained</li>
     <li><strong>Blank page:</strong> Check your browser's console for errors (F12)</li>
-    <li><strong>Routes not working:</strong> Ensure the <code>.htaccess</code> file was properly uploaded to the root directory</li>
+    <li><strong>Routes not working:</strong> This site uses a hash router (#) which is compatible with standard hosting. If changing URL results in a 404, ensure you're not using .htaccess to rewrite URLs</li>
     <li><strong>Permissions issues:</strong> Ensure files have correct permissions (typically 644 for files and 755 for directories)</li>
-    <li><strong>JSON loading errors:</strong> This build creates both .json and .js versions of all JSON files for compatibility</li>
-    <li><strong>Script loading issues:</strong> Make sure all files in the <code>assets</code> folder were uploaded with the correct structure</li>
   </ul>
-
-  <h2>Testing Your Deployment</h2>
-  <ol>
-    <li>Visit your website's URL</li>
-    <li>Check that all pages load correctly</li>
-    <li>Test navigation between different sections</li>
-    <li>Check the site on mobile devices</li>
-    <li>If you encounter issues, visit <code>https://your-domain.co.za/deployment-check.php</code> to verify server settings</li>
-  </ol>
-  
-  <div class="note">
-    <p>For more technical assistance, please contact your web development team.</p>
-  </div>
 </body>
 </html>

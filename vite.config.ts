@@ -21,7 +21,6 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.js'] // Add .js twice to ensure it's checked even for .json imports
   },
   build: {
     outDir: 'dist',
@@ -31,38 +30,13 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: 'assets/[name].[hash].js',
+        entryFileNames: '[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: ({ name }) => {
-          // Don't hash JSON files as they might be referenced directly
-          if (name && /\.json$/.test(name)) {
-            return 'assets/[name].[ext]';
-          }
-          return 'assets/[name].[hash].[ext]';
-        },
-        format: 'es' // Ensure ES module format
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
     sourcemap: true,
     target: 'es2015',
-    // Ensure correct script type output
-    polyfillModulePreload: true,
-    // Improve CSS handling
-    cssCodeSplit: true,
-    // Optimize dependencies
-    commonjsOptions: {
-      include: [/node_modules/],
-      extensions: ['.js', '.cjs'],
-      strictRequires: true,
-    },
   },
-  // Use relative base path for easier deployments
-  base: '/',
-  // Optimize dependencies
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-    esbuildOptions: {
-      target: 'es2020',
-    },
-  },
+  base: './',
 }));

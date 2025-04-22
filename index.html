@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -23,231 +24,53 @@
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    
-    <!-- Improved loading indicator -->
-    <style>
-      #loading-indicator {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #f9fafb;
-        z-index: 9999;
-        transition: opacity 0.3s ease-out;
-      }
-      #loading-indicator.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid #e5e7eb;
-        border-top: 4px solid #1f2937;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-      }
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-      
-      /* Reset conflicting browser styles */
-      html {
-        display: block !important;
-        -webkit-locale: auto !important;
-        view-transition-name: none !important;
-      }
-      
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      
-      /* Ensure content is visible */
-      body, html {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        display: block !important;
-      }
-      
-      #root {
-        min-height: 100vh;
-        width: 100%;
-      }
-      
-      /* Fallback content for severe errors */
-      .error-fallback {
-        padding: 20px;
-        margin: 20px;
-        border: 1px solid red;
-        background-color: #ffeeee;
-        font-family: sans-serif;
-      }
-    </style>
   </head>
 
   <body>
-    <!-- Loading indicator -->
-    <div id="loading-indicator">
-      <div class="spinner"></div>
-    </div>
-    
-    <!-- Root element for React -->
     <div id="root"></div>
     
-    <!-- Fallback content that will be replaced when app loads successfully -->
-    <noscript>
-      <div class="error-fallback">
-        <h2>JavaScript Required</h2>
-        <p>This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
-      </div>
-    </noscript>
-    
-    <!-- Required Lovable script - MUST be before application scripts -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Workaround for JSON file support -->
-    <script>
-      // Enhanced JSON loading fallback system for cPanel
-      window.jsonWorkaround = true;
-      window.fetchJson = async function(url) {
-        console.log(`Attempting to fetch: ${url}`);
-        try {
-          // Try to fetch as JSON first
-          const response = await fetch(url);
-          if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.status}`);
-          console.log(`Successfully loaded JSON from ${url}`);
-          return await response.json();
-        } catch (jsonError) {
-          console.warn(`JSON fetch failed for ${url}, trying as JS module...`, jsonError);
-          try {
-            // If JSON fails, try to load as a JavaScript module
-            const jsUrl = url.replace('.json', '.js');
-            console.log(`Attempting to load as module: ${jsUrl}`);
-            const module = await import(jsUrl);
-            console.log(`Successfully loaded JS module from ${jsUrl}`);
-            return module.default;
-          } catch (moduleError) {
-            console.error(`All attempts to load ${url} failed`, moduleError);
-            throw moduleError;
-          }
-        }
-      };
-      
-      // Add compatibility check
-      window.isCPanel = function() {
-        return window.location.hostname.includes('.co.za') || 
-               document.documentElement.dataset.hosting === 'cpanel';
-      };
-      
-      // Set hosting type flag for scripts
-      document.documentElement.dataset.hosting = window.isCPanel() ? 'cpanel' : 'standard';
-      console.log(`Detected hosting type: ${document.documentElement.dataset.hosting}`);
-    </script>
+    <!-- Main application script -->
+    <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Direct script inclusion that works better with cPanel -->
-    <script type="module">
-      // Mark document as loading
-      document.documentElement.dataset.loading = 'true';
-      console.log("Starting application loading process...");
-      
-      // Function to handle loading timeouts
-      function setupLoadingTimeout() {
-        return setTimeout(() => {
-          const loadingIndicator = document.getElementById('loading-indicator');
-          if (loadingIndicator) {
-            loadingIndicator.classList.add('hidden');
-            console.log('Loading timeout reached - hiding indicator');
-          }
+    <!-- Fallback loading message -->
+    <script>
+      // Show loading message after a delay if app hasn't loaded
+      const loadingTimeout = setTimeout(function() {
+        const root = document.getElementById('root');
+        if (root && (!root.children || root.children.length === 0)) {
+          console.log('Application not loaded after timeout. Adding loading message...');
           
-          // Check if the app actually rendered anything
-          if (document.getElementById('root').children.length === 0) {
-            console.error("Application failed to render content");
-            document.body.innerHTML += `
-              <div class="error-fallback">
-                <h2>Application Failed to Load</h2>
-                <p>We're sorry, but the application is taking longer than expected to load.</p>
-                <p>Please try refreshing the page or check your connection.</p>
-                <p>Hosting environment: ${window.location.hostname}</p>
-                <p>If this problem persists, please try clearing your browser cache.</p>
-              </div>
-            `;
-          }
-        }, 10000); // Increased timeout for slower connections
-      }
-      
-      // Hide loading indicator when app loads
-      window.addEventListener('app-loaded', () => {
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) {
-          loadingIndicator.classList.add('hidden');
-          console.log('App loaded successfully - hiding loading indicator');
+          // Add loading message
+          const loadingMsg = document.createElement('div');
+          loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
+          loadingMsg.innerHTML = '<h2>Me First Group</h2><p>Loading application resources...</p>';
+          root.appendChild(loadingMsg);
         }
-        document.documentElement.dataset.loading = 'false';
+      }, 800);
+      
+      // Clear the timeout if app loads successfully
+      window.addEventListener('app-loaded', function() {
+        console.log('Application loaded successfully, cleared fallback timer');
+        clearTimeout(loadingTimeout);
       });
       
-      // Set up loading timeout
-      const loadingTimeout = setupLoadingTimeout();
-      
-      // Direct script loading - this approach works better with cPanel
-      function loadAppDirectly() {
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.src = './assets/index.js';
-        script.onerror = (error) => {
-          console.error("Error loading main script:", error);
-          document.body.innerHTML += `
-            <div class="error-fallback">
-              <h2>Script Loading Error</h2>
-              <p>Failed to load the application script.</p>
-              <p>If you're the site administrator, please check that all files were uploaded correctly.</p>
-              <p>Hosting: ${window.location.hostname}</p>
+      // Error handling if loading takes too long
+      setTimeout(function() {
+        const root = document.getElementById('root');
+        if (root && (!root.children || root.children.length === 0 || root.innerHTML.includes('Loading application resources'))) {
+          console.error('Application failed to load after extended timeout');
+          
+          root.innerHTML = `
+            <div style="font-family: Arial; padding: 20px; text-align: center;">
+              <h2>Me First Group</h2>
+              <p>We're having trouble loading the application.</p>
+              <p>Please try refreshing your browser, or contact us if the problem persists.</p>
             </div>
           `;
-        };
-        document.body.appendChild(script);
-        console.log("Direct script injection attempted");
-      }
-      
-      // Start the application loading
-      try {
-        // For cPanel hosting, use direct loading approach
-        if (window.isCPanel()) {
-          console.log("Using cPanel-compatible loading method");
-          loadAppDirectly();
-        } else {
-          // Try the standard import approach for other hosting
-          import('./src/main.js').catch(error => {
-            console.warn("Standard import failed, trying direct loading:", error);
-            loadAppDirectly();
-          });
         }
-      } catch (error) {
-        console.error("Fatal initialization error:", error);
-        
-        // Ensure loading indicator is hidden
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) {
-          loadingIndicator.classList.add('hidden');
-        }
-        
-        // Show visible error message
-        document.body.innerHTML += `
-          <div class="error-fallback">
-            <h2>Critical Application Error</h2>
-            <p>The application could not be initialized.</p>
-            <p>Please try refreshing the page.</p>
-            <p>Hosting environment: ${window.location.hostname}</p>
-          </div>
-        `;
-      }
+      }, 10000);
     </script>
   </body>
 </html>
