@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -12,7 +11,11 @@ export default defineConfig(({ mode }) => ({
     strictPort: false, // Auto find available port if 8080 is in use
   },
   plugins: [
-    react(),
+    react({
+      babel: {
+        browserslistConfigFile: true,
+      }
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
@@ -37,9 +40,9 @@ export default defineConfig(({ mode }) => ({
         }
       }
     },
-    sourcemap: mode === 'development', // Only generate sourcemaps in development
-    target: 'es2015',
-    minify: mode === 'production', // Minify only in production
+    target: ['es2015', 'chrome58', 'firefox57', 'safari11', 'edge18'],
+    sourcemap: mode === 'development',
+    minify: mode === 'production',
   },
   assetsInclude: ['**/*.html'],
   base: './',
