@@ -25,9 +25,53 @@
     
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     
-    <!-- Preload React and ReactDOM to ensure they're available -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Preload React and ReactDOM from more reliable CDN with fallbacks -->
+    <script>
+      // Define fallback function to load scripts with retries
+      function loadScript(src, retries = 3) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.crossOrigin = "anonymous";
+          script.onload = resolve;
+          script.onerror = () => {
+            if (retries > 0) {
+              console.warn(`Failed to load ${src}, retrying... (${retries} attempts left)`);
+              loadScript(src, retries - 1).then(resolve).catch(reject);
+            } else {
+              console.error(`Failed to load ${src} after multiple attempts`);
+              reject();
+            }
+          };
+          document.head.appendChild(script);
+        });
+      }
+      
+      // Load React from multiple potential CDNs
+      window.loadReactLibraries = async function() {
+        try {
+          await Promise.all([
+            loadScript("https://unpkg.com/react@18/umd/react.production.min.js"),
+            loadScript("https://unpkg.com/react-dom@18/umd/react-dom.production.min.js")
+          ]);
+          console.log("React libraries loaded successfully");
+        } catch (e) {
+          try {
+            // Try alternative CDN if first one fails
+            await Promise.all([
+              loadScript("https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"),
+              loadScript("https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js")
+            ]);
+            console.log("React libraries loaded from alternative CDN");
+          } catch (err) {
+            console.error("Failed to load React libraries from all sources");
+          }
+        }
+      };
+      
+      // Start loading React libraries
+      window.loadReactLibraries();
+    </script>
   </head>
 
   <body>
@@ -35,48 +79,64 @@
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script -->
-    <script type="module" src="./src/main.tsx"></script>
-    
-    <!-- Fallback loading message -->
-    <script>
-      window.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          const root = document.getElementById('root');
-          if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script not loaded. Setting up fallback and adding loading message...');
-            
-            // Add loading message
-            const loadingMsg = document.createElement('div');
-            loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-            loadingMsg.innerHTML = '<h2>Me First Group</h2><p>Loading application resources...</p>';
-            root.appendChild(loadingMsg);
-            
-            // Try alternative script paths
-            const alternativePaths = [
-              './main.js',
-              './index.js',
-              './dist/main.js',
-              './assets/main.js',
-              './bundle.js',
-              './src/main.js'
-            ];
-            
-            // Attempt to load from alternative paths
-            for (const path of alternativePaths) {
-              try {
-                console.log('Trying script path:', path);
-                const script = document.createElement('script');
-                script.type = 'module';
-                script.src = path;
-                document.body.appendChild(script);
-              } catch (e) {
-                console.error('Error loading alternative script:', path, e);
-              }
-            }
+    <!-- Main application script with multiple path fallbacks -->
+    <script type="module">
+      // Try to load from various possible paths
+      const scriptPaths = [
+        './src/main.tsx',
+        './main.js',
+        './assets/main.js',
+        './assets/index.js'
+      ];
+      
+      let scriptLoaded = false;
+      
+      async function tryLoadScript() {
+        for (const path of scriptPaths) {
+          try {
+            const module = await import(path);
+            console.log(`Successfully loaded app from: ${path}`);
+            scriptLoaded = true;
+            break;
+          } catch (e) {
+            console.warn(`Failed to load from ${path}, trying next option...`);
           }
-        }, 1000);
+        }
+        
+        if (!scriptLoaded) {
+          console.error("Failed to load application from any known path");
+          const root = document.getElementById('root');
+          if (root) {
+            root.innerHTML = `
+              <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
+                <h1>Me First Group</h1>
+                <p>We're experiencing technical difficulties. Please try refreshing the page.</p>
+                <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                  If this problem persists, please contact our support team.
+                </p>
+              </div>
+            `;
+          }
+        }
+      }
+      
+      // Wait for DOM to be ready
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(tryLoadScript, 100); // Small delay to ensure DOM is fully loaded
       });
+      
+      // If DOMContentLoaded already fired, run immediately
+      if (document.readyState === 'interactive' || document.readyState === 'complete') {
+        tryLoadScript();
+      }
     </script>
+    
+    <!-- Fallback for older browsers or if main script fails -->
+    <noscript>
+      <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
+        <h1>Me First Group</h1>
+        <p>JavaScript is required to view this website. Please enable JavaScript in your browser settings and reload the page.</p>
+      </div>
+    </noscript>
   </body>
 </html>
