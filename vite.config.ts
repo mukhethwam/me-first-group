@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     historyApiFallback: true,
+    strictPort: false, // Auto find available port if 8080 is in use
   },
   plugins: [
     react(),
@@ -19,6 +20,7 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'], // Add all extensions to improve module resolution
   },
   build: {
     outDir: 'dist',
@@ -35,9 +37,16 @@ export default defineConfig(({ mode }) => ({
         }
       }
     },
-    sourcemap: false,
+    sourcemap: mode === 'development', // Only generate sourcemaps in development
     target: 'es2015',
+    minify: mode === 'production', // Minify only in production
   },
   assetsInclude: ['**/*.html'],
   base: './',
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
+    esbuildOptions: {
+      target: 'es2020',
+    },
+  },
 }));

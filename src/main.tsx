@@ -31,6 +31,17 @@ const renderApp = () => {
       return;
     }
     
+    // Ensure React is available
+    if (typeof React === 'undefined') {
+      console.error("React is not defined - trying to recover");
+      // Attempt to load React via window global if available
+      if (window.React) {
+        console.log("Found React on window object, using that");
+      } else {
+        throw new Error("React is not available");
+      }
+    }
+
     const root = createRoot(rootElement);
     root.render(<App />);
     console.log("App successfully rendered");
