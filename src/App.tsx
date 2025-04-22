@@ -26,6 +26,8 @@ const queryClient = new QueryClient({
 
 const App = () => {
   console.log("App component rendering");
+  console.log("Current route:", window.location.pathname);
+  console.log("Query client options:", queryClient.getDefaultOptions());
   
   return (
     <QueryClientProvider client={queryClient}>
