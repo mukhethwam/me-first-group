@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-loading="true">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +8,8 @@
     <meta name="author" content="Me First Group" />
 
     <link rel="canonical" href="https://www.mefirstgroup.co.za" />
-
+    
+    <!-- Open Graph / Meta Tags -->
     <meta property="og:title" content="Me First Group | Mining Transport Specialists" />
     <meta property="og:description" content="Specialists in mining commodity transport with 34-ton side tipper trucks for manganese, chrome, coal and more." />
     <meta property="og:type" content="website" />
@@ -113,8 +114,27 @@
     <!-- Required Lovable script - MUST be before application scripts -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Workaround for JSON file support -->
+    <!-- Universal error handler -->
     <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.error("Global error caught:", message, "at", source, lineno, colno);
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) loadingIndicator.classList.add('hidden');
+        
+        // Show visible error for critical failures
+        if (document.getElementById('root').children.length === 0) {
+          document.body.innerHTML += `
+            <div class="error-fallback">
+              <h2>Application Error</h2>
+              <p>We encountered a problem while loading the application.</p>
+              <p>Error: ${message}</p>
+              <p><a href="/deployment-check.php">Run Deployment Check</a></p>
+            </div>
+          `;
+        }
+        return true; // Let other error handlers run
+      };
+      
       // Enhanced JSON loading fallback system for cPanel
       window.jsonWorkaround = true;
       window.fetchJson = async function(url) {
@@ -152,6 +172,9 @@
       console.log(`Detected hosting type: ${document.documentElement.dataset.hosting}`);
     </script>
     
+    <!-- Load emergency fallback script -->
+    <script src="fallback.js"></script>
+    
     <!-- Direct script inclusion that works better with cPanel -->
     <script type="module">
       // Mark document as loading
@@ -166,21 +189,7 @@
             loadingIndicator.classList.add('hidden');
             console.log('Loading timeout reached - hiding indicator');
           }
-          
-          // Check if the app actually rendered anything
-          if (document.getElementById('root').children.length === 0) {
-            console.error("Application failed to render content");
-            document.body.innerHTML += `
-              <div class="error-fallback">
-                <h2>Application Failed to Load</h2>
-                <p>We're sorry, but the application is taking longer than expected to load.</p>
-                <p>Please try refreshing the page or check your connection.</p>
-                <p>Hosting environment: ${window.location.hostname}</p>
-                <p>If this problem persists, please try clearing your browser cache.</p>
-              </div>
-            `;
-          }
-        }, 10000); // Increased timeout for slower connections
+        }, 10000);
       }
       
       // Hide loading indicator when app loads
@@ -196,58 +205,100 @@
       // Set up loading timeout
       const loadingTimeout = setupLoadingTimeout();
       
-      // Direct script loading - this approach works better with cPanel
-      function loadAppDirectly() {
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.src = './assets/index.js';
-        script.onerror = (error) => {
-          console.error("Error loading main script:", error);
-          document.body.innerHTML += `
-            <div class="error-fallback">
-              <h2>Script Loading Error</h2>
-              <p>Failed to load the application script.</p>
-              <p>If you're the site administrator, please check that all files were uploaded correctly.</p>
-              <p>Hosting: ${window.location.hostname}</p>
-            </div>
-          `;
-        };
-        document.body.appendChild(script);
-        console.log("Direct script injection attempted");
-      }
-      
-      // Start the application loading
-      try {
-        // For cPanel hosting, use direct loading approach
-        if (window.isCPanel()) {
-          console.log("Using cPanel-compatible loading method");
-          loadAppDirectly();
-        } else {
-          // Try the standard import approach for other hosting
-          import('./src/main.js').catch(error => {
-            console.warn("Standard import failed, trying direct loading:", error);
-            loadAppDirectly();
+      // Multi-strategy script loading approach
+      const strategies = [
+        // Strategy 1: Try standard ES module import
+        async () => {
+          console.log("Strategy 1: Trying standard ES module import");
+          try {
+            if (window.isCPanel()) throw new Error("Skipping for cPanel environment");
+            await import('./src/main.js');
+            return true;
+          } catch (e) {
+            console.warn("Strategy 1 failed:", e);
+            return false;
+          }
+        },
+        
+        // Strategy 2: Direct script injection
+        async () => {
+          console.log("Strategy 2: Trying direct script injection");
+          return new Promise(resolve => {
+            try {
+              const script = document.createElement('script');
+              script.type = 'module';
+              script.src = './assets/index.js';
+              script.onload = () => resolve(true);
+              script.onerror = (e) => {
+                console.warn("Strategy 2 failed:", e);
+                resolve(false);
+              };
+              document.body.appendChild(script);
+            } catch (e) {
+              console.warn("Strategy 2 setup failed:", e);
+              resolve(false);
+            }
+          });
+        },
+        
+        // Strategy 3: Try non-module script
+        async () => {
+          console.log("Strategy 3: Trying non-module script");
+          return new Promise(resolve => {
+            try {
+              const script = document.createElement('script');
+              script.src = './assets/index.js';
+              script.onload = () => resolve(true);
+              script.onerror = (e) => {
+                console.warn("Strategy 3 failed:", e);
+                resolve(false);
+              };
+              document.body.appendChild(script);
+            } catch (e) {
+              console.warn("Strategy 3 setup failed:", e);
+              resolve(false);
+            }
+          });
+        },
+        
+        // Strategy 4: Use fallback main.js
+        async () => {
+          console.log("Strategy 4: Trying main.js fallback");
+          return new Promise(resolve => {
+            try {
+              const script = document.createElement('script');
+              script.type = 'text/javascript';
+              script.src = './src/main.js';
+              script.onload = () => resolve(true);
+              script.onerror = (e) => {
+                console.warn("Strategy 4 failed:", e);
+                resolve(false);
+              };
+              document.body.appendChild(script);
+            } catch (e) {
+              console.warn("Strategy 4 setup failed:", e);
+              resolve(false);
+            }
           });
         }
-      } catch (error) {
-        console.error("Fatal initialization error:", error);
-        
-        // Ensure loading indicator is hidden
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) {
-          loadingIndicator.classList.add('hidden');
+      ];
+      
+      // Try all strategies in sequence
+      async function tryLoadingStrategies() {
+        for (const strategy of strategies) {
+          if (await strategy()) {
+            console.log("Successfully loaded application!");
+            return true;
+          }
         }
-        
-        // Show visible error message
-        document.body.innerHTML += `
-          <div class="error-fallback">
-            <h2>Critical Application Error</h2>
-            <p>The application could not be initialized.</p>
-            <p>Please try refreshing the page.</p>
-            <p>Hosting environment: ${window.location.hostname}</p>
-          </div>
-        `;
+        console.error("All loading strategies failed");
+        return false;
       }
+      
+      // Start loading process
+      tryLoadingStrategies().catch(error => {
+        console.error("Fatal error in loading process:", error);
+      });
     </script>
   </body>
 </html>

@@ -7,40 +7,37 @@ Header set Access-Control-Allow-Origin "*"
 Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
 Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
 
-# Handle SPA routes by redirecting to index.html
+# Fix common PHP + SPA issues, direct certain file types to PHP handler
+RewriteCond %{REQUEST_URI} !^/(deployment-check\.php|index\.php) [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.html [L,QSA]
+RewriteRule ^(.*)$ index.php [L,QSA]
 
 # Set correct MIME types
-AddType application/javascript .js
-AddType application/javascript .mjs
-AddType application/javascript .tsx
-AddType application/javascript .ts
-AddType text/plain .json
-AddType text/css .css
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType application/javascript .mjs
+  AddType text/css .css
+  AddType text/html .html
+  AddType text/plain .json
+</IfModule>
 
-# Allow Cross Origin
+# Handle MIME types with headers
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
-  Header set X-Frame-Options "DENY"
-  Header set X-XSS-Protection "1; mode=block"
+  
   # Ensure JS files are served with the correct MIME type
-  <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
+  <FilesMatch "\.(js|mjs)$">
     Header set Content-Type "application/javascript"
   </FilesMatch>
+  
   <FilesMatch "\.css$">
     Header set Content-Type "text/css"
   </FilesMatch>
   
-  # Handle JSON files as text/plain since hosting doesn't support JSON
+  # Handle JSON files as text/plain for compatibility
   <FilesMatch "\.json$">
     Header set Content-Type "text/plain"
-  </FilesMatch>
-  
-  # Ensure proper module handling
-  <FilesMatch "\.js$">
-    Header set Content-Type "application/javascript"
   </FilesMatch>
 </IfModule>
 
@@ -69,23 +66,15 @@ AddType text/css .css
   Header set Expires 0
 </FilesMatch>
 
-# Handle various script file extensions
-<FilesMatch "\.(tsx|ts|jsx|js|mjs)$">
-  Header set Cache-Control "no-cache, must-revalidate"
-  Header set Pragma "no-cache"
-</FilesMatch>
+# PHP settings that might help with script loading
+<IfModule mod_php.c>
+  php_value display_errors 1
+  php_value memory_limit 256M
+  php_value max_execution_time 60
+  php_flag zlib.output_compression on
+</IfModule>
 
-# Add fallback for routes with dots but no file extension
-RewriteCond %{REQUEST_URI} ^[^.]+$
-RewriteRule (.*) $1/ [R=301,L]
-
-# Special handling for JSON files
-<FilesMatch "\.json$">
-  ForceType text/plain
-</FilesMatch>
-
-# Fix for some hosts that don't properly handle module scripts
-<IfModule mod_rewrite.c>
-  RewriteCond %{HTTP_USER_AGENT} !(Chrome|Firefox|Safari) [NC]
-  RewriteRule \.js$ - [T=application/javascript]
+# Alternative SPA routing for hosts that don't support RewriteRule properly
+<IfModule !mod_rewrite.c>
+  FallbackResource /index.php
 </IfModule>
