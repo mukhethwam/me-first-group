@@ -35,6 +35,11 @@ const renderApp = () => {
     
     console.log("[STARTUP] Root element found:", rootElement);
     
+    // Make sure React and ReactDOM are loaded before rendering
+    if (!window.React) {
+      console.error("[ERROR] React not found in window object. External React library may not be loaded.");
+    }
+    
     const root = createRoot(rootElement);
     root.render(
       <React.StrictMode>
