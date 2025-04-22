@@ -35,6 +35,9 @@ export default defineConfig(({ mode }) => ({
             return 'vendors';
           }
         }
+      },
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
       }
     },
     target: ['es2015', 'chrome58', 'firefox57', 'safari11', 'edge18'],

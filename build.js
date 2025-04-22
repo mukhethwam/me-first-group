@@ -26,6 +26,15 @@ try {
     path.join(__dirname, 'dist', 'fallback.html')
   );
   
+  // Copy index.html if not in dist (shouldn't be necessary with proper Vite config)
+  if (!fs.existsSync(path.join(__dirname, 'dist', 'index.html'))) {
+    console.log('Copying index.html to dist folder...');
+    fs.copyFileSync(
+      path.join(__dirname, 'index.html'),
+      path.join(__dirname, 'dist', 'index.html')
+    );
+  }
+  
   // Verify the build output contains HTML files
   const distPath = path.join(__dirname, 'dist');
   

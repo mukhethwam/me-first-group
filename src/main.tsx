@@ -36,7 +36,11 @@ const renderApp = () => {
     console.log("[STARTUP] Root element found:", rootElement);
     
     const root = createRoot(rootElement);
-    root.render(<App />);
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
     console.log("[STARTUP] App successfully rendered");
   } catch (error) {
     console.error("[CRITICAL ERROR] Rendering error:", error);
