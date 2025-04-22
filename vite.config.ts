@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -11,11 +12,7 @@ export default defineConfig(({ mode }) => ({
     strictPort: false, // Auto find available port if 8080 is in use
   },
   plugins: [
-    react({
-      babel: {
-        browserslistConfigFile: true,
-      }
-    }),
+    react(),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
