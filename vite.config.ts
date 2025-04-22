@@ -38,5 +38,7 @@ export default defineConfig(({ mode }) => ({
     sourcemap: true,
     target: 'es2015',
   },
+  // Add support for HTML files
+  assetsInclude: ['**/*.html'],
   base: './',
 }));
