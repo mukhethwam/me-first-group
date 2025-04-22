@@ -29,7 +29,13 @@ export default defineConfig(({ mode }) => ({
       output: {
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
+        assetFileNames: ({name}) => {
+          // Don't hash HTML files
+          if (name && /\.(html)$/.test(name)) {
+            return '[name].[ext]';
+          }
+          return 'assets/[name].[hash].[ext]';
+        },
         manualChunks(id) {
           if (id.includes('node_modules')) {
             return 'vendors';
