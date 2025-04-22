@@ -19,48 +19,6 @@ const renderApp = () => {
   try {
     console.log("Initializing app rendering...");
     
-    // Verify React and ReactDOM are available
-    if (!React || !createRoot) {
-      console.error("React or ReactDOM not found. Attempting to load them via CDN as fallback...");
-      
-      // This is a fallback message if the script loading fails
-      const displayErrorMessage = () => {
-        document.body.innerHTML = `
-          <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
-            <h1>Loading Error</h1>
-            <p>Unable to load React libraries. Please check your internet connection and try again.</p>
-          </div>
-        `;
-      };
-      
-      // Try again in a moment to see if React has loaded
-      setTimeout(() => {
-        if (window.React && window.ReactDOM) {
-          console.log("React loaded via CDN, attempting to render...");
-          // Try rendering again
-          const retryRender = () => {
-            try {
-              const rootElement = document.getElementById("root");
-              if (rootElement) {
-                const root = window.ReactDOM.createRoot(rootElement);
-                root.render(window.React.createElement(App));
-                console.log("App successfully rendered after CDN load");
-              }
-            } catch (e) {
-              console.error("Retry render failed:", e);
-              displayErrorMessage();
-            }
-          };
-          retryRender();
-        } else {
-          console.error("React still not available after waiting");
-          displayErrorMessage();
-        }
-      }, 1000);
-      
-      return;
-    }
-    
     const rootElement = document.getElementById("root");
     
     if (!rootElement) {
@@ -68,7 +26,7 @@ const renderApp = () => {
       document.body.innerHTML = `
         <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
           <h1>Loading Error</h1>
-          <p>Unable to find root element. Please check browser console for details.</p>
+          <p>Unable to find root element. Please refresh the page or check browser console for details.</p>
         </div>
       `;
       return;
@@ -88,7 +46,7 @@ const renderApp = () => {
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
         <h1>Something went wrong</h1>
         <p>We're sorry, but there was an error loading the site. Please try refreshing the page.</p>
-        <p style="color: #777; font-size: 14px;">Error details have been logged to the console.</p>
+        <p style="color: #777; font-size: 14px;">If this problem persists, please contact our support team.</p>
       </div>
     `;
   }
