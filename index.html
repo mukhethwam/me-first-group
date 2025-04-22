@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" data-loading="true">
   <head>
@@ -17,7 +18,6 @@
     <meta property="og:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@mefirstgroup" />
     <meta name="twitter:title" content="Me First Group | Mining Transport Specialists" />
     <meta name="twitter:description" content="Specialists in mining commodity transport with 34-ton side tipper trucks for manganese, chrome, coal and more." />
     <meta name="twitter:url" content="https://www.mefirstgroup.co.za" />
@@ -175,22 +175,11 @@
     <!-- Load emergency fallback script -->
     <script src="fallback.js"></script>
     
-    <!-- Direct script inclusion that works better with cPanel -->
-    <script type="module">
+    <!-- SIMPLIFIED DIRECT SCRIPT LOADING FOR cPANEL - DIRECT APPROACH -->
+    <script type="text/javascript">
       // Mark document as loading
       document.documentElement.dataset.loading = 'true';
       console.log("Starting application loading process...");
-      
-      // Function to handle loading timeouts
-      function setupLoadingTimeout() {
-        return setTimeout(() => {
-          const loadingIndicator = document.getElementById('loading-indicator');
-          if (loadingIndicator) {
-            loadingIndicator.classList.add('hidden');
-            console.log('Loading timeout reached - hiding indicator');
-          }
-        }, 10000);
-      }
       
       // Hide loading indicator when app loads
       window.addEventListener('app-loaded', () => {
@@ -203,101 +192,63 @@
       });
       
       // Set up loading timeout
-      const loadingTimeout = setupLoadingTimeout();
+      setTimeout(() => {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (loadingIndicator) {
+          loadingIndicator.classList.add('hidden');
+          console.log('Loading timeout reached - hiding indicator');
+        }
+      }, 10000);
       
-      // Multi-strategy script loading approach
-      const strategies = [
-        // Strategy 1: Try standard ES module import
-        async () => {
-          console.log("Strategy 1: Trying standard ES module import");
+      // Simple script loading approach for cPanel
+      function loadScript(src, isModule = false) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          if (isModule) {
+            script.type = 'module';
+          }
+          script.src = src;
+          script.onload = () => {
+            console.log(`Successfully loaded: ${src}`);
+            resolve(true);
+          };
+          script.onerror = (e) => {
+            console.error(`Failed to load: ${src}`);
+            reject(e);
+          };
+          document.body.appendChild(script);
+        });
+      }
+      
+      // Try all possible entry points
+      async function loadApplication() {
+        const scripts = [
+          { src: './src/main.js', module: true },
+          { src: './src/main.js', module: false },
+          { src: './main.js', module: true },
+          { src: './main.js', module: false },
+          { src: './assets/index.js', module: true },
+          { src: './assets/index.js', module: false }
+        ];
+        
+        for (const script of scripts) {
           try {
-            if (window.isCPanel()) throw new Error("Skipping for cPanel environment");
-            await import('./src/main.js');
+            await loadScript(script.src, script.module);
+            console.log("Application loaded successfully!");
             return true;
           } catch (e) {
-            console.warn("Strategy 1 failed:", e);
-            return false;
-          }
-        },
-        
-        // Strategy 2: Direct script injection
-        async () => {
-          console.log("Strategy 2: Trying direct script injection");
-          return new Promise(resolve => {
-            try {
-              const script = document.createElement('script');
-              script.type = 'module';
-              script.src = './assets/index.js';
-              script.onload = () => resolve(true);
-              script.onerror = (e) => {
-                console.warn("Strategy 2 failed:", e);
-                resolve(false);
-              };
-              document.body.appendChild(script);
-            } catch (e) {
-              console.warn("Strategy 2 setup failed:", e);
-              resolve(false);
-            }
-          });
-        },
-        
-        // Strategy 3: Try non-module script
-        async () => {
-          console.log("Strategy 3: Trying non-module script");
-          return new Promise(resolve => {
-            try {
-              const script = document.createElement('script');
-              script.src = './assets/index.js';
-              script.onload = () => resolve(true);
-              script.onerror = (e) => {
-                console.warn("Strategy 3 failed:", e);
-                resolve(false);
-              };
-              document.body.appendChild(script);
-            } catch (e) {
-              console.warn("Strategy 3 setup failed:", e);
-              resolve(false);
-            }
-          });
-        },
-        
-        // Strategy 4: Use fallback main.js
-        async () => {
-          console.log("Strategy 4: Trying main.js fallback");
-          return new Promise(resolve => {
-            try {
-              const script = document.createElement('script');
-              script.type = 'text/javascript';
-              script.src = './src/main.js';
-              script.onload = () => resolve(true);
-              script.onerror = (e) => {
-                console.warn("Strategy 4 failed:", e);
-                resolve(false);
-              };
-              document.body.appendChild(script);
-            } catch (e) {
-              console.warn("Strategy 4 setup failed:", e);
-              resolve(false);
-            }
-          });
-        }
-      ];
-      
-      // Try all strategies in sequence
-      async function tryLoadingStrategies() {
-        for (const strategy of strategies) {
-          if (await strategy()) {
-            console.log("Successfully loaded application!");
-            return true;
+            console.warn(`Script loading attempt failed for ${script.src}`);
+            // Continue to next script
           }
         }
-        console.error("All loading strategies failed");
+        
+        console.error("All script loading attempts failed!");
         return false;
       }
       
-      // Start loading process
-      tryLoadingStrategies().catch(error => {
-        console.error("Fatal error in loading process:", error);
+      // Start loading the application
+      loadApplication().catch(error => {
+        console.error("Fatal application loading error:", error);
       });
     </script>
   </body>

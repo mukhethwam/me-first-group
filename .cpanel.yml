@@ -5,5 +5,8 @@ deployment:
     - export DEPLOYPATH=/home/glades/public_html
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R dist/* $DEPLOYPATH
-    - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp dist/.htaccess $DEPLOYPATH
+    - /bin/chmod 644 $DEPLOYPATH/.htaccess
+    - /bin/chmod 755 $DEPLOYPATH/deployment-check.php
+    - /bin/chmod 755 $DEPLOYPATH/index.php
     - echo "Deployment completed at $(date)"
