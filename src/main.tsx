@@ -8,19 +8,24 @@ const renderApp = () => {
   try {
     console.log("Initializing app rendering...");
     const rootElement = document.getElementById("root");
-    if (rootElement) {
-      createRoot(rootElement).render(<App />);
-      console.log("App successfully rendered");
-    } else {
+    
+    if (!rootElement) {
       console.error("Failed to find the root element - DOM may not be fully loaded");
-      // Try to create a visible error for debugging
       document.body.innerHTML = `
         <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
           <h1>Loading Error</h1>
           <p>Unable to find root element. Please check browser console for details.</p>
         </div>
       `;
+      return;
     }
+    
+    // Create root before rendering
+    const root = createRoot(rootElement);
+    
+    // Render the app
+    root.render(<App />);
+    console.log("App successfully rendered");
   } catch (error) {
     console.error("Critical rendering error:", error);
     
@@ -35,9 +40,10 @@ const renderApp = () => {
   }
 };
 
-// Execute with a slight delay to ensure DOM is ready
+// Execute with a check to ensure DOM is ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', renderApp);
 } else {
+  // DOM already ready, render immediately
   renderApp();
 }
