@@ -23,54 +23,16 @@
     <meta name="twitter:url" content="https://www.mefirstgroup.co.za" />
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
   </head>
 
   <body>
     <div id="root"></div>
     
+    <!-- Required Lovable script for new features -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script -->
-    <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Fallback loading message -->
-    <script>
-      // Show loading message after a delay if app hasn't loaded
-      const loadingTimeout = setTimeout(function() {
-        const root = document.getElementById('root');
-        if (root && (!root.children || root.children.length === 0)) {
-          console.log('Application not loaded after timeout. Adding loading message...');
-          
-          // Add loading message
-          const loadingMsg = document.createElement('div');
-          loadingMsg.style = 'font-family: Arial; padding: 20px; text-align: center;';
-          loadingMsg.innerHTML = '<h2>Me First Group</h2><p>Loading application resources...</p>';
-          root.appendChild(loadingMsg);
-        }
-      }, 800);
-      
-      // Clear the timeout if app loads successfully
-      window.addEventListener('app-loaded', function() {
-        console.log('Application loaded successfully, cleared fallback timer');
-        clearTimeout(loadingTimeout);
-      });
-      
-      // Error handling if loading takes too long
-      setTimeout(function() {
-        const root = document.getElementById('root');
-        if (root && (!root.children || root.children.length === 0 || root.innerHTML.includes('Loading application resources'))) {
-          console.error('Application failed to load after extended timeout');
-          
-          root.innerHTML = `
-            <div style="font-family: Arial; padding: 20px; text-align: center;">
-              <h2>Me First Group</h2>
-              <p>We're having trouble loading the application.</p>
-              <p>Please try refreshing your browser, or contact us if the problem persists.</p>
-            </div>
-          `;
-        }
-      }, 10000);
-    </script>
+    <!-- Main application script with relative paths for HTML hosting -->
+    <script type="module" src="assets/main.js"></script>
   </body>
 </html>

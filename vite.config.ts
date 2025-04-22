@@ -9,8 +9,6 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
-    // Add history fallback to support SPA routing
-    historyApiFallback: true,
   },
   plugins: [
     react(),
@@ -30,13 +28,17 @@ export default defineConfig(({ mode }) => ({
         main: path.resolve(__dirname, 'index.html'),
       },
       output: {
-        entryFileNames: '[name].[hash].js',
-        chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]'
+        // Static file names without hashes for HTML hosting
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]'
       }
     },
+    // Add sourcemap for better debugging
     sourcemap: true,
+    // Generate ES module code for better browser compatibility
     target: 'es2015',
   },
-  base: './',
+  // Empty base path for HTML hosting
+  base: '',
 }));
