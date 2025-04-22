@@ -7,6 +7,21 @@ Header set Access-Control-Allow-Origin "*"
 Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
 Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
 
+# Set PHP timeout values
+<IfModule mod_php.c>
+  php_value max_execution_time 300
+  php_value memory_limit 256M
+  php_flag display_errors on
+  php_value error_reporting E_ALL
+  php_flag zlib.output_compression on
+</IfModule>
+
+# Enable detailed PHP error reporting for deployment-check.php
+<Files "deployment-check.php">
+  php_flag display_errors on
+  php_value error_reporting E_ALL
+</Files>
+
 # Fix common PHP + SPA issues, direct certain file types to PHP handler
 RewriteCond %{REQUEST_URI} !^/(deployment-check\.php|index\.php) [NC]
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -66,15 +81,10 @@ RewriteRule ^(.*)$ index.php [L,QSA]
   Header set Expires 0
 </FilesMatch>
 
-# PHP settings that might help with script loading
-<IfModule mod_php.c>
-  php_value display_errors 1
-  php_value memory_limit 256M
-  php_value max_execution_time 60
-  php_flag zlib.output_compression on
-</IfModule>
-
 # Alternative SPA routing for hosts that don't support RewriteRule properly
 <IfModule !mod_rewrite.c>
   FallbackResource /index.php
 </IfModule>
+
+# Handle 503 errors gracefully
+ErrorDocument 503 /503-error.html
