@@ -2,6 +2,19 @@
 # Enable rewriting
 RewriteEngine On
 
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Handle www vs non-www (choose one option and uncomment)
+# Option 1: Force non-www (www to non-www redirect)
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# Option 2: Force www (non-www to www redirect)
+# RewriteCond %{HTTP_HOST} !^www\. [NC]
+# RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
+
 # Handle SPA routes by redirecting to index.html
 RewriteBase /
 RewriteRule ^index\.html$ - [L]
