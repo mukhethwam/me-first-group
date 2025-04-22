@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html lang="en" data-loading="true">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,8 +8,7 @@
     <meta name="author" content="Me First Group" />
 
     <link rel="canonical" href="https://www.mefirstgroup.co.za" />
-    
-    <!-- Open Graph / Meta Tags -->
+
     <meta property="og:title" content="Me First Group | Mining Transport Specialists" />
     <meta property="og:description" content="Specialists in mining commodity transport with 34-ton side tipper trucks for manganese, chrome, coal and more." />
     <meta property="og:type" content="website" />
@@ -18,6 +16,7 @@
     <meta property="og:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@mefirstgroup" />
     <meta name="twitter:title" content="Me First Group | Mining Transport Specialists" />
     <meta name="twitter:description" content="Specialists in mining commodity transport with 34-ton side tipper trucks for manganese, chrome, coal and more." />
     <meta name="twitter:url" content="https://www.mefirstgroup.co.za" />
@@ -114,27 +113,8 @@
     <!-- Required Lovable script - MUST be before application scripts -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Universal error handler -->
+    <!-- Workaround for JSON file support -->
     <script>
-      window.onerror = function(message, source, lineno, colno, error) {
-        console.error("Global error caught:", message, "at", source, lineno, colno);
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) loadingIndicator.classList.add('hidden');
-        
-        // Show visible error for critical failures
-        if (document.getElementById('root').children.length === 0) {
-          document.body.innerHTML += `
-            <div class="error-fallback">
-              <h2>Application Error</h2>
-              <p>We encountered a problem while loading the application.</p>
-              <p>Error: ${message}</p>
-              <p><a href="/deployment-check.php">Run Deployment Check</a></p>
-            </div>
-          `;
-        }
-        return true; // Let other error handlers run
-      };
-      
       // Enhanced JSON loading fallback system for cPanel
       window.jsonWorkaround = true;
       window.fetchJson = async function(url) {
@@ -172,14 +152,36 @@
       console.log(`Detected hosting type: ${document.documentElement.dataset.hosting}`);
     </script>
     
-    <!-- Load emergency fallback script -->
-    <script src="fallback.js"></script>
-    
-    <!-- SIMPLIFIED DIRECT SCRIPT LOADING FOR cPANEL - DIRECT APPROACH -->
-    <script type="text/javascript">
+    <!-- Direct script inclusion that works better with cPanel -->
+    <script type="module">
       // Mark document as loading
       document.documentElement.dataset.loading = 'true';
       console.log("Starting application loading process...");
+      
+      // Function to handle loading timeouts
+      function setupLoadingTimeout() {
+        return setTimeout(() => {
+          const loadingIndicator = document.getElementById('loading-indicator');
+          if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+            console.log('Loading timeout reached - hiding indicator');
+          }
+          
+          // Check if the app actually rendered anything
+          if (document.getElementById('root').children.length === 0) {
+            console.error("Application failed to render content");
+            document.body.innerHTML += `
+              <div class="error-fallback">
+                <h2>Application Failed to Load</h2>
+                <p>We're sorry, but the application is taking longer than expected to load.</p>
+                <p>Please try refreshing the page or check your connection.</p>
+                <p>Hosting environment: ${window.location.hostname}</p>
+                <p>If this problem persists, please try clearing your browser cache.</p>
+              </div>
+            `;
+          }
+        }, 10000); // Increased timeout for slower connections
+      }
       
       // Hide loading indicator when app loads
       window.addEventListener('app-loaded', () => {
@@ -192,64 +194,60 @@
       });
       
       // Set up loading timeout
-      setTimeout(() => {
+      const loadingTimeout = setupLoadingTimeout();
+      
+      // Direct script loading - this approach works better with cPanel
+      function loadAppDirectly() {
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './assets/index.js';
+        script.onerror = (error) => {
+          console.error("Error loading main script:", error);
+          document.body.innerHTML += `
+            <div class="error-fallback">
+              <h2>Script Loading Error</h2>
+              <p>Failed to load the application script.</p>
+              <p>If you're the site administrator, please check that all files were uploaded correctly.</p>
+              <p>Hosting: ${window.location.hostname}</p>
+            </div>
+          `;
+        };
+        document.body.appendChild(script);
+        console.log("Direct script injection attempted");
+      }
+      
+      // Start the application loading
+      try {
+        // For cPanel hosting, use direct loading approach
+        if (window.isCPanel()) {
+          console.log("Using cPanel-compatible loading method");
+          loadAppDirectly();
+        } else {
+          // Try the standard import approach for other hosting
+          import('./src/main.js').catch(error => {
+            console.warn("Standard import failed, trying direct loading:", error);
+            loadAppDirectly();
+          });
+        }
+      } catch (error) {
+        console.error("Fatal initialization error:", error);
+        
+        // Ensure loading indicator is hidden
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
           loadingIndicator.classList.add('hidden');
-          console.log('Loading timeout reached - hiding indicator');
-        }
-      }, 10000);
-      
-      // Simple script loading approach for cPanel
-      function loadScript(src, isModule = false) {
-        return new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          if (isModule) {
-            script.type = 'module';
-          }
-          script.src = src;
-          script.onload = () => {
-            console.log(`Successfully loaded: ${src}`);
-            resolve(true);
-          };
-          script.onerror = (e) => {
-            console.error(`Failed to load: ${src}`);
-            reject(e);
-          };
-          document.body.appendChild(script);
-        });
-      }
-      
-      // Try all possible entry points
-      async function loadApplication() {
-        const scripts = [
-          { src: './src/main.js', module: true },
-          { src: './src/main.js', module: false },
-          { src: './main.js', module: true },
-          { src: './main.js', module: false },
-          { src: './assets/index.js', module: true },
-          { src: './assets/index.js', module: false }
-        ];
-        
-        for (const script of scripts) {
-          try {
-            await loadScript(script.src, script.module);
-            console.log("Application loaded successfully!");
-            return true;
-          } catch (e) {
-            console.warn(`Script loading attempt failed for ${script.src}`);
-            // Continue to next script
-          }
         }
         
-        console.error("All script loading attempts failed!");
-        return false;
+        // Show visible error message
+        document.body.innerHTML += `
+          <div class="error-fallback">
+            <h2>Critical Application Error</h2>
+            <p>The application could not be initialized.</p>
+            <p>Please try refreshing the page.</p>
+            <p>Hosting environment: ${window.location.hostname}</p>
+          </div>
+        `;
       }
-      
-      // Start loading the application
-      loadApplication().catch(error => {
-        console.error("Fatal application loading error:", error);
-      });
     </script>
   </body>
 </html>
