@@ -44,7 +44,7 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development',
     minify: mode === 'production',
   },
-  assetsInclude: ['**/*.html'],
+  assetsInclude: ['**/*.html', '**/*.png', '**/*.svg', '**/*.jpg', '**/*.jpeg', '**/*.gif'],
   base: './',
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
