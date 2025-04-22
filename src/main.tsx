@@ -4,6 +4,16 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
+// Add typings for the window object with React and ReactDOM
+declare global {
+  interface Window {
+    React: typeof React;
+    ReactDOM: {
+      createRoot: typeof createRoot;
+    };
+  }
+}
+
 // Enhanced error handling with deployment-specific checks
 const renderApp = () => {
   try {
@@ -33,7 +43,7 @@ const renderApp = () => {
               const rootElement = document.getElementById("root");
               if (rootElement) {
                 const root = window.ReactDOM.createRoot(rootElement);
-                root.render(React.createElement(App));
+                root.render(window.React.createElement(App));
                 console.log("App successfully rendered after CDN load");
               }
             } catch (e) {
