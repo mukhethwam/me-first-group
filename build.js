@@ -11,11 +11,19 @@ try {
   execSync('npm run build', { stdio: 'inherit' });
   console.log('Build completed successfully.');
   
-  // Ensure .htaccess is copied to dist folder
-  console.log('Ensuring .htaccess is copied to the dist folder...');
+  // Ensure .htaccess and fallback.html are copied to dist folder
+  console.log('Copying critical files to the dist folder...');
+  
+  // Copy .htaccess
   fs.copyFileSync(
     path.join(__dirname, '.htaccess'),
     path.join(__dirname, 'dist', '.htaccess')
+  );
+  
+  // Copy fallback.html
+  fs.copyFileSync(
+    path.join(__dirname, 'public/fallback.html'),
+    path.join(__dirname, 'dist', 'fallback.html')
   );
   
   // Verify the build output contains HTML files
@@ -26,6 +34,12 @@ try {
   } else {
     console.error('\nError: index.html not found in the dist folder!');
     process.exit(1);
+  }
+  
+  if (fs.existsSync(path.join(distPath, 'fallback.html'))) {
+    console.log('Verifying build output: ✓ fallback.html found');
+  } else {
+    console.warn('\nWarning: fallback.html not found in the dist folder. Static fallback page may not be available.');
   }
   
   console.log('\nThe website has been successfully built for cPanel hosting.');

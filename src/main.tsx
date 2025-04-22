@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-// Enhanced error handling with deployment-specific checks
+// Enhanced error handling with improved error messages
 const renderApp = () => {
   try {
     console.log("Initializing app rendering...");
@@ -27,6 +27,7 @@ const renderApp = () => {
         <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
           <h1>Loading Error</h1>
           <p>Unable to find root element. Please refresh the page or check browser console for details.</p>
+          <a href="/" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #0056b3; color: white; text-decoration: none; border-radius: 4px;">Retry</a>
         </div>
       `;
       return;
@@ -41,14 +42,24 @@ const renderApp = () => {
   } catch (error) {
     console.error("Critical rendering error:", error);
     
-    // Display a fallback error message for users
+    // Display a better fallback error message for users
     document.body.innerHTML = `
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
         <h1>Something went wrong</h1>
         <p>We're sorry, but there was an error loading the site. Please try refreshing the page.</p>
         <p style="color: #777; font-size: 14px;">If this problem persists, please contact our support team.</p>
+        <a href="/" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #0056b3; color: white; text-decoration: none; border-radius: 4px;">Retry</a>
       </div>
     `;
+    
+    // Try to redirect to fallback page after a brief delay
+    setTimeout(() => {
+      try {
+        window.location.href = './fallback.html';
+      } catch (e) {
+        // Silent fail - already showing error message
+      }
+    }, 5000);
   }
 };
 

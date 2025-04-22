@@ -48,3 +48,7 @@ AddType text/css .css
   Header set Pragma "no-cache"
   Header set Expires 0
 </FilesMatch>
+
+# Handle redirects to fallback page when errors occur
+ErrorDocument 404 /fallback.html
+ErrorDocument 500 /fallback.html
