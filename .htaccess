@@ -3,9 +3,11 @@
 RewriteEngine On
 
 # Handle SPA routes by redirecting to index.html
+RewriteBase /
+RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.html [L,QSA]
+RewriteRule . /index.html [L]
 
 # Set correct MIME types
 AddType text/html .html

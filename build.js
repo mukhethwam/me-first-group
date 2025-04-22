@@ -11,6 +11,13 @@ try {
   execSync('npm run build', { stdio: 'inherit' });
   console.log('Build completed successfully.');
   
+  // Ensure .htaccess is copied to dist folder
+  console.log('Ensuring .htaccess is copied to the dist folder...');
+  fs.copyFileSync(
+    path.join(__dirname, '.htaccess'),
+    path.join(__dirname, 'dist', '.htaccess')
+  );
+  
   // Verify the build output contains HTML files
   const distPath = path.join(__dirname, 'dist');
   
@@ -25,10 +32,9 @@ try {
   console.log('You can find all the required files in the "dist" folder.');
   console.log('\nFollow these steps to deploy your website to cPanel:');
   console.log('1. Download the "dist" folder from your build environment');
-  console.log('2. Log in to cPanel and use the File Manager to upload ALL files from the "dist" folder to your public_html directory');
+  console.log('2. Log in to cPanel and use the File Manager to upload ALL files from the "dist" folder to your public_html directory (including .htaccess)');
   console.log('3. Make sure you maintain the folder structure exactly as it is');
-  console.log('4. If you need to use Google Maps, set your API key in index.html');
-  console.log('\nAlternatively, you can set up automatic deployment using Git repositories in cPanel.');
+  console.log('\nIf your site still shows a blank page, check the cPanel error logs in "Error Log" section of cPanel.');
   console.log('\nYour site is now ready for cPanel hosting!');
 } catch (error) {
   console.error('Build failed:', error);

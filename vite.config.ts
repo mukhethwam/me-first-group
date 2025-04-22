@@ -35,10 +35,10 @@ export default defineConfig(({ mode }) => ({
         assetFileNames: 'assets/[name].[hash].[ext]'
       }
     },
-    sourcemap: true,
+    sourcemap: false, // Changed from true to reduce file size
     target: 'es2015',
   },
-  // Add support for HTML files
+  // Support for HTML files
   assetsInclude: ['**/*.html'],
-  base: './',
+  base: './', // Ensures assets are loaded with relative paths
 }));
