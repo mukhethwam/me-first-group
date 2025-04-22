@@ -1,3 +1,4 @@
+
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -40,6 +41,110 @@ try {
   }
   
   processDirectory(distPath);
+  
+  // Create an index.php file that points to index.html for PHP hosting
+  const indexPhpPath = path.join(distPath, 'index.php');
+  fs.writeFileSync(indexPhpPath, '<?php include_once("index.html"); ?>');
+  console.log('\nCreated index.php file for PHP hosting compatibility');
+  
+  // Create a server-side .htaccess file for path routing and MIME types
+  const htaccessPath = path.join(distPath, '.htaccess');
+  const htaccessContent = `
+# Enable rewriting
+RewriteEngine On
+
+# Allow cross-domain access
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+Header set Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type, Accept"
+
+# Handle SPA routes by redirecting to index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.html [L,QSA]
+
+# Set correct MIME types
+AddType application/javascript .js
+AddType application/javascript .mjs
+AddType application/javascript .tsx
+AddType application/javascript .ts
+AddType text/plain .json
+AddType text/css .css
+
+# Allow Cross Origin
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "DENY"
+  Header set X-XSS-Protection "1; mode=block"
+  # Ensure JS files are served with the correct MIME type
+  <FilesMatch "\\.(js|mjs|jsx|ts|tsx)$">
+    Header set Content-Type "application/javascript"
+  </FilesMatch>
+  <FilesMatch "\\.css$">
+    Header set Content-Type "text/css"
+  </FilesMatch>
+  
+  # Handle JSON files as text/plain since hosting doesn't support JSON
+  <FilesMatch "\\.json$">
+    Header set Content-Type "text/plain"
+  </FilesMatch>
+  
+  # Ensure proper module handling
+  <FilesMatch "\\.js$">
+    Header set Content-Type "application/javascript"
+  </FilesMatch>
+</IfModule>
+
+# Enable compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/x-javascript application/json
+</IfModule>
+
+# Set caching
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType text/plain "access plus 1 day"
+</IfModule>
+
+# Prevent caching of index.html to ensure latest app is loaded
+<FilesMatch "index\\.html$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
+</FilesMatch>
+
+# Handle various script file extensions
+<FilesMatch "\\.(tsx|ts|jsx|js|mjs)$">
+  Header set Cache-Control "no-cache, must-revalidate"
+  Header set Pragma "no-cache"
+</FilesMatch>
+
+# Special handling for JSON files
+<FilesMatch "\\.json$">
+  ForceType text/plain
+</FilesMatch>
+
+# Fix for some hosts that don't properly handle module scripts
+<IfModule mod_rewrite.c>
+  RewriteCond %{HTTP_USER_AGENT} !(Chrome|Firefox|Safari) [NC]
+  RewriteRule \\.js$ - [T=application/javascript]
+</IfModule>
+`;
+  
+  fs.writeFileSync(htaccessPath, htaccessContent);
+  console.log('\nCreated .htaccess file for proper routing and MIME types');
+  
+  // Create a simple deployment-check.php file to verify PHP is working
+  const checkPhpPath = path.join(distPath, 'deployment-check.php');
+  fs.writeFileSync(checkPhpPath, '<?php echo "Server environment: " . php_uname() . "<br>PHP version: " . phpversion(); ?>');
+  console.log('\nCreated deployment-check.php for server verification');
   
   // Verify the build output contains HTML files
   if (fs.existsSync(path.join(distPath, 'index.html'))) {

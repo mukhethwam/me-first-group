@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,7 +24,7 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Add a loading indicator that appears before scripts load -->
+    <!-- Improved loading indicator -->
     <style>
       #loading-indicator {
         position: fixed;
@@ -116,20 +115,24 @@
     
     <!-- Workaround for JSON file support -->
     <script>
-      // Provide fallback for JSON loading if server doesn't support it
+      // Enhanced JSON loading fallback system for cPanel
       window.jsonWorkaround = true;
       window.fetchJson = async function(url) {
+        console.log(`Attempting to fetch: ${url}`);
         try {
           // Try to fetch as JSON first
           const response = await fetch(url);
           if (!response.ok) throw new Error(`Failed to fetch ${url}: ${response.status}`);
+          console.log(`Successfully loaded JSON from ${url}`);
           return await response.json();
         } catch (jsonError) {
           console.warn(`JSON fetch failed for ${url}, trying as JS module...`, jsonError);
           try {
             // If JSON fails, try to load as a JavaScript module
             const jsUrl = url.replace('.json', '.js');
+            console.log(`Attempting to load as module: ${jsUrl}`);
             const module = await import(jsUrl);
+            console.log(`Successfully loaded JS module from ${jsUrl}`);
             return module.default;
           } catch (moduleError) {
             console.error(`All attempts to load ${url} failed`, moduleError);
@@ -137,10 +140,22 @@
           }
         }
       };
+      
+      // Add compatibility check
+      window.isCPanel = function() {
+        return window.location.hostname.includes('.co.za') || 
+               document.documentElement.dataset.hosting === 'cpanel';
+      };
+      
+      // Set hosting type flag for scripts
+      document.documentElement.dataset.hosting = window.isCPanel() ? 'cpanel' : 'standard';
+      console.log(`Detected hosting type: ${document.documentElement.dataset.hosting}`);
     </script>
     
-    <!-- Simpler script loading approach for better cross-domain compatibility -->
+    <!-- Direct script inclusion that works better with cPanel -->
     <script type="module">
+      // Mark document as loading
+      document.documentElement.dataset.loading = 'true';
       console.log("Starting application loading process...");
       
       // Function to handle loading timeouts
@@ -161,6 +176,7 @@
                 <p>We're sorry, but the application is taking longer than expected to load.</p>
                 <p>Please try refreshing the page or check your connection.</p>
                 <p>Hosting environment: ${window.location.hostname}</p>
+                <p>If this problem persists, please try clearing your browser cache.</p>
               </div>
             `;
           }
@@ -174,58 +190,45 @@
           loadingIndicator.classList.add('hidden');
           console.log('App loaded successfully - hiding loading indicator');
         }
+        document.documentElement.dataset.loading = 'false';
       });
       
       // Set up loading timeout
       const loadingTimeout = setupLoadingTimeout();
       
-      // Try to load the main application directly with flexible path options
-      const importScript = () => {
-        const scripts = [
-          './src/main.tsx',
-          './src/main.js',
-          '/src/main.tsx',
-          '/src/main.js',
-          'src/main.tsx',
-          'src/main.js'
-        ];
-        
-        let loaded = false;
-        
-        // Try each possible script path
-        const tryNextScript = (index) => {
-          if (index >= scripts.length) {
-            console.error("Failed to load any application script");
-            document.body.innerHTML += `
-              <div class="error-fallback">
-                <h2>Application Failed to Load</h2>
-                <p>We're sorry, but there was a critical error loading the application scripts.</p>
-                <p>Please try refreshing the page or contact support.</p>
-                <p>Hosting environment: ${window.location.hostname}</p>
-              </div>
-            `;
-            return;
-          }
-          
-          console.log(`Attempting to load script: ${scripts[index]}`);
-          
-          import(scripts[index])
-            .then(() => {
-              console.log(`Successfully loaded: ${scripts[index]}`);
-              loaded = true;
-            })
-            .catch(error => {
-              console.warn(`Failed to load ${scripts[index]}:`, error);
-              tryNextScript(index + 1);
-            });
+      // Direct script loading - this approach works better with cPanel
+      function loadAppDirectly() {
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './assets/index.js';
+        script.onerror = (error) => {
+          console.error("Error loading main script:", error);
+          document.body.innerHTML += `
+            <div class="error-fallback">
+              <h2>Script Loading Error</h2>
+              <p>Failed to load the application script.</p>
+              <p>If you're the site administrator, please check that all files were uploaded correctly.</p>
+              <p>Hosting: ${window.location.hostname}</p>
+            </div>
+          `;
         };
-        
-        tryNextScript(0);
-      };
+        document.body.appendChild(script);
+        console.log("Direct script injection attempted");
+      }
       
-      // Start the import process
+      // Start the application loading
       try {
-        importScript();
+        // For cPanel hosting, use direct loading approach
+        if (window.isCPanel()) {
+          console.log("Using cPanel-compatible loading method");
+          loadAppDirectly();
+        } else {
+          // Try the standard import approach for other hosting
+          import('./src/main.js').catch(error => {
+            console.warn("Standard import failed, trying direct loading:", error);
+            loadAppDirectly();
+          });
+        }
       } catch (error) {
         console.error("Fatal initialization error:", error);
         
