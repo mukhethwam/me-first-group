@@ -1,3 +1,4 @@
+
 import React from "react";
 import { CheckCircle } from "lucide-react";
 import {
@@ -54,7 +55,8 @@ const Fleet = () => {
     }
   ];
 
-  const plugin = React.useCallback(() => Autoplay({ delay: 4000 }), []);
+  // Fix: Create the plugin directly rather than as a callback function
+  const plugin = React.useMemo(() => Autoplay({ delay: 4000 }), []);
 
   return (
     <section id="fleet" className="section-padding">
