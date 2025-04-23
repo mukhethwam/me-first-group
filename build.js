@@ -8,46 +8,31 @@ console.log('Starting build process for cPanel deployment...');
 // Run the Vite build
 try {
   console.log('Building the project with Vite...');
-  execSync('npm run build:vite', { stdio: 'inherit' });
+  execSync('npm run build', { stdio: 'inherit' });
   console.log('Build completed successfully.');
   
   // Ensure .htaccess and fallback.html are copied to dist folder
   console.log('Copying critical files to the dist folder...');
   
   // Copy .htaccess
-  try {
-    fs.copyFileSync(
-      path.join(__dirname, '.htaccess'),
-      path.join(__dirname, 'dist', '.htaccess')
-    );
-    console.log('✓ .htaccess copied successfully');
-  } catch (error) {
-    console.error('Error copying .htaccess:', error.message);
-  }
+  fs.copyFileSync(
+    path.join(__dirname, '.htaccess'),
+    path.join(__dirname, 'dist', '.htaccess')
+  );
   
   // Copy fallback.html
-  try {
-    fs.copyFileSync(
-      path.join(__dirname, 'public/fallback.html'),
-      path.join(__dirname, 'dist', 'fallback.html')
-    );
-    console.log('✓ fallback.html copied successfully');
-  } catch (error) {
-    console.error('Error copying fallback.html:', error.message);
-  }
+  fs.copyFileSync(
+    path.join(__dirname, 'public/fallback.html'),
+    path.join(__dirname, 'dist', 'fallback.html')
+  );
   
   // Copy index.html if not in dist (shouldn't be necessary with proper Vite config)
   if (!fs.existsSync(path.join(__dirname, 'dist', 'index.html'))) {
     console.log('Copying index.html to dist folder...');
-    try {
-      fs.copyFileSync(
-        path.join(__dirname, 'index.html'),
-        path.join(__dirname, 'dist', 'index.html')
-      );
-      console.log('✓ index.html copied successfully');
-    } catch (error) {
-      console.error('Error copying index.html:', error.message);
-    }
+    fs.copyFileSync(
+      path.join(__dirname, 'index.html'),
+      path.join(__dirname, 'dist', 'index.html')
+    );
   }
   
   // Verify the build output contains HTML files

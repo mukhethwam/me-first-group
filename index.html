@@ -24,8 +24,56 @@
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    <!-- Ensure CSS is loaded before the application -->
-    <link rel="stylesheet" href="./src/index.css">
+    
+    <!-- Preload React and ReactDOM with proper error handling -->
+    <script>
+      // Define fallback function to load scripts with retries
+      function loadScript(src, retries = 3) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = src;
+          script.crossOrigin = "anonymous";
+          script.onload = resolve;
+          script.onerror = () => {
+            if (retries > 0) {
+              console.warn(`Failed to load ${src}, retrying... (${retries} attempts left)`);
+              loadScript(src, retries - 1).then(resolve).catch(reject);
+            } else {
+              console.error(`Failed to load ${src} after multiple attempts`);
+              reject();
+            }
+          };
+          document.head.appendChild(script);
+        });
+      }
+      
+      // Load React from CDN with fallbacks
+      window.loadReactLibraries = async function() {
+        try {
+          await Promise.all([
+            loadScript("https://unpkg.com/react@18/umd/react.production.min.js"),
+            loadScript("https://unpkg.com/react-dom@18/umd/react-dom.production.min.js")
+          ]);
+          console.log("React libraries loaded successfully");
+        } catch (e) {
+          try {
+            // Try alternative CDN if first one fails
+            await Promise.all([
+              loadScript("https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"),
+              loadScript("https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js")
+            ]);
+            console.log("React libraries loaded from alternative CDN");
+          } catch (err) {
+            console.error("Failed to load React libraries from all sources");
+            // Redirect to fallback page
+            window.location.href = './fallback.html';
+          }
+        }
+      };
+      
+      // Start loading React libraries
+      window.loadReactLibraries();
+    </script>
   </head>
 
   <body>
@@ -35,8 +83,9 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
     <!-- Main application script with improved error handling -->
-    <script type="module" src="./src/main.tsx" defer></script>
+    <script type="module" src="./src/main.tsx"></script>
     
+    <!-- Fallback for older browsers or if main script fails -->
     <noscript>
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
         <h1>Me First Group</h1>
