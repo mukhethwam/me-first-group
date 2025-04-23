@@ -1,4 +1,3 @@
-
 import React from "react";
 import { CheckCircle } from "lucide-react";
 import {
@@ -8,6 +7,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 const Fleet = () => {
   const fleetFeatures = [
@@ -53,6 +53,8 @@ const Fleet = () => {
       alt: "Scania truck in sandy area"
     }
   ];
+
+  const plugin = React.useCallback(() => Autoplay({ delay: 4000 }), []);
 
   return (
     <section id="fleet" className="section-padding">
@@ -108,7 +110,7 @@ const Fleet = () => {
         <div className="mt-16">
           <h3 className="text-2xl font-bold mb-8 text-center">Explore Our Fleet</h3>
           <div className="px-4 md:px-12">
-            <Carousel className="w-full">
+            <Carousel plugins={[plugin]} className="w-full">
               <CarouselContent>
                 {fleetImages.map((image, index) => (
                   <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
