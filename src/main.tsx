@@ -4,10 +4,10 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Create a more resilient initialization function
-(function initApp() {
+// Ensure DOM is fully loaded before we attempt to render
+document.addEventListener('DOMContentLoaded', () => {
   try {
-    console.log("[STARTUP] Initializing app...");
+    console.log("[STARTUP] DOM loaded, initializing app...");
     
     // Get root element
     const rootElement = document.getElementById("root");
@@ -23,16 +23,20 @@ import './index.css';
       return;
     }
     
-    // Create root and render app with simplified approach
+    // Create root and render app
     console.log("[STARTUP] Creating React root and rendering app...");
     const root = createRoot(rootElement);
-    root.render(
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    );
     
-    console.log("[STARTUP] App render initiated");
+    // Render with a slight delay to ensure the DOM is ready
+    setTimeout(() => {
+      root.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      );
+      console.log("[STARTUP] App render completed");
+    }, 0);
+    
   } catch (error) {
     console.error("[CRITICAL ERROR] App initialization failed:", error);
     
@@ -46,4 +50,12 @@ import './index.css';
       </div>
     `;
   }
-})();
+});
+
+// Fallback initialization if DOMContentLoaded doesn't fire for some reason
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  console.log("[STARTUP] Document already complete, running initialization immediately");
+  const event = document.createEvent('Event');
+  event.initEvent('DOMContentLoaded', true, true);
+  document.dispatchEvent(event);
+}

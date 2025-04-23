@@ -24,6 +24,8 @@
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <!-- Ensure CSS is loaded before the application -->
+    <link rel="stylesheet" href="./src/index.css">
   </head>
 
   <body>
@@ -33,7 +35,7 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
     <!-- Main application script with improved error handling -->
-    <script type="module" src="./src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx" defer></script>
     
     <noscript>
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
@@ -43,4 +45,3 @@
     </noscript>
   </body>
 </html>
-

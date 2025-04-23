@@ -1,10 +1,11 @@
 
-/* Remove the max-width restriction that might be causing layout issues */
+/* Reset root container to full width and remove restrictions */
 #root {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  width: 100%;
-  text-align: center;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -13,9 +14,11 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
