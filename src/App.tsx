@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import ServicesPage from "./pages/Services";
@@ -26,11 +26,11 @@ const queryClient = new QueryClient({
 
 const App = () => {
   // Debug log to verify route loading
-  console.log("App component rendering");
-  console.log("Current route:", window.location.href);
-  console.log("Current pathname:", window.location.pathname);
-  console.log("Current hash:", window.location.hash);
-  console.log("Query client options:", queryClient.getDefaultOptions());
+  console.log("[DEBUG] App component rendering");
+  console.log("[DEBUG] Current URL:", window.location.href);
+  console.log("[DEBUG] Current pathname:", window.location.pathname);
+  console.log("[DEBUG] Current hash:", window.location.hash);
+  console.log("[DEBUG] Query client options:", queryClient.getDefaultOptions());
   
   return (
     <QueryClientProvider client={queryClient}>

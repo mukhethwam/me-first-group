@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 const Index = () => {
   useEffect(() => {
     // Debug log to verify component mounting
-    console.log("Index page mounted");
+    console.log("[DEBUG] Index page mounted");
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);

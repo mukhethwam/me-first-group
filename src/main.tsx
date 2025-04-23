@@ -23,19 +23,16 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    // Create root and render app
+    // Clean any existing content and create root
     console.log("[STARTUP] Creating React root and rendering app...");
     const root = createRoot(rootElement);
     
-    // Render with a slight delay to ensure the DOM is ready
-    setTimeout(() => {
-      root.render(
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      );
-      console.log("[STARTUP] App render completed");
-    }, 0);
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+    console.log("[STARTUP] App render completed");
     
   } catch (error) {
     console.error("[CRITICAL ERROR] App initialization failed:", error);

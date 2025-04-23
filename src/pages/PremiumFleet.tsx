@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 
 const PremiumFleet = () => {
   useEffect(() => {
+    // Debug log to verify component mounting
+    console.log("[DEBUG] PremiumFleet page mounted");
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
   }, []);
