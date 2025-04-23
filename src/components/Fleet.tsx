@@ -74,7 +74,7 @@ const Fleet = () => {
             <h3 className="text-2xl font-bold mb-6">Fleet Specifications</h3>
             <p className="text-lg mb-6 text-transport-gray">
               Our vehicles are regularly maintained to ensure maximum reliability and efficiency
-              for all your transport needs.
+              for your transport needs.
             </p>
             
             <div className="space-y-3 mb-8">
@@ -100,6 +100,7 @@ const Fleet = () => {
                 src={fleetImages[0].src}
                 alt={fleetImages[0].alt}
                 className="object-cover w-full h-full"
+                loading="eager"
               />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-transport-orange text-white p-4 rounded-lg shadow-lg hidden md:block">
@@ -122,6 +123,7 @@ const Fleet = () => {
                           src={image.src} 
                           alt={image.alt}
                           className="object-cover w-full h-full" 
+                          loading={index < 2 ? "eager" : "lazy"}
                         />
                       </div>
                     </div>

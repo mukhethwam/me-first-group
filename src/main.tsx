@@ -25,8 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Clean any existing content and create root
     console.log("[STARTUP] Creating React root and rendering app...");
+    
+    // Use a more reliable mounting strategy with Chrome
     const root = createRoot(rootElement);
     
+    // Immediate rendering
     root.render(
       <React.StrictMode>
         <App />
