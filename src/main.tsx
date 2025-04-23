@@ -4,20 +4,17 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 
-declare global {
-  interface Window {
-    React: typeof React;
-    ReactDOM: {
-      createRoot: typeof createRoot;
-    };
-  }
-}
+// Ensure React is globally available
+window.React = React;
+
+// Make sure we're only using one instance of React
+console.log("[STARTUP] React version:", React.version);
+console.log("[STARTUP] React instance:", React);
 
 const renderApp = () => {
   try {
     console.log("[STARTUP] Initializing app rendering...");
     console.log("[STARTUP] Current time:", new Date().toISOString());
-    console.log("[STARTUP] Environment:", import.meta.env);
     
     const rootElement = document.getElementById("root");
     
@@ -34,6 +31,15 @@ const renderApp = () => {
     }
     
     console.log("[STARTUP] Root element found:", rootElement);
+    
+    // Make sure createRoot is defined and we're using it correctly
+    if (typeof createRoot !== 'function') {
+      console.error("[ERROR] React DOM createRoot is not a function. This might indicate React version mismatch.");
+      return;
+    }
+
+    // Store createRoot in window for debugging purposes
+    window.ReactDOM = { createRoot };
     
     const root = createRoot(rootElement);
     root.render(
@@ -64,9 +70,11 @@ const renderApp = () => {
   }
 };
 
+// Update the index.html script to make sure React is loaded before the app
 if (typeof window !== 'undefined') {
   console.log("[STARTUP] Window object available, checking document readyState");
   
+  // Ensure the document is ready before rendering
   if (document.readyState === 'loading') {
     console.log("[STARTUP] Document is still loading, adding event listener");
     document.addEventListener('DOMContentLoaded', renderApp);
