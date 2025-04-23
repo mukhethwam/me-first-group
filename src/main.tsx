@@ -1,17 +1,8 @@
 
-import React from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-
-declare global {
-  interface Window {
-    React: typeof React;
-    ReactDOM: {
-      createRoot: typeof createRoot;
-    };
-  }
-}
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
 
 const renderApp = () => {
   try {
@@ -20,7 +11,6 @@ const renderApp = () => {
     console.log("[STARTUP] Environment:", import.meta.env);
     
     const rootElement = document.getElementById("root");
-    
     if (!rootElement) {
       console.error("[ERROR] Failed to find the root element - DOM may not be fully loaded");
       document.body.innerHTML = `
@@ -34,12 +24,7 @@ const renderApp = () => {
     }
     
     console.log("[STARTUP] Root element found:", rootElement);
-    
-    // Make sure React and ReactDOM are loaded before rendering
-    if (!window.React) {
-      console.error("[ERROR] React not found in window object. External React library may not be loaded.");
-    }
-    
+
     const root = createRoot(rootElement);
     root.render(
       <React.StrictMode>
@@ -47,9 +32,8 @@ const renderApp = () => {
       </React.StrictMode>
     );
     console.log("[STARTUP] App successfully rendered");
-  } catch (error) {
+  } catch (error: any) {
     console.error("[CRITICAL ERROR] Rendering error:", error);
-    
     document.body.innerHTML = `
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
         <h1>Something went wrong</h1>
@@ -58,7 +42,6 @@ const renderApp = () => {
         <a href="/" style="display: inline-block; margin-top: 20px; padding: 10px 20px; background-color: #0056b3; color: white; text-decoration: none; border-radius: 4px;">Retry</a>
       </div>
     `;
-    
     setTimeout(() => {
       try {
         window.location.href = './fallback.html';
@@ -71,7 +54,6 @@ const renderApp = () => {
 
 if (typeof window !== 'undefined') {
   console.log("[STARTUP] Window object available, checking document readyState");
-  
   if (document.readyState === 'loading') {
     console.log("[STARTUP] Document is still loading, adding event listener");
     document.addEventListener('DOMContentLoaded', renderApp);
