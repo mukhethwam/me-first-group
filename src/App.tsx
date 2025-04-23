@@ -25,8 +25,11 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
+  // Debug log to verify route loading
   console.log("App component rendering");
-  console.log("Current route:", window.location.pathname);
+  console.log("Current route:", window.location.href);
+  console.log("Current pathname:", window.location.pathname);
+  console.log("Current hash:", window.location.hash);
   console.log("Query client options:", queryClient.getDefaultOptions());
   
   return (
@@ -43,7 +46,6 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/footprint" element={<Footprint />} />
             <Route path="/fleet" element={<PremiumFleet />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </HashRouter>

@@ -55,14 +55,14 @@ const Fleet = () => {
     }
   ];
 
-  // Fix: Create the plugin directly rather than as a callback function
+  // Create the plugin using useMemo to avoid re-creation on each render
   const plugin = React.useMemo(() => Autoplay({ delay: 4000 }), []);
 
   return (
     <section id="fleet" className="section-padding">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h2 className="section-title">Our Premium Fleet</h2>
+          <h2 className="text-3xl font-bold mb-4">Our Premium Fleet</h2>
           <p className="text-lg max-w-3xl mx-auto text-transport-gray">
             Me First Group operates a fleet of specialized 34-ton side tipper trucks designed 
             specifically for the challenges of mining commodity transport.
