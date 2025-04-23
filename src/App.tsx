@@ -31,10 +31,10 @@ const App = () => {
   
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster />
-      <Sonner />
-      <HashRouter>
-        <TooltipProvider delayDuration={300}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <HashRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/about" element={<About />} />
@@ -46,8 +46,8 @@ const App = () => {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </TooltipProvider>
-      </HashRouter>
+        </HashRouter>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 };

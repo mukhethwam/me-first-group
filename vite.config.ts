@@ -49,6 +49,7 @@ export default defineConfig(({ mode }) => ({
     target: ['es2015', 'chrome58', 'firefox57', 'safari11', 'edge18'],
     sourcemap: mode === 'development',
     minify: mode === 'production',
+    cssCodeSplit: false,
   },
   assetsInclude: ['**/*.html', '**/*.png', '**/*.svg', '**/*.jpg', '**/*.jpeg', '**/*.gif'],
   base: './',

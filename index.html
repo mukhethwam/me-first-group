@@ -24,10 +24,8 @@
     <meta name="twitter:image" content="https://www.mefirstgroup.co.za/opengraph-image.png" />
     
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
-    
-    <!-- Load React before any other scripts -->
-    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <!-- Ensure CSS is loaded before the application -->
+    <link rel="stylesheet" href="./src/index.css">
   </head>
 
   <body>
@@ -37,9 +35,8 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
     <!-- Main application script with improved error handling -->
-    <script type="module" src="./src/main.tsx"></script>
+    <script type="module" src="./src/main.tsx" defer></script>
     
-    <!-- Fallback for older browsers or if main script fails -->
     <noscript>
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; padding: 20px;">
         <h1>Me First Group</h1>
