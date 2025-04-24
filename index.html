@@ -32,37 +32,87 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Ensure CSS is loaded before the application -->
-    <link rel="stylesheet" href="./src/index.css">
+    <!-- Critical CSS inline for faster rendering -->
+    <style>
+      /* Critical rendering styles */
+      body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+      #root { min-height: 100vh; }
+      .loading-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+      }
+      .spinner {
+        width: 48px;
+        height: 48px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
     
     <!-- Preload critical assets -->
     <link rel="preload" href="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png" as="image">
     <link rel="preload" href="/lovable-uploads/8a8be9f2-4251-4d4f-b750-185a58c1a8c4.png" as="image">
+    
+    <!-- Ensure CSS is loaded before the application -->
+    <link rel="stylesheet" href="./src/index.css">
   </head>
 
   <body>
-    <!-- Root element for React app -->
-    <div id="root"></div>
+    <!-- Initial loading state -->
+    <div id="root">
+      <div class="loading-indicator">
+        <div class="spinner"></div>
+        <p style="margin-top: 16px;">Loading Me First Group...</p>
+      </div>
+    </div>
     
     <!-- Error page backup to prevent white screen -->
     <script>
+      // Improved error handling for Chrome compatibility
       window.addEventListener('error', function(e) {
-        if (document.getElementById('root') && document.getElementById('root').childNodes.length === 0) {
-          console.error('Critical error detected, showing emergency fallback:', e);
-          setTimeout(function() {
-            if (document.getElementById('root').childNodes.length === 0) {
-              document.getElementById('root').innerHTML = 
-                '<div style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">' +
-                '<h2>We\'re experiencing technical difficulties</h2>' +
-                '<p>Please try refreshing the page or try again later.</p>' +
-                '<button onclick="window.location.reload()" ' +
-                'style="padding: 10px 20px; background-color: #0056b3; color: white; ' +
-                'border: none; border-radius: 4px; cursor: pointer; margin-top: 20px;">' +
-                'Refresh Page</button></div>';
-            }
-          }, 5000);
-        }
+        console.error('Critical error detected:', e);
+        
+        // More aggressive error detection for Chrome
+        setTimeout(function() {
+          const root = document.getElementById('root');
+          if (root && (!root.childNodes.length || root.childNodes.length <= 1 || 
+              (root.childNodes.length === 1 && root.childNodes[0].className === 'loading-indicator'))) {
+            console.error('Application failed to render properly, showing emergency fallback');
+            root.innerHTML = 
+              '<div style="font-family: Arial, sans-serif; padding: 20px; text-align: center;">' +
+              '<h2>We\'re experiencing technical difficulties</h2>' +
+              '<p>Please try refreshing the page or try again later.</p>' +
+              '<button onclick="window.location.reload()" ' +
+              'style="padding: 10px 20px; background-color: #0056b3; color: white; ' +
+              'border: none; border-radius: 4px; cursor: pointer; margin-top: 20px;">' +
+              'Refresh Page</button></div>';
+          }
+        }, 5000);
       });
+      
+      // Additional check specifically for Chrome
+      setTimeout(function() {
+        const root = document.getElementById('root');
+        if (root && root.childNodes.length <= 1) {
+          console.warn('Application may not have fully rendered, checking again in 2 seconds');
+          setTimeout(function() {
+            if (root && (!root.childNodes.length || root.childNodes.length <= 1 || 
+                (root.childNodes.length === 1 && root.childNodes[0].className === 'loading-indicator'))) {
+              console.error('Application confirmed to not have rendered properly, forcing page reload');
+              window.location.reload();
+            }
+          }, 2000);
+        }
+      }, 8000);
     </script>
     
     <!-- Lovable script for new features -->

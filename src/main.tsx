@@ -4,12 +4,17 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Function to initialize the React application
+// Immediately log startup for debugging
+console.log("[STARTUP] Script execution started");
+
+// Function to initialize the React application with improved Chrome compatibility
 function initializeApp() {
   console.log("[STARTUP] Initializing app...");
   
-  // Get root element
+  // Get root element with more detailed logging
   const rootElement = document.getElementById("root");
+  console.log("[STARTUP] Root element found:", !!rootElement);
+  
   if (!rootElement) {
     console.error("[CRITICAL] Root element not found in DOM");
     // Create root element if missing
@@ -32,13 +37,22 @@ function initializeApp() {
     const root = createRoot(rootElement);
     renderApp(root);
     console.log("[STARTUP] Root rendering successful");
+    
+    // Additional check for Chrome-specific rendering
+    setTimeout(() => {
+      if (rootElement.childNodes.length === 0) {
+        console.log("[STARTUP] No children found after initial render, forcing re-render");
+        renderApp(root);
+      }
+    }, 100);
+    
   } catch (error) {
     console.error("[CRITICAL ERROR] Root rendering failed:", error);
     handleRenderingFailure(error);
   }
 }
 
-// Function to render the app
+// Function to render the app with improved error handling
 function renderApp(root) {
   try {
     root.render(
@@ -47,6 +61,10 @@ function renderApp(root) {
       </React.StrictMode>
     );
     console.log("[STARTUP] App render completed successfully");
+    
+    // Force a layout recalculation
+    document.body.clientHeight;
+    
   } catch (error) {
     console.error("[CRITICAL ERROR] App rendering failed:", error);
     handleRenderingFailure(error);
@@ -66,30 +84,35 @@ function handleRenderingFailure(error) {
   `;
 }
 
-// Ensure DOM is fully loaded before trying to initialize
+// Improved initialization with Chrome compatibility fixes
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApp);
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("[STARTUP] DOMContentLoaded event fired");
+    initializeApp();
+  });
 } else {
-  // DOM already loaded, run immediately
-  initializeApp();
+  // DOM already loaded, run immediately with a small delay
+  // This helps Chrome with proper initialization
+  console.log("[STARTUP] Document already ready, initializing with delay");
+  setTimeout(initializeApp, 10);
 }
 
-// Add a more aggressive backup initialization
+// Add a shorter backup initialization timeout
+setTimeout(() => {
+  console.log("[STARTUP] Checking if app was initialized...");
+  const rootElement = document.getElementById("root");
+  if (rootElement && (!rootElement.childNodes.length || rootElement.childNodes.length < 2)) {
+    console.log("[STARTUP] App not properly initialized, running backup initialization");
+    initializeApp();
+  }
+}, 200); // Reduced timeout for faster recovery
+
+// Add a window load event handler to ensure rendering after all resources load
 window.addEventListener('load', function() {
   console.log("[STARTUP] Window load event fired, checking if app is initialized");
   const rootElement = document.getElementById("root");
-  if (rootElement && rootElement.children.length === 0) {
+  if (rootElement && (!rootElement.childNodes.length || rootElement.childNodes.length < 2)) {
     console.log("[STARTUP] App not initialized after load event, running emergency initialization");
     initializeApp();
   }
 });
-
-// Add a backup timeout to ensure initialization happens
-setTimeout(() => {
-  console.log("[STARTUP] Checking if app was initialized...");
-  const rootElement = document.getElementById("root");
-  if (rootElement && !rootElement.childNodes.length) {
-    console.log("[STARTUP] App not initialized, running backup initialization");
-    initializeApp();
-  }
-}, 300); // Reduced timeout for faster recovery

@@ -19,12 +19,12 @@ const PremiumFleet = () => {
     window.scrollTo(0, 0);
     
     try {
-      // Mark component as loaded after a small delay
-      // This allows the browser to process rendering first
+      // Mark component as loaded with a small delay
+      // This helps ensure proper rendering in Chrome
       setTimeout(() => {
         setIsLoaded(true);
         console.log("[DEBUG] PremiumFleet marked as loaded");
-      }, 50);
+      }, 20);
     } catch (error) {
       console.error("[PREMIUM-FLEET] Error during component initialization:", error);
       setLoadError(true);
@@ -35,6 +35,16 @@ const PremiumFleet = () => {
       console.log("[DEBUG] PremiumFleet page unmounted");
     };
   }, []);
+
+  // This secondary effect ensures visibility in Chrome
+  useEffect(() => {
+    if (isLoaded) {
+      console.log("[DEBUG] PremiumFleet components now rendering");
+      
+      // Force layout recalculation in Chrome
+      document.body.clientHeight;
+    }
+  }, [isLoaded]);
 
   // Show error state
   if (loadError) {

@@ -23,8 +23,11 @@ const Index = () => {
     window.scrollTo(0, 0);
     
     try {
-      // Mark component as loaded
-      setIsLoaded(true);
+      // Mark component as loaded with a small delay to ensure rendering
+      setTimeout(() => {
+        setIsLoaded(true);
+        console.log("[DEBUG] Index page marked as loaded");
+      }, 10);
     } catch (error) {
       console.error("[INDEX] Error during component initialization:", error);
       setLoadError(true);
@@ -35,6 +38,16 @@ const Index = () => {
       console.log("[DEBUG] Index page unmounted");
     };
   }, []);
+
+  // This secondary effect ensures visibility in Chrome
+  useEffect(() => {
+    if (isLoaded) {
+      console.log("[DEBUG] Index components now rendering");
+      
+      // Force layout recalculation in Chrome
+      document.body.clientHeight;
+    }
+  }, [isLoaded]);
 
   // Show error state
   if (loadError) {
@@ -68,7 +81,7 @@ const Index = () => {
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-transport-blue mx-auto"></div>
-            <p className="mt-4 text-transport-gray">Loading...</p>
+            <p className="mt-4 text-transport-gray">Loading content...</p>
           </div>
         </div>
       )}
