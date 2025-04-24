@@ -13,8 +13,16 @@ import Footprint from "./pages/Footprint";
 import PremiumFleet from "./pages/PremiumFleet";
 import NotFound from "./pages/NotFound";
 
-// Create a client
-const queryClient = new QueryClient();
+// Create a client with proper error handling
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -30,7 +38,6 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/footprint" element={<Footprint />} />
           <Route path="/fleet" element={<PremiumFleet />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </HashRouter>
