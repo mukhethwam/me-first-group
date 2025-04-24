@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { CheckCircle } from "lucide-react";
 import {
   Carousel,
@@ -11,6 +11,10 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const Fleet = () => {
+  useEffect(() => {
+    console.log("[FLEET] Fleet component mounted");
+  }, []);
+
   const fleetFeatures = [
     "34-ton side tipper capacity",
     "Modern, well-maintained vehicles",
@@ -55,8 +59,8 @@ const Fleet = () => {
     }
   ];
 
-  // Create the plugin using useMemo to avoid re-creation on each render
-  const plugin = React.useMemo(() => Autoplay({ delay: 4000 }), []);
+  // Create plugin - moved outside of useMemo for simpler rendering
+  const plugin = Autoplay({ delay: 4000, stopOnInteraction: false });
 
   return (
     <section id="fleet" className="section-padding">

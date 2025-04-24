@@ -3,7 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import ServicesPage from "./pages/Services";
@@ -24,19 +25,20 @@ const queryClient = new QueryClient({
   },
 });
 
+// Root App component
 const App = () => {
-  // Debug log to verify route loading
-  console.log("[DEBUG] App component rendering");
-  console.log("[DEBUG] Current URL:", window.location.href);
-  console.log("[DEBUG] Current pathname:", window.location.pathname);
-  console.log("[DEBUG] Current hash:", window.location.hash);
-  console.log("[DEBUG] Query client options:", queryClient.getDefaultOptions());
-  
+  // Debug logs for initialization
+  useEffect(() => {
+    console.log("[APP] App component mounted");
+    console.log("[APP] Using HashRouter for routing");
+    console.log("[APP] Current URL:", window.location.href);
+    console.log("[APP] Current pathname:", window.location.pathname);
+    console.log("[APP] Current hash:", window.location.hash);
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Sonner />
         <HashRouter>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -49,6 +51,8 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </HashRouter>
+        <Toaster />
+        <Sonner />
       </TooltipProvider>
     </QueryClientProvider>
   );

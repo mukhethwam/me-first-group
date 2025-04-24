@@ -10,14 +10,22 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   useEffect(() => {
-    // Debug log to verify component mounting
+    // Debug logs to verify component mounting and behavior
     console.log("[DEBUG] Index page mounted");
+    console.log("[DEBUG] Current URL:", window.location.href);
+    console.log("[DEBUG] Current pathname:", window.location.pathname);
+    
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
+    
+    // Return cleanup function
+    return () => {
+      console.log("[DEBUG] Index page unmounted");
+    };
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
       <Hero />
       <Services />
