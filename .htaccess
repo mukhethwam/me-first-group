@@ -1,37 +1,13 @@
+
 # Enable rewriting
 RewriteEngine On
 
-# Force HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-# Handle www vs non-www (choose one option and uncomment)
-# Option 1: Force non-www (www to non-www redirect)
-# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-# RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
-# Option 2: Force www (non-www to www redirect)
-# RewriteCond %{HTTP_HOST} !^www\. [NC]
-# RewriteRule ^(.*)$ https://www.%{HTTP_HOST}/$1 [R=301,L]
-
 # Handle SPA routes by redirecting to index.html
-RewriteBase /
-RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.html [L]
-
-# Enhanced browser compatibility headers
-<IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
-</IfModule>
+RewriteRule ^(.*)$ index.html [L,QSA]
 
 # Set correct MIME types
-AddType text/html .html
 AddType text/javascript .js
 AddType application/javascript .mjs
 AddType text/javascript .tsx
@@ -39,35 +15,52 @@ AddType text/javascript .ts
 AddType application/json .json
 AddType text/css .css
 
-# Enhanced compression for more file types
+# Allow Cross Origin
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "DENY"
+  Header set X-XSS-Protection "1; mode=block"
+  # Ensure JS files are served with the correct MIME type
+  <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
+    Header set Content-Type "text/javascript"
+  </FilesMatch>
+</IfModule>
+
+# Enable compression
 <IfModule mod_deflate.c>
-    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json application/xml application/x-font-ttf application/x-font-opentype image/svg+xml
-    BrowserMatch ^Mozilla/4 gzip-only-text/html
-    BrowserMatch ^Mozilla/4\.0[678] no-gzip
-    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
 </IfModule>
 
 # Set caching
 <IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresByType image/jpg "access plus 1 year"
-    ExpiresByType image/jpeg "access plus 1 year"
-    ExpiresByType image/gif "access plus 1 year"
-    ExpiresByType image/png "access plus 1 year"
-    ExpiresByType image/svg+xml "access plus 1 year"
-    ExpiresByType text/css "access plus 1 month"
-    ExpiresByType text/javascript "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
-    ExpiresByType text/html "access plus 0 seconds"
+  ExpiresActive On
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
 </IfModule>
 
 # Prevent caching of index.html to ensure latest app is loaded
 <FilesMatch "index\.html$">
-    Header set Cache-Control "no-cache, no-store, must-revalidate"
-    Header set Pragma "no-cache"
-    Header set Expires 0
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+  Header set Pragma "no-cache"
+  Header set Expires 0
 </FilesMatch>
 
-# Handle redirects to fallback page when errors occur
-ErrorDocument 404 /fallback.html
-ErrorDocument 500 /fallback.html
+# Ensure correct file types for Vite assets
+<FilesMatch "\.js$">
+  Header set Content-Type "application/javascript"
+</FilesMatch>
+
+<FilesMatch "\.css$">
+  Header set Content-Type "text/css"
+</FilesMatch>
+
+# Add fallback for routes with dots but no file extension
+RewriteCond %{REQUEST_URI} ^[^.]+$
+RewriteRule (.*) $1/ [R=301,L]

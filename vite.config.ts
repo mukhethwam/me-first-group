@@ -4,12 +4,13 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
+// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // Add history fallback to support SPA routing
     historyApiFallback: true,
-    strictPort: false, // Auto find available port if 8080 is in use
   },
   plugins: [
     react(),
@@ -20,41 +21,40 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'], // Add all extensions to improve module resolution
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'] // Ensure all extensions are properly resolved
   },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
       output: {
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: ({name}) => {
-          // Don't hash HTML files
-          if (name && /\.(html)$/.test(name)) {
-            return '[name].[ext]';
-          }
-          return 'assets/[name].[hash].[ext]';
-        },
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendors';
-          }
-        }
-      },
-      input: {
-        main: path.resolve(__dirname, 'index.html'),
+        assetFileNames: 'assets/[name].[hash].[ext]',
+        format: 'es' // Ensure ES module format
       }
     },
-    target: ['es2015', 'chrome58', 'firefox57', 'safari11', 'edge18'],
-    sourcemap: mode === 'development',
-    minify: mode === 'production',
-    cssCodeSplit: false,
+    sourcemap: true,
+    target: 'es2015',
+    // Ensure correct script type output
+    polyfillModulePreload: true,
+    // Improve CSS handling
+    cssCodeSplit: true,
+    // Optimize dependencies
+    commonjsOptions: {
+      include: [/node_modules/],
+      extensions: ['.js', '.cjs'],
+      strictRequires: true,
+    },
   },
-  assetsInclude: ['**/*.html', '**/*.png', '**/*.svg', '**/*.jpg', '**/*.jpeg', '**/*.gif'],
-  base: './',
+  // Use relative base path for easier deployments
+  base: '/',
+  // Optimize dependencies
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', '@tanstack/react-query'],
+    include: ['react', 'react-dom', 'react-router-dom'],
     esbuildOptions: {
       target: 'es2020',
     },

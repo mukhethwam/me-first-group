@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState, useCallback } from "react";
+import React from "react";
 import { CheckCircle } from "lucide-react";
 import {
   Carousel,
@@ -8,13 +8,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 
 const Fleet = () => {
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-  const [loadingError, setLoadingError] = useState(false);
-
-  // Fleet data
   const fleetFeatures = [
     "34-ton side tipper capacity",
     "Modern, well-maintained vehicles",
@@ -59,78 +54,11 @@ const Fleet = () => {
     }
   ];
 
-  // Improved image preloading
-  useEffect(() => {
-    console.log("[FLEET] Fleet component mounted");
-    
-    // Give a small delay to let other critical components render first
-    const timer = setTimeout(() => {
-      // Only preload the first image to get something on screen quickly
-      const img = new Image();
-      img.src = fleetImages[0].src;
-      img.onload = () => {
-        console.log("[FLEET] First critical image loaded");
-        setImagesLoaded(true);
-        
-        // Then start loading the rest
-        fleetImages.slice(1, 3).forEach(image => {
-          const img = new Image();
-          img.src = image.src;
-        });
-      };
-      
-      img.onerror = (e) => {
-        console.error("[FLEET] Failed to load first image:", e);
-        setImagesLoaded(true); // Still continue even on error
-        setLoadingError(true);
-      };
-      
-      // Failsafe - if image doesn't load in 3 seconds, show the component anyway
-      const fallbackTimer = setTimeout(() => {
-        if (!imagesLoaded) {
-          console.log("[FLEET] Using fallback timer to display component");
-          setImagesLoaded(true);
-        }
-      }, 3000);
-      
-      return () => clearTimeout(fallbackTimer);
-    }, 100);
-    
-    return () => {
-      console.log("[FLEET] Fleet component unmounted");
-      clearTimeout(timer);
-    };
-  }, []);
-
-  // Create plugin
-  const plugin = Autoplay({ delay: 4000, stopOnInteraction: false });
-  
-  // Image error handler with improved logging
-  const handleImageError = useCallback((e) => {
-    console.error(`[FLEET] Image failed to load: ${e.target.src}`);
-    e.target.src = "/placeholder.svg"; // Fallback to placeholder
-    e.target.onerror = null; // Prevent infinite error loops
-  }, []);
-
-  // Simple loading view
-  if (!imagesLoaded) {
-    return (
-      <section id="fleet" className="section-padding">
-        <div className="container mx-auto px-4 py-12">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-transport-blue mx-auto"></div>
-            <p className="mt-4 text-transport-gray">Loading fleet information...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section id="fleet" className="section-padding">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Our Premium Fleet</h2>
+          <h2 className="section-title">Our Premium Fleet</h2>
           <p className="text-lg max-w-3xl mx-auto text-transport-gray">
             Me First Group operates a fleet of specialized 34-ton side tipper trucks designed 
             specifically for the challenges of mining commodity transport.
@@ -142,7 +70,7 @@ const Fleet = () => {
             <h3 className="text-2xl font-bold mb-6">Fleet Specifications</h3>
             <p className="text-lg mb-6 text-transport-gray">
               Our vehicles are regularly maintained to ensure maximum reliability and efficiency
-              for your transport needs.
+              for all your transport needs.
             </p>
             
             <div className="space-y-3 mb-8">
@@ -163,20 +91,12 @@ const Fleet = () => {
           </div>
           
           <div className="relative">
-            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-xl bg-gray-100">
-              {loadingError ? (
-                <div className="flex items-center justify-center h-full">
-                  <p>Image unavailable</p>
-                </div>
-              ) : (
-                <img 
-                  src={fleetImages[0].src}
-                  alt={fleetImages[0].alt}
-                  className="object-cover w-full h-full"
-                  loading="eager"
-                  onError={handleImageError}
-                />
-              )}
+            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-xl">
+              <img 
+                src={fleetImages[0].src}
+                alt={fleetImages[0].alt}
+                className="object-cover w-full h-full"
+              />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-transport-orange text-white p-4 rounded-lg shadow-lg hidden md:block">
               <p className="text-2xl font-bold">34-TON</p>
@@ -188,18 +108,16 @@ const Fleet = () => {
         <div className="mt-16">
           <h3 className="text-2xl font-bold mb-8 text-center">Explore Our Fleet</h3>
           <div className="px-4 md:px-12">
-            <Carousel plugins={[plugin]} className="w-full">
+            <Carousel className="w-full">
               <CarouselContent>
                 {fleetImages.map((image, index) => (
                   <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                     <div className="p-2">
-                      <div className="rounded-lg overflow-hidden shadow-lg aspect-w-16 aspect-h-12 bg-gray-100">
+                      <div className="rounded-lg overflow-hidden shadow-lg aspect-w-16 aspect-h-12 bg-white">
                         <img 
                           src={image.src} 
                           alt={image.alt}
                           className="object-cover w-full h-full" 
-                          loading={index < 2 ? "eager" : "lazy"}
-                          onError={handleImageError}
                         />
                       </div>
                     </div>
