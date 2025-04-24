@@ -31,6 +31,7 @@ function initializeApp() {
     // Use createRoot API
     const root = createRoot(rootElement);
     renderApp(root);
+    console.log("[STARTUP] Root rendering successful");
   } catch (error) {
     console.error("[CRITICAL ERROR] Root rendering failed:", error);
     handleRenderingFailure(error);
@@ -39,16 +40,22 @@ function initializeApp() {
 
 // Function to render the app
 function renderApp(root) {
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-  console.log("[STARTUP] App render completed");
+  try {
+    root.render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+    console.log("[STARTUP] App render completed successfully");
+  } catch (error) {
+    console.error("[CRITICAL ERROR] App rendering failed:", error);
+    handleRenderingFailure(error);
+  }
 }
 
 // Function to handle rendering failures
 function handleRenderingFailure(error) {
+  console.error("[CRITICAL] Rendering failure, attempting to show fallback", error);
   document.body.innerHTML = `
     <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
       <h1>Unable to load application</h1>
@@ -59,13 +66,23 @@ function handleRenderingFailure(error) {
   `;
 }
 
-// Try to execute as soon as possible
+// Ensure DOM is fully loaded before trying to initialize
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initializeApp);
 } else {
   // DOM already loaded, run immediately
   initializeApp();
 }
+
+// Add a more aggressive backup initialization
+window.addEventListener('load', function() {
+  console.log("[STARTUP] Window load event fired, checking if app is initialized");
+  const rootElement = document.getElementById("root");
+  if (rootElement && rootElement.children.length === 0) {
+    console.log("[STARTUP] App not initialized after load event, running emergency initialization");
+    initializeApp();
+  }
+});
 
 // Add a backup timeout to ensure initialization happens
 setTimeout(() => {
@@ -75,4 +92,4 @@ setTimeout(() => {
     console.log("[STARTUP] App not initialized, running backup initialization");
     initializeApp();
   }
-}, 500); // Reduced timeout for faster recovery
+}, 300); // Reduced timeout for faster recovery

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { CheckCircle } from "lucide-react";
 import {
   Carousel,
@@ -12,38 +12,9 @@ import Autoplay from "embla-carousel-autoplay";
 
 const Fleet = () => {
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [loadingError, setLoadingError] = useState(false);
 
-  useEffect(() => {
-    console.log("[FLEET] Fleet component mounted");
-    // Preload critical images
-    const preloadImages = async () => {
-      try {
-        const imagePromises = fleetImages.slice(0, 3).map((image) => {
-          return new Promise((resolve, reject) => {
-            const img = new Image();
-            img.src = image.src;
-            img.onload = () => resolve(image.src);
-            img.onerror = () => reject(new Error(`Failed to load image: ${image.src}`));
-          });
-        });
-        
-        await Promise.all(imagePromises);
-        setImagesLoaded(true);
-        console.log("[FLEET] Critical images preloaded");
-      } catch (error) {
-        console.error("[FLEET] Error preloading images:", error);
-        // Still set as loaded to allow rendering with fallbacks
-        setImagesLoaded(true);
-      }
-    };
-    
-    preloadImages();
-    
-    return () => {
-      console.log("[FLEET] Fleet component unmounted");
-    };
-  }, []);
-
+  // Fleet data
   const fleetFeatures = [
     "34-ton side tipper capacity",
     "Modern, well-maintained vehicles",
@@ -88,16 +59,60 @@ const Fleet = () => {
     }
   ];
 
-  // Create plugin - moved outside of useMemo for simpler rendering
+  // Improved image preloading
+  useEffect(() => {
+    console.log("[FLEET] Fleet component mounted");
+    
+    // Give a small delay to let other critical components render first
+    const timer = setTimeout(() => {
+      // Only preload the first image to get something on screen quickly
+      const img = new Image();
+      img.src = fleetImages[0].src;
+      img.onload = () => {
+        console.log("[FLEET] First critical image loaded");
+        setImagesLoaded(true);
+        
+        // Then start loading the rest
+        fleetImages.slice(1, 3).forEach(image => {
+          const img = new Image();
+          img.src = image.src;
+        });
+      };
+      
+      img.onerror = (e) => {
+        console.error("[FLEET] Failed to load first image:", e);
+        setImagesLoaded(true); // Still continue even on error
+        setLoadingError(true);
+      };
+      
+      // Failsafe - if image doesn't load in 3 seconds, show the component anyway
+      const fallbackTimer = setTimeout(() => {
+        if (!imagesLoaded) {
+          console.log("[FLEET] Using fallback timer to display component");
+          setImagesLoaded(true);
+        }
+      }, 3000);
+      
+      return () => clearTimeout(fallbackTimer);
+    }, 100);
+    
+    return () => {
+      console.log("[FLEET] Fleet component unmounted");
+      clearTimeout(timer);
+    };
+  }, []);
+
+  // Create plugin
   const plugin = Autoplay({ delay: 4000, stopOnInteraction: false });
   
-  // Image error handler
-  const handleImageError = (e) => {
+  // Image error handler with improved logging
+  const handleImageError = useCallback((e) => {
     console.error(`[FLEET] Image failed to load: ${e.target.src}`);
     e.target.src = "/placeholder.svg"; // Fallback to placeholder
     e.target.onerror = null; // Prevent infinite error loops
-  };
+  }, []);
 
+  // Simple loading view
   if (!imagesLoaded) {
     return (
       <section id="fleet" className="section-padding">
@@ -148,14 +163,20 @@ const Fleet = () => {
           </div>
           
           <div className="relative">
-            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-xl">
-              <img 
-                src={fleetImages[0].src}
-                alt={fleetImages[0].alt}
-                className="object-cover w-full h-full"
-                loading="eager"
-                onError={handleImageError}
-              />
+            <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden shadow-xl bg-gray-100">
+              {loadingError ? (
+                <div className="flex items-center justify-center h-full">
+                  <p>Image unavailable</p>
+                </div>
+              ) : (
+                <img 
+                  src={fleetImages[0].src}
+                  alt={fleetImages[0].alt}
+                  className="object-cover w-full h-full"
+                  loading="eager"
+                  onError={handleImageError}
+                />
+              )}
             </div>
             <div className="absolute -bottom-6 -right-6 bg-transport-orange text-white p-4 rounded-lg shadow-lg hidden md:block">
               <p className="text-2xl font-bold">34-TON</p>
@@ -172,7 +193,7 @@ const Fleet = () => {
                 {fleetImages.map((image, index) => (
                   <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
                     <div className="p-2">
-                      <div className="rounded-lg overflow-hidden shadow-lg aspect-w-16 aspect-h-12 bg-white">
+                      <div className="rounded-lg overflow-hidden shadow-lg aspect-w-16 aspect-h-12 bg-gray-100">
                         <img 
                           src={image.src} 
                           alt={image.alt}

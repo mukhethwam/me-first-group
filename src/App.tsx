@@ -4,21 +4,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 
-// Lazy load pages for better performance
-const Index = lazy(() => import("./pages/Index"));
-const About = lazy(() => import("./pages/About"));
-const ServicesPage = lazy(() => import("./pages/Services"));
-const DirectorPage = lazy(() => import("./pages/Director"));
-const Contact = lazy(() => import("./pages/Contact"));
-const Footprint = lazy(() => import("./pages/Footprint"));
-const PremiumFleet = lazy(() => import("./pages/PremiumFleet"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-
-// Loading indicator
+// Improved loading indicator with error boundary
 const LoadingFallback = () => (
-  <div className="flex items-center justify-center h-screen">
+  <div className="flex items-center justify-center h-screen w-full bg-white">
     <div className="text-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-transport-blue mx-auto"></div>
       <p className="mt-4 text-transport-gray">Loading...</p>
@@ -37,9 +27,29 @@ const queryClient = new QueryClient({
   },
 });
 
-// Root App component
+// Lazy load pages with proper error boundaries
+const Index = lazy(() => {
+  console.log("[APP] Loading Index page");
+  return import("./pages/Index").catch(err => {
+    console.error("[APP] Failed to load Index page:", err);
+    return { default: () => <div>Error loading page</div> };
+  });
+});
+
+const About = lazy(() => import("./pages/About").catch(err => {
+  console.error("[APP] Failed to load About page:", err);
+  return { default: () => <div>Error loading page</div> };
+}));
+
+const ServicesPage = lazy(() => import("./pages/Services"));
+const DirectorPage = lazy(() => import("./pages/Director"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Footprint = lazy(() => import("./pages/Footprint"));
+const PremiumFleet = lazy(() => import("./pages/PremiumFleet"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+// Root App component with improved error handling
 const App = () => {
-  // Debug logs for initialization
   useEffect(() => {
     console.log("[APP] App component mounted");
     console.log("[APP] Using HashRouter for routing");
