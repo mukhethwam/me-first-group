@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle } from "lucide-react";
 import {
   Carousel,
@@ -11,8 +11,37 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 
 const Fleet = () => {
+  const [imagesLoaded, setImagesLoaded] = useState(false);
+
   useEffect(() => {
     console.log("[FLEET] Fleet component mounted");
+    // Preload critical images
+    const preloadImages = async () => {
+      try {
+        const imagePromises = fleetImages.slice(0, 3).map((image) => {
+          return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = image.src;
+            img.onload = () => resolve(image.src);
+            img.onerror = () => reject(new Error(`Failed to load image: ${image.src}`));
+          });
+        });
+        
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+        console.log("[FLEET] Critical images preloaded");
+      } catch (error) {
+        console.error("[FLEET] Error preloading images:", error);
+        // Still set as loaded to allow rendering with fallbacks
+        setImagesLoaded(true);
+      }
+    };
+    
+    preloadImages();
+    
+    return () => {
+      console.log("[FLEET] Fleet component unmounted");
+    };
   }, []);
 
   const fleetFeatures = [
@@ -61,6 +90,26 @@ const Fleet = () => {
 
   // Create plugin - moved outside of useMemo for simpler rendering
   const plugin = Autoplay({ delay: 4000, stopOnInteraction: false });
+  
+  // Image error handler
+  const handleImageError = (e) => {
+    console.error(`[FLEET] Image failed to load: ${e.target.src}`);
+    e.target.src = "/placeholder.svg"; // Fallback to placeholder
+    e.target.onerror = null; // Prevent infinite error loops
+  };
+
+  if (!imagesLoaded) {
+    return (
+      <section id="fleet" className="section-padding">
+        <div className="container mx-auto px-4 py-12">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-transport-blue mx-auto"></div>
+            <p className="mt-4 text-transport-gray">Loading fleet information...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="fleet" className="section-padding">
@@ -105,6 +154,7 @@ const Fleet = () => {
                 alt={fleetImages[0].alt}
                 className="object-cover w-full h-full"
                 loading="eager"
+                onError={handleImageError}
               />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-transport-orange text-white p-4 rounded-lg shadow-lg hidden md:block">
@@ -128,6 +178,7 @@ const Fleet = () => {
                           alt={image.alt}
                           className="object-cover w-full h-full" 
                           loading={index < 2 ? "eager" : "lazy"}
+                          onError={handleImageError}
                         />
                       </div>
                     </div>

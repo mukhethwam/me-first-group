@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
@@ -9,14 +9,20 @@ import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 const Index = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     // Debug logs to verify component mounting and behavior
     console.log("[DEBUG] Index page mounted");
     console.log("[DEBUG] Current URL:", window.location.href);
     console.log("[DEBUG] Current pathname:", window.location.pathname);
+    console.log("[DEBUG] Current hash:", window.location.hash);
     
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
+    
+    // Mark component as loaded
+    setIsLoaded(true);
     
     // Return cleanup function
     return () => {
@@ -27,12 +33,16 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-      <Hero />
-      <Services />
-      <Fleet />
-      <MiningCommodities />
-      <ContactSection />
-      <Footer />
+      {isLoaded && (
+        <>
+          <Hero />
+          <Services />
+          <Fleet />
+          <MiningCommodities />
+          <ContactSection />
+          <Footer />
+        </>
+      )}
     </div>
   );
 };
