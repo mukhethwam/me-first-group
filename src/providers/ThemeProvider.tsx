@@ -19,8 +19,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
   useEffect(() => {
     const root = window.document.documentElement;
+    
+    // First remove all theme classes
     root.classList.remove('light', 'dark');
     
+    // Apply the appropriate theme
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       root.classList.add(systemTheme);
@@ -29,8 +32,17 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
     }
   }, [theme]);
 
+  // Providing a stable context value
+  const value = React.useMemo(
+    () => ({
+      theme,
+      setTheme,
+    }),
+    [theme]
+  );
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );
