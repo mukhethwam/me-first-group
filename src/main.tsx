@@ -10,9 +10,6 @@ declare global {
   }
 }
 
-// Log initialization for debugging
-console.log("Initializing application on Host Africa server...");
-
 // Create a more robust app initialization process
 const renderApp = () => {
   try {
@@ -36,18 +33,6 @@ const renderApp = () => {
   } catch (error) {
     console.error("Critical rendering error:", error);
     
-    // Display error in the error display div
-    try {
-      const errorDisplay = document.getElementById('error-display');
-      if (errorDisplay) {
-        errorDisplay.style.display = 'block';
-        errorDisplay.innerHTML = `<h3>Error Loading App</h3><p>${error instanceof Error ? error.message : String(error)}</p>`;
-      }
-    } catch (e) {
-      // Last resort error display
-      console.error("Failed to display error:", e);
-    }
-    
     // Display a fallback error message for users
     document.body.innerHTML = `
       <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
@@ -57,7 +42,6 @@ const renderApp = () => {
           Refresh Page
         </button>
         <p style="color: #777; font-size: 14px;">Error details have been logged to the console.</p>
-        <p style="color: #777; font-size: 14px;">Error: ${error instanceof Error ? error.message : String(error)}</p>
       </div>
     `;
   }
@@ -67,7 +51,9 @@ const renderApp = () => {
 const checkBrowserCompatibility = () => {
   const isCompatible = 
     'querySelector' in document && 
-    'addEventListener' in window;
+    'addEventListener' in window &&
+    'localStorage' in window &&
+    'fetch' in window;
     
   if (!isCompatible) {
     document.body.innerHTML = `
@@ -84,21 +70,11 @@ const checkBrowserCompatibility = () => {
 
 // Use a more reliable DOM ready check
 if (checkBrowserCompatibility()) {
-  // Try to detect if we're running in a testing environment
-  const possibleTestEnvironment = typeof window !== 'undefined' && 
-    (window.navigator.userAgent.includes('Node.js') || 
-     window.navigator.userAgent.includes('jsdom'));
-
-  if (!possibleTestEnvironment) {
-    if (document.readyState === 'loading') {
-      console.log("Document still loading, waiting for DOMContentLoaded");
-      document.addEventListener('DOMContentLoaded', renderApp);
-    } else {
-      // If DOM is already ready, render immediately
-      console.log("DOM already ready, rendering immediately");
-      renderApp();
-    }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderApp);
   } else {
-    console.log("Test environment detected, deferring render");
+    // If DOM is already ready, render immediately
+    console.log("DOM already ready, rendering immediately");
+    renderApp();
   }
 }

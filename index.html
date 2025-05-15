@@ -65,22 +65,6 @@
         display: block;
         -webkit-locale: auto !important;
       }
-      
-      /* Add error display for debugging */
-      .error-message {
-        display: none;
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(255, 0, 0, 0.7);
-        color: white;
-        padding: 10px;
-        font-family: monospace;
-        max-height: 30%;
-        overflow-y: auto;
-        z-index: 10000;
-      }
     </style>
   </head>
 
@@ -88,65 +72,41 @@
     <!-- Loading indicator -->
     <div id="loading-indicator">
       <div class="spinner"></div>
-      <p style="margin-top: 20px; color: #4f46e5;">Loading Me First Group...</p>
     </div>
     
     <div id="root"></div>
-    <div id="error-display" class="error-message"></div>
     
     <!-- For GPT Engineer functionality -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script with explicit file paths -->
+    <!-- Main application script - using multiple paths for fallback -->
     <script type="module" src="./src/main.tsx"></script>
     <script>
-      // Track page load status
-      let appLoaded = false;
-      
-      // Display errors in the error box
-      window.addEventListener('error', function(e) {
-        const errorDisplay = document.getElementById('error-display');
-        if (errorDisplay) {
-          errorDisplay.style.display = 'block';
-          errorDisplay.innerHTML += '<p>' + e.message + ' at ' + e.filename + ':' + e.lineno + '</p>';
-          console.error(e);
-        }
-      });
-      
       // Fallback for ESM module loading issues
       document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded, waiting for app to initialize');
         setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
             console.log('Main script may have failed, trying alternate path...');
-            // Create secondary script with .js extension
             const fallbackScript = document.createElement('script');
             fallbackScript.type = 'module';
-            fallbackScript.src = './assets/index.js';
+            fallbackScript.src = './src/main.tsx';
             document.body.appendChild(fallbackScript);
-            
-            // Try loading directly from dist folder
-            const secondFallbackScript = document.createElement('script');
-            secondFallbackScript.type = 'module';
-            secondFallbackScript.src = './dist/assets/index.js';
-            document.body.appendChild(secondFallbackScript);
           }
-        }, 2000);
+        }, 1000);
       });
       
-      // Add a timeout to hide the loading indicator
+      // Add a timeout to hide the loading indicator after app loads or after timeout
       let loadTimeout = setTimeout(function() {
         const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator && !appLoaded) {
+        if (loadingIndicator) {
           loadingIndicator.classList.add('hidden');
           console.log('App load timeout reached - hiding loading indicator');
         }
-      }, 8000); // Longer timeout for slower connections
+      }, 5000);
       
       // Hide loading indicator when app loads successfully
       window.addEventListener('app-loaded', function() {
-        appLoaded = true;
         clearTimeout(loadTimeout);
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
@@ -157,7 +117,6 @@
       
       // Handle window load event too
       window.addEventListener('load', function() {
-        console.log('Window load event triggered');
         setTimeout(function() {
           const loadingIndicator = document.getElementById('loading-indicator');
           if (loadingIndicator) {

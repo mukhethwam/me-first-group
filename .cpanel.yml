@@ -9,8 +9,3 @@ deployment:
     - /bin/cp favicon.ico $DEPLOYPATH 2>/dev/null || true
     - /bin/cp robots.txt $DEPLOYPATH 2>/dev/null || true
     - echo "Deployment completed at $(date)"
-    - echo "Ensuring file permissions are correct..."
-    - /bin/find $DEPLOYPATH -type f -exec chmod 644 {} \;
-    - /bin/find $DEPLOYPATH -type d -exec chmod 755 {} \;
-    - echo "Permissions updated"
-
