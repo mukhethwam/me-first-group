@@ -25,8 +25,8 @@
     
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
-    <!-- Preload critical resources -->
-    <link rel="preload" href="/assets/index.css" as="style">
+    <!-- Preload critical resources, using relative paths -->
+    <link rel="preload" href="./src/index.css" as="style">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -76,11 +76,26 @@
     
     <div id="root"></div>
     
-    <!-- Main application script - using type="module" for proper imports -->
-    <script type="module" src="/src/main.tsx"></script>
+    <!-- For GPT Engineer functionality -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Script to hide loading indicator and handle potential load failures -->
+    <!-- Main application script - using multiple paths for fallback -->
+    <script type="module" src="./src/main.tsx"></script>
     <script>
+      // Fallback for ESM module loading issues
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+          const root = document.getElementById('root');
+          if (root && (!root.children || root.children.length === 0)) {
+            console.log('Main script may have failed, trying alternate path...');
+            const fallbackScript = document.createElement('script');
+            fallbackScript.type = 'module';
+            fallbackScript.src = '/src/main.tsx';
+            document.body.appendChild(fallbackScript);
+          }
+        }, 1000);
+      });
+      
       // Add a timeout to hide the loading indicator after app loads or after timeout
       let loadTimeout = setTimeout(function() {
         const loadingIndicator = document.getElementById('loading-indicator');
@@ -100,7 +115,7 @@
         }
       });
       
-      // Try to handle window load event too
+      // Handle window load event too
       window.addEventListener('load', function() {
         setTimeout(function() {
           const loadingIndicator = document.getElementById('loading-indicator');

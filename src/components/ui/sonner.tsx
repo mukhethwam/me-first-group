@@ -5,16 +5,16 @@ import { Toaster as Sonner } from "sonner";
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-  const { theme } = useTheme();
+  const { theme = 'light' } = useTheme ? useTheme() : { theme: 'light' };
   
-  // Use a safe approach to determine theme for Sonner
-  let sonnerTheme: ToasterProps["theme"] = "light";
+  // Use a more robust approach to determine theme for Sonner
+  let sonnerTheme: "light" | "dark" = "light";
   
   try {
-    if (theme === 'system' && typeof window !== 'undefined') {
+    if (theme === 'system' && typeof window !== 'undefined' && window.matchMedia) {
       sonnerTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     } else {
-      sonnerTheme = theme as ToasterProps["theme"];
+      sonnerTheme = theme === 'dark' ? 'dark' : 'light';
     }
   } catch (e) {
     console.error("Theme detection error:", e);
