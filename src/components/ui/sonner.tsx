@@ -7,14 +7,24 @@ type ToasterProps = React.ComponentProps<typeof Sonner>;
 const Toaster = ({ ...props }: ToasterProps) => {
   const { theme } = useTheme();
   
-  // Map our theme to Sonner's theme format
-  const sonnerTheme = theme === 'system' 
-    ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    : theme;
+  // Use a safe approach to determine theme for Sonner
+  let sonnerTheme: ToasterProps["theme"] = "light";
+  
+  try {
+    if (theme === 'system' && typeof window !== 'undefined') {
+      sonnerTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } else {
+      sonnerTheme = theme as ToasterProps["theme"];
+    }
+  } catch (e) {
+    console.error("Theme detection error:", e);
+    // Fallback to light theme if there's an error
+    sonnerTheme = "light";
+  }
 
   return (
     <Sonner
-      theme={sonnerTheme as ToasterProps["theme"]}
+      theme={sonnerTheme}
       className="toaster group"
       toastOptions={{
         classNames: {

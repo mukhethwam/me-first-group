@@ -26,7 +26,7 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="preload" href="/assets/index.css" as="style">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -76,9 +76,7 @@
     
     <div id="root"></div>
     
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    
-    <!-- Main application script - using proper path and type -->
+    <!-- Main application script - using type="module" for proper imports -->
     <script type="module" src="/src/main.tsx"></script>
     
     <!-- Script to hide loading indicator and handle potential load failures -->
@@ -102,36 +100,15 @@
         }
       });
       
-      // Fallback for app load issues
-      window.addEventListener('DOMContentLoaded', function() {
+      // Try to handle window load event too
+      window.addEventListener('load', function() {
         setTimeout(function() {
-          const root = document.getElementById('root');
-          if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script not loaded. Setting up fallback and checking alternative paths...');
-            
-            // Try alternative script paths
-            const alternativePaths = [
-              '/src/main.tsx',
-              './src/main.tsx',
-              '/src/main.js',
-              './src/main.js',
-              '/dist/assets/main.js'
-            ];
-            
-            // Attempt to load from alternative paths
-            for (const path of alternativePaths) {
-              try {
-                console.log('Trying script path:', path);
-                const script = document.createElement('script');
-                script.type = 'module';
-                script.src = path;
-                document.body.appendChild(script);
-              } catch (e) {
-                console.error('Error loading alternative script:', path, e);
-              }
-            }
+          const loadingIndicator = document.getElementById('loading-indicator');
+          if (loadingIndicator) {
+            loadingIndicator.classList.add('hidden');
+            console.log('Window load event - hiding loading indicator');
           }
-        }, 2000);
+        }, 1000);
       });
     </script>
   </body>

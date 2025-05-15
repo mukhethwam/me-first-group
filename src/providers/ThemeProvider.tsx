@@ -14,10 +14,42 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+// Default to light theme when SSR or no window object
+const getDefaultTheme = (): Theme => {
+  // Safely check for window to avoid SSR issues
+  if (typeof window !== 'undefined') {
+    const savedTheme = localStorage.getItem('theme') as Theme | null;
+    if (savedTheme) return savedTheme;
+    
+    // Use system preference as fallback
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+  }
+  
+  // Final fallback - always return light theme to ensure something displays
+  return 'light';
+};
+
 export function ThemeProvider({ children }: ThemeProviderProps) {
+  // Initialize with default theme but in a way that works with SSR
   const [theme, setTheme] = useState<Theme>('light');
+  
+  // Once mounted, load the saved theme
+  useEffect(() => {
+    setTheme(getDefaultTheme());
+  }, []);
+
+  // Save theme to localStorage when it changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const root = window.document.documentElement;
     
     // First remove all theme classes
