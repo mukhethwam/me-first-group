@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
         format: 'es' // Ensure ES module format
       }
     },
-    sourcemap: true,
+    sourcemap: false, // Disable sourcemaps for production
     target: 'es2015',
     // Ensure correct script type output
     polyfillModulePreload: true,
@@ -49,6 +49,14 @@ export default defineConfig(({ mode }) => ({
       extensions: ['.js', '.cjs'],
       strictRequires: true,
     },
+    // Minify output for better performance
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false, // Keep console logs for debugging
+        drop_debugger: true
+      }
+    }
   },
   // Use relative base path for easier deployments on any domain
   base: './',

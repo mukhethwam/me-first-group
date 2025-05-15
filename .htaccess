@@ -15,6 +15,12 @@ AddType text/javascript .ts
 AddType application/json .json
 AddType text/css .css
 
+# Handle PHP environment issues that might cause blank pages
+<IfModule mod_php7.c>
+  php_value display_errors 1
+  php_value display_startup_errors 1
+</IfModule>
+
 # Allow Cross Origin
 <IfModule mod_headers.c>
   Header set Access-Control-Allow-Origin "*"
@@ -54,17 +60,20 @@ AddType text/css .css
 
 # Ensure correct file types for Vite assets
 <FilesMatch "\.js$">
-  Header set Content-Type "application/javascript"
+  ForceType application/javascript
 </FilesMatch>
 
 <FilesMatch "\.css$">
-  Header set Content-Type "text/css"
+  ForceType text/css
 </FilesMatch>
 
 # Remove trailing slash requirement - helps with domain compatibility
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)/$ /$1 [L,R=301]
 
-# Handle www and non-www versions (useful for .co.za domains)
+# Handle .co.za and www to non-www redirects
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# Fallback for 404 errors to index.html
+ErrorDocument 404 /index.html
