@@ -50,8 +50,8 @@ export default defineConfig(({ mode }) => ({
       strictRequires: true,
     },
   },
-  // Use relative base path for easier deployments
-  base: '/',
+  // Use relative base path for easier deployments on any domain
+  base: './',
   // Optimize dependencies
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

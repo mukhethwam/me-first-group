@@ -6,4 +6,6 @@ deployment:
     - /bin/mkdir -p $DEPLOYPATH
     - /bin/cp -R dist/* $DEPLOYPATH
     - /bin/cp .htaccess $DEPLOYPATH
+    - /bin/cp favicon.ico $DEPLOYPATH 2>/dev/null || true
+    - /bin/cp robots.txt $DEPLOYPATH 2>/dev/null || true
     - echo "Deployment completed at $(date)"

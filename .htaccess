@@ -61,6 +61,10 @@ AddType text/css .css
   Header set Content-Type "text/css"
 </FilesMatch>
 
-# Add fallback for routes with dots but no file extension
-RewriteCond %{REQUEST_URI} ^[^.]+$
-RewriteRule (.*) $1/ [R=301,L]
+# Remove trailing slash requirement - helps with domain compatibility
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Handle www and non-www versions (useful for .co.za domains)
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
