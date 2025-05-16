@@ -25,6 +25,9 @@ AddType text/css .css
   <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
     Header set Content-Type "text/javascript"
   </FilesMatch>
+  <FilesMatch "\.css$">
+    Header set Content-Type "text/css"
+  </FilesMatch>
 </IfModule>
 
 # Enable compression
@@ -68,3 +71,14 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
 # Handle www and non-www versions (useful for .co.za domains)
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# Fix for Host Africa specific issues
+<IfModule mod_headers.c>
+  # Disable content type sniffing
+  Header always set X-Content-Type-Options "nosniff"
+  
+  # Force Content-Type for CSS
+  <FilesMatch "\.css$">
+    ForceType text/css
+  </FilesMatch>
+</IfModule>

@@ -47,34 +47,44 @@ const renderApp = () => {
   }
 };
 
-// Check if the browser supports modern features
+// Modified browser compatibility check
 const checkBrowserCompatibility = () => {
-  const isCompatible = 
-    'querySelector' in document && 
-    'addEventListener' in window &&
-    'localStorage' in window &&
-    'fetch' in window;
-    
-  if (!isCompatible) {
-    document.body.innerHTML = `
-      <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
-        <h1>Browser Not Supported</h1>
-        <p>Your browser does not support the modern features needed to run this website.</p>
-        <p>Please use a more recent version of Chrome, Firefox, Safari, or Edge.</p>
-      </div>
-    `;
+  try {
+    // Basic feature detection
+    const isCompatible = 
+      'querySelector' in document && 
+      'addEventListener' in window &&
+      'localStorage' in window &&
+      'fetch' in window;
+      
+    if (!isCompatible) {
+      document.body.innerHTML = `
+        <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
+          <h1>Browser Not Supported</h1>
+          <p>Your browser does not support the modern features needed to run this website.</p>
+          <p>Please use a more recent version of Chrome, Firefox, Safari, or Edge.</p>
+        </div>
+      `;
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error("Browser compatibility check failed:", e);
     return false;
   }
-  return true;
 };
 
-// Use a more reliable DOM ready check
-if (checkBrowserCompatibility()) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderApp);
-  } else {
-    // If DOM is already ready, render immediately
-    console.log("DOM already ready, rendering immediately");
-    renderApp();
+// Use a more reliable DOM ready check with error handling
+try {
+  if (checkBrowserCompatibility()) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderApp);
+    } else {
+      // If DOM is already ready, render immediately
+      console.log("DOM already ready, rendering immediately");
+      renderApp();
+    }
   }
+} catch (e) {
+  console.error("Fatal initialization error:", e);
 }

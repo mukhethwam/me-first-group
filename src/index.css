@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -44,10 +45,12 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   
-  /* Reset browser styles to prevent conflicts */
+  /* Fix for webkit-locale and display issues */
   html {
     box-sizing: border-box;
-    -webkit-locale: auto;
+    -webkit-locale: auto !important; /* Fixed webkit locale issue */
+    locale: auto;
+    display: block !important; /* Ensure proper display */
     view-transition-name: none;
   }
   
