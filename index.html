@@ -62,8 +62,9 @@
       
       /* Reset conflicting browser styles */
       html {
-        display: block;
+        display: block !important;
         -webkit-locale: auto !important;
+        locale: auto;
       }
     </style>
   </head>
@@ -79,7 +80,7 @@
     <!-- For GPT Engineer functionality -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script - using multiple paths for fallback -->
+    <!-- Main application script - using standard script type -->
     <script type="module" src="./src/main.tsx"></script>
     <script>
       // Fallback for ESM module loading issues
@@ -87,10 +88,12 @@
         setTimeout(function() {
           const root = document.getElementById('root');
           if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script may have failed, trying alternate path...');
+            console.log('Main script may have failed, trying alternate approach...');
+            
+            // Try a different script format as fallback
             const fallbackScript = document.createElement('script');
-            fallbackScript.type = 'module';
-            fallbackScript.src = './src/main.tsx';
+            fallbackScript.type = 'text/javascript';
+            fallbackScript.src = './assets/main.js';
             document.body.appendChild(fallbackScript);
           }
         }, 1000);

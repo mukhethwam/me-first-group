@@ -82,3 +82,12 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
     ForceType text/css
   </FilesMatch>
 </IfModule>
+
+# Additional ESM module handling
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType application/javascript .mjs
+  AddType application/javascript .jsx
+  AddType application/javascript .ts
+  AddType application/javascript .tsx
+</IfModule>
