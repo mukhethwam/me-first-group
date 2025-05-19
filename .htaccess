@@ -7,18 +7,13 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.html [L,QSA]
 
-# Set correct MIME types - explicitly defining both content-type and mime-type
-AddType application/javascript .js
+# Set correct MIME types
+AddType text/javascript .js
 AddType application/javascript .mjs
-AddType application/javascript .tsx
-AddType application/javascript .ts
+AddType text/javascript .tsx
+AddType text/javascript .ts
 AddType application/json .json
 AddType text/css .css
-
-# Force the correct MIME type for JavaScript files
-<FilesMatch "\.(js|mjs)$">
-  ForceType application/javascript
-</FilesMatch>
 
 # Allow Cross Origin
 <IfModule mod_headers.c>
@@ -26,10 +21,9 @@ AddType text/css .css
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "DENY"
   Header set X-XSS-Protection "1; mode=block"
-  
-  # Explicitly set Content-Type for JavaScript files
+  # Ensure JS files are served with the correct MIME type
   <FilesMatch "\.(js|mjs|jsx|ts|tsx)$">
-    Header set Content-Type "application/javascript"
+    Header set Content-Type "text/javascript"
   </FilesMatch>
   <FilesMatch "\.css$">
     Header set Content-Type "text/css"
@@ -38,7 +32,7 @@ AddType text/css .css
 
 # Enable compression
 <IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/x-javascript application/json
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/json
 </IfModule>
 
 # Set caching
@@ -50,6 +44,7 @@ AddType text/css .css
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
   ExpiresByType application/javascript "access plus 1 month"
 </IfModule>
 
@@ -60,6 +55,15 @@ AddType text/css .css
   Header set Expires 0
 </FilesMatch>
 
+# Ensure correct file types for Vite assets
+<FilesMatch "\.js$">
+  Header set Content-Type "application/javascript"
+</FilesMatch>
+
+<FilesMatch "\.css$">
+  Header set Content-Type "text/css"
+</FilesMatch>
+
 # Remove trailing slash requirement - helps with domain compatibility
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)/$ /$1 [L,R=301]
@@ -67,15 +71,6 @@ RewriteRule ^(.*)/$ /$1 [L,R=301]
 # Handle www and non-www versions (useful for .co.za domains)
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
 RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
-
-# Add explicit content type handling for JavaScript files
-<Files "*.js">
-  SetHandler application/javascript
-</Files>
-
-<Files "*.mjs">
-  SetHandler application/javascript
-</Files>
 
 # Fix for Host Africa specific issues
 <IfModule mod_headers.c>
@@ -86,4 +81,13 @@ RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
   <FilesMatch "\.css$">
     ForceType text/css
   </FilesMatch>
+</IfModule>
+
+# Additional ESM module handling
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType application/javascript .mjs
+  AddType application/javascript .jsx
+  AddType application/javascript .ts
+  AddType application/javascript .tsx
 </IfModule>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,8 +25,8 @@
     
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     
-    <!-- Properly load CSS instead of using preload -->
-    <link rel="stylesheet" href="./src/index.css">
+    <!-- Preload critical resources, using relative paths -->
+    <link rel="preload" href="./src/index.css" as="style">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -79,8 +80,8 @@
     <!-- For GPT Engineer functionality -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script with explicit type -->
-    <script type="application/javascript" src="./src/main.tsx"></script>
+    <!-- Main application script - using standard script type -->
+    <script type="module" src="./src/main.tsx"></script>
     <script>
       // Fallback for ESM module loading issues
       document.addEventListener('DOMContentLoaded', function() {

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Declare the custom event for TypeScript using window
+// Declare the custom event for TypeScript
 declare global {
   interface WindowEventMap {
     'app-loaded': CustomEvent;
@@ -54,7 +54,7 @@ const renderApp = () => {
   }
 };
 
-// Simplified browser compatibility check
+// Modified browser compatibility check
 const checkBrowserCompatibility = () => {
   try {
     // Basic feature detection
@@ -81,13 +81,26 @@ const checkBrowserCompatibility = () => {
   }
 };
 
-// Use a more reliable DOM ready check
-if (checkBrowserCompatibility()) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderApp);
-  } else {
-    // If DOM is already ready, render immediately
-    console.log("DOM already ready, rendering immediately");
-    renderApp();
+// Use a more reliable DOM ready check with error handling
+try {
+  if (checkBrowserCompatibility()) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', renderApp);
+    } else {
+      // If DOM is already ready, render immediately
+      console.log("DOM already ready, rendering immediately");
+      renderApp();
+    }
+    
+    // Also attempt to render on window load as fallback
+    window.addEventListener('load', () => {
+      const rootElement = document.getElementById("root");
+      if (rootElement && (!rootElement.children || rootElement.children.length === 0)) {
+        console.log("Window loaded but app not rendered yet, trying again");
+        renderApp();
+      }
+    });
   }
+} catch (e) {
+  console.error("Fatal initialization error:", e);
 }

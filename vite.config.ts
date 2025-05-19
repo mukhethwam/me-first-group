@@ -13,11 +13,7 @@ export default defineConfig(({ mode }) => ({
     historyApiFallback: true,
   },
   plugins: [
-    react({
-      // Improve React plugin configuration
-      jsxImportSource: undefined,
-      tsDecorators: false,
-    }),
+    react(),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
@@ -38,11 +34,22 @@ export default defineConfig(({ mode }) => ({
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
         assetFileNames: 'assets/[name].[hash].[ext]',
+        format: 'es', // Ensure ES module format
+        inlineDynamicImports: false
       }
     },
     sourcemap: true,
-    minify: 'esbuild',
-    target: ['es2015']
+    target: 'es2015',
+    // Ensure correct script type output
+    polyfillModulePreload: true,
+    // Improve CSS handling
+    cssCodeSplit: true,
+    // Optimize dependencies
+    commonjsOptions: {
+      include: [/node_modules/],
+      extensions: ['.js', '.cjs'],
+      strictRequires: true,
+    },
   },
   // Use relative base path for easier deployments on any domain
   base: './',
