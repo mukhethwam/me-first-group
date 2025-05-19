@@ -99,34 +99,36 @@
         }, 1000);
       });
       
-      // Add a timeout to hide the loading indicator after app loads or after timeout
-      let loadTimeout = setTimeout(function() {
+      // Improved loading indicator handling with direct DOM manipulation
+      function hideLoadingIndicator() {
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
           loadingIndicator.classList.add('hidden');
-          console.log('App load timeout reached - hiding loading indicator');
+          console.log('Loading indicator hidden successfully');
         }
-      }, 5000);
+      }
       
-      // Hide loading indicator when app loads successfully
+      // Multiple event handlers to ensure loading indicator is hidden
+      if (document.readyState === 'complete') {
+        // If already loaded
+        hideLoadingIndicator();
+      } else {
+        // Add multiple event listeners to ensure it gets hidden
+        window.addEventListener('load', function() {
+          setTimeout(hideLoadingIndicator, 500);
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(hideLoadingIndicator, 1000);
+        });
+        
+        // Fallback timeout - hide after max 5 seconds regardless of loading state
+        setTimeout(hideLoadingIndicator, 5000);
+      }
+      
+      // Custom event for app loaded state
       window.addEventListener('app-loaded', function() {
-        clearTimeout(loadTimeout);
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (loadingIndicator) {
-          loadingIndicator.classList.add('hidden');
-          console.log('App loaded successfully - hiding loading indicator');
-        }
-      });
-      
-      // Handle window load event too
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          const loadingIndicator = document.getElementById('loading-indicator');
-          if (loadingIndicator) {
-            loadingIndicator.classList.add('hidden');
-            console.log('Window load event - hiding loading indicator');
-          }
-        }, 1000);
+        hideLoadingIndicator();
       });
     </script>
   </body>

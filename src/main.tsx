@@ -28,7 +28,14 @@ const renderApp = () => {
       console.log("App successfully rendered");
       
       // Dispatch an event when the app has loaded successfully
-      window.dispatchEvent(new CustomEvent('app-loaded'));
+      setTimeout(() => {
+        try {
+          window.dispatchEvent(new CustomEvent('app-loaded'));
+          console.log("app-loaded event dispatched");
+        } catch (e) {
+          console.error("Error dispatching app-loaded event:", e);
+        }
+      }, 100);
     }
   } catch (error) {
     console.error("Critical rendering error:", error);
@@ -84,6 +91,15 @@ try {
       console.log("DOM already ready, rendering immediately");
       renderApp();
     }
+    
+    // Also attempt to render on window load as fallback
+    window.addEventListener('load', () => {
+      const rootElement = document.getElementById("root");
+      if (rootElement && (!rootElement.children || rootElement.children.length === 0)) {
+        console.log("Window loaded but app not rendered yet, trying again");
+        renderApp();
+      }
+    });
   }
 } catch (e) {
   console.error("Fatal initialization error:", e);
