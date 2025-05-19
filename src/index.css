@@ -48,10 +48,11 @@
   /* Fix for webkit-locale and display issues */
   html {
     box-sizing: border-box;
-    -webkit-locale: auto !important; /* Fixed webkit locale issue */
+    -webkit-locale: auto !important;
     locale: auto;
-    display: block !important; /* Ensure proper display */
-    view-transition-name: none;
+    display: block !important;
+    /* Remove problematic view-transition-name */
+    view-transition-name: none !important;
   }
   
   *, *:before, *:after {
