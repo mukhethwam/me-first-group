@@ -13,7 +13,12 @@ export default defineConfig(({ mode }) => ({
     historyApiFallback: true,
   },
   plugins: [
-    react(),
+    react({
+      // Use React Fast Refresh for better development experience
+      fastRefresh: true,
+      // Handle JSX more efficiently
+      jsxImportSource: "react",
+    }),
     mode === 'development' &&
     componentTagger(),
   ].filter(Boolean),
@@ -36,7 +41,9 @@ export default defineConfig(({ mode }) => ({
         assetFileNames: 'assets/[name].[hash].[ext]',
         format: 'es', // Ensure ES module format
         inlineDynamicImports: false
-      }
+      },
+      // Ensure all dependencies are properly bundled
+      external: [],
     },
     sourcemap: true,
     target: 'es2015',
@@ -50,6 +57,13 @@ export default defineConfig(({ mode }) => ({
       extensions: ['.js', '.cjs'],
       strictRequires: true,
     },
+    minify: 'terser', // Use terser for better minification
+    terserOptions: {
+      compress: {
+        // Remove console logs in production
+        drop_console: mode === 'production',
+      },
+    },
   },
   // Use relative base path for easier deployments on any domain
   base: './',
@@ -58,6 +72,12 @@ export default defineConfig(({ mode }) => ({
     include: ['react', 'react-dom', 'react-router-dom'],
     esbuildOptions: {
       target: 'es2020',
+      // Ensure proper JSX transformation
+      jsx: 'automatic',
     },
+  },
+  // Avoid inconsistent chunk loading
+  esbuild: {
+    logOverride: { 'this-is-undefined-in-esm': 'silent' }
   },
 }));

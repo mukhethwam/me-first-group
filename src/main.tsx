@@ -1,9 +1,8 @@
-
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Declare the custom event for TypeScript
+// Define our custom event type
 declare global {
   interface WindowEventMap {
     'app-loaded': CustomEvent;
@@ -24,6 +23,16 @@ const renderApp = () => {
       createRoot(fallbackRoot).render(<App />);
     } else {
       console.log("Root element found, rendering app...");
+      
+      // Clear any existing content in the root element
+      if (rootElement.hasChildNodes()) {
+        console.log("Clearing existing content in root element");
+        while (rootElement.firstChild) {
+          rootElement.removeChild(rootElement.firstChild);
+        }
+      }
+      
+      // Render the app
       createRoot(rootElement).render(<App />);
       console.log("App successfully rendered");
       
@@ -40,17 +49,17 @@ const renderApp = () => {
   } catch (error) {
     console.error("Critical rendering error:", error);
     
-    // Display a fallback error message for users
-    document.body.innerHTML = `
-      <div style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px; color: #333;">
-        <h1>Something went wrong</h1>
-        <p>We're sorry, but there was an error loading the site. Please try refreshing the page.</p>
-        <button onclick="window.location.reload()" style="background-color: #4f46e5; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">
-          Refresh Page
-        </button>
-        <p style="color: #777; font-size: 14px;">Error details have been logged to the console.</p>
-      </div>
-    `;
+    // Show the fallback content
+    const fallbackContent = document.getElementById('fallback-content');
+    if (fallbackContent) {
+      fallbackContent.style.display = 'block';
+    }
+    
+    // Hide the loading indicator
+    const loadingIndicator = document.getElementById('loading-indicator');
+    if (loadingIndicator) {
+      loadingIndicator.classList.add('hidden');
+    }
   }
 };
 
@@ -84,16 +93,21 @@ const checkBrowserCompatibility = () => {
 // Use a more reliable DOM ready check with error handling
 try {
   if (checkBrowserCompatibility()) {
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', renderApp);
-    } else {
-      // If DOM is already ready, render immediately
+    // Try to render immediately if DOM is ready
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
       console.log("DOM already ready, rendering immediately");
-      renderApp();
+      setTimeout(renderApp, 0); // Use setTimeout to push to next event loop
+    } else {
+      // Otherwise wait for DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log("DOMContentLoaded fired, rendering app");
+        renderApp();
+      });
     }
     
     // Also attempt to render on window load as fallback
     window.addEventListener('load', () => {
+      console.log("Window load event fired");
       const rootElement = document.getElementById("root");
       if (rootElement && (!rootElement.children || rootElement.children.length === 0)) {
         console.log("Window loaded but app not rendered yet, trying again");
@@ -103,4 +117,16 @@ try {
   }
 } catch (e) {
   console.error("Fatal initialization error:", e);
+  
+  // Show fallback content
+  const fallbackContent = document.getElementById('fallback-content');
+  if (fallbackContent) {
+    fallbackContent.style.display = 'block';
+  }
+  
+  // Hide loading indicator
+  const loadingIndicator = document.getElementById('loading-indicator');
+  if (loadingIndicator) {
+    loadingIndicator.classList.add('hidden');
+  }
 }

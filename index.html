@@ -25,8 +25,8 @@
     
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     
-    <!-- Preload critical resources, using relative paths -->
-    <link rel="preload" href="./src/index.css" as="style">
+    <!-- Direct CSS import instead of preload -->
+    <link rel="stylesheet" href="./src/index.css">
     
     <!-- Add a loading indicator that appears before scripts load -->
     <style>
@@ -66,6 +66,14 @@
         -webkit-locale: auto !important;
         locale: auto;
       }
+      
+      /* Fallback content if scripts don't load */
+      #fallback-content {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+        font-family: Arial, sans-serif;
+      }
     </style>
   </head>
 
@@ -77,29 +85,31 @@
     
     <div id="root"></div>
     
-    <!-- For GPT Engineer functionality -->
+    <!-- Fallback content -->
+    <div id="fallback-content">
+      <h2>Unable to load the application</h2>
+      <p>Please try refreshing the page or check your internet connection.</p>
+      <button onclick="window.location.reload()" style="background-color: #1A3A5D; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+        Refresh Page
+      </button>
+    </div>
+    
+    <!-- GPT Engineer script - must be first -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     
-    <!-- Main application script - using standard script type -->
+    <!-- Main application script -->
     <script type="module" src="./src/main.tsx"></script>
+    
     <script>
-      // Fallback for ESM module loading issues
-      document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-          const root = document.getElementById('root');
-          if (root && (!root.children || root.children.length === 0)) {
-            console.log('Main script may have failed, trying alternate approach...');
-            
-            // Try a different script format as fallback
-            const fallbackScript = document.createElement('script');
-            fallbackScript.type = 'text/javascript';
-            fallbackScript.src = './assets/main.js';
-            document.body.appendChild(fallbackScript);
-          }
-        }, 1000);
-      });
+      // Show fallback content if app doesn't load after timeout
+      const showFallbackTimeout = setTimeout(function() {
+        const root = document.getElementById('root');
+        if (!root || (!root.children || root.children.length === 0)) {
+          document.getElementById('fallback-content').style.display = 'block';
+        }
+      }, 10000);
       
-      // Improved loading indicator handling with direct DOM manipulation
+      // Improved loading indicator handling
       function hideLoadingIndicator() {
         const loadingIndicator = document.getElementById('loading-indicator');
         if (loadingIndicator) {
@@ -110,10 +120,8 @@
       
       // Multiple event handlers to ensure loading indicator is hidden
       if (document.readyState === 'complete') {
-        // If already loaded
         hideLoadingIndicator();
       } else {
-        // Add multiple event listeners to ensure it gets hidden
         window.addEventListener('load', function() {
           setTimeout(hideLoadingIndicator, 500);
         });
@@ -129,6 +137,7 @@
       // Custom event for app loaded state
       window.addEventListener('app-loaded', function() {
         hideLoadingIndicator();
+        clearTimeout(showFallbackTimeout);
       });
     </script>
   </body>
