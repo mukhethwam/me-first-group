@@ -1,8 +1,9 @@
+
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 
-// Define our custom event type
+// Define our custom event type with proper TypeScript syntax
 declare global {
   interface WindowEventMap {
     'app-loaded': CustomEvent;
