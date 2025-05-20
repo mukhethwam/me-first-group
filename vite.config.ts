@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -14,8 +13,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react({
-      // Use React Fast Refresh for better development experience
-      fastRefresh: true,
       // Handle JSX more efficiently
       jsxImportSource: "react",
     }),

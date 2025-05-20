@@ -7,6 +7,14 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.html [L,QSA]
 
+# PHP Error Reporting Settings
+php_flag display_errors on
+php_value error_reporting E_ALL
+php_flag display_startup_errors on
+php_flag html_errors on
+php_flag log_errors on
+php_value error_log /path/to/error.log
+
 # Set correct MIME types
 AddType text/javascript .js
 AddType application/javascript .mjs
