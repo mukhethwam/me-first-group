@@ -10,6 +10,9 @@ declare global {
   }
 }
 
+// Create a safe global object reference
+const globalObject = typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : self);
+
 // Create a more robust app initialization process
 const renderApp = () => {
   try {

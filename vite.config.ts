@@ -26,6 +26,10 @@ export default defineConfig(({ mode }) => ({
     },
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'] // Ensure all extensions are properly resolved
   },
+  define: {
+    // Handle global object properly for different environments
+    'global': {}
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
