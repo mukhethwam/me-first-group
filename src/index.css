@@ -47,8 +47,6 @@
   /* Fix for webkit rendering issues */
   html {
     box-sizing: border-box;
-    -webkit-locale: auto !important;
-    /* Remove invalid locale property and explicit display setting */
     view-transition-name: none;
   }
   
