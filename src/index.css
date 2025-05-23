@@ -44,11 +44,11 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   
-  /* Fix for webkit-locale and display issues */
+  /* Fix for webkit rendering issues */
   html {
     box-sizing: border-box;
     -webkit-locale: auto !important;
-    display: block !important; /* Ensure proper display */
+    /* Remove explicit display: block to allow default behavior */
     view-transition-name: none;
   }
   
