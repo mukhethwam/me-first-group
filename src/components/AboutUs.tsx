@@ -30,7 +30,7 @@ const AboutUs = () => {
     {
       icon: <Target size={32} />,
       title: "Reliability",
-      description: "Our commitment to timeliness and dependability has made us a trusted partner in the mining industry."
+      description: "Our commitment to timeliness and dependability has made us a trusted partner across multiple industries."
     },
     {
       icon: <Users size={32} />,
@@ -44,13 +44,13 @@ const AboutUs = () => {
       <div className="container mx-auto">
         <div className="text-center mb-12">
           <p className="text-lg text-transport-gray max-w-3xl mx-auto mb-6">
-            Me First Group is a leading transport company specializing in mining commodity logistics. 
-            We've built our reputation on reliability, safety, and efficiency in the transport of 
-            manganese, chrome, coal, and other mining materials.
+            Me First Group is a leading transport company specializing in comprehensive logistics solutions 
+            across multiple industries. We've built our reputation on reliability, safety, and efficiency in 
+            the transport of mining commodities, construction materials, agricultural products, and consumer goods.
           </p>
           <p className="text-lg text-transport-gray max-w-3xl mx-auto">
-            With our fleet of 34-ton side tipper trucks and experienced team, we provide comprehensive 
-            transport solutions tailored to the unique needs of the mining industry.
+            With our diverse fleet of Tautliner Superlink, Side Tipper, and Flatbed trailers, combined with 
+            our experienced team, we provide tailored transport solutions to meet the unique needs of every industry we serve.
           </p>
         </div>
 
@@ -70,4 +70,3 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
-

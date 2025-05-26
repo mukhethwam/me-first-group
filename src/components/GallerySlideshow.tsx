@@ -7,7 +7,7 @@ const GallerySlideshow = () => {
     {
       image: "/lovable-uploads/c9754556-57c1-4716-94ea-70cca848029e.png",
       title: "Professional Transport Solutions",
-      message: "Verbella General Trading - Your trusted partner for reliable transport across all industries"
+      message: "Me First Group - Your trusted partner for reliable transport across all industries"
     },
     {
       image: "/lovable-uploads/0d3cd3ad-6cdf-4a0d-b257-5b5e863d5bc8.png",
@@ -33,6 +33,36 @@ const GallerySlideshow = () => {
       image: "/lovable-uploads/ca13c38d-430b-4685-879c-eefdc31eb6fc.png",
       title: "Industrial Transport Solutions",
       message: "Comprehensive transport for fertilizers, cement, and construction materials nationwide"
+    },
+    {
+      image: "/lovable-uploads/2699f7ba-cc91-4c5b-bcfa-28f66e3c834d.png",
+      title: "Premium Fleet Operations",
+      message: "High-performance vehicles designed for reliability and efficiency in every delivery"
+    },
+    {
+      image: "/lovable-uploads/2b8f60f4-f018-43a3-87af-503038b14d75.png",
+      title: "Advanced Logistics Solutions",
+      message: "Cutting-edge fleet technology ensuring optimal performance and cargo safety"
+    },
+    {
+      image: "/lovable-uploads/30ff2778-31e9-4cd9-9b9b-35a85416a46c.png",
+      title: "Versatile Transport Capabilities",
+      message: "Tautliner superlink trailers for secure and weather-protected cargo transport"
+    },
+    {
+      image: "/lovable-uploads/34e441d6-ef82-4a45-ae53-8f78580a000a.png",
+      title: "Specialized Equipment Fleet",
+      message: "Flatbed trailers for oversized loads and construction equipment transport"
+    },
+    {
+      image: "/lovable-uploads/44daee58-b83d-47b2-8e46-79cdb9b9ab5d.png",
+      title: "Professional Driver Team",
+      message: "Experienced drivers committed to safe and timely delivery of your valuable cargo"
+    },
+    {
+      image: "/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png",
+      title: "Complete Fleet Solutions",
+      message: "Comprehensive range of vehicles and trailers to meet all your transport requirements"
     }
   ];
 

@@ -68,7 +68,7 @@ const Services = () => {
         <div className="text-center mb-12">
           <h2 className="section-title">Our Comprehensive Transport Services</h2>
           <p className="text-lg text-transport-gray max-w-4xl mx-auto">
-            Verbella General Trading provides specialized transport solutions across multiple industries, 
+            Me First Group provides specialized transport solutions across multiple industries, 
             from mining commodities to fresh produce, ensuring your goods reach their destination safely, 
             efficiently, and on time with our modern fleet and experienced team.
           </p>
@@ -86,8 +86,8 @@ const Services = () => {
         </div>
 
         <div className="mt-12 bg-white p-8 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold mb-4 text-transport-blue text-center">Why Choose Verbella General Trading?</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <h3 className="text-2xl font-bold mb-4 text-transport-blue text-center">Why Choose Me First Group?</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div className="text-center">
               <h4 className="font-semibold text-lg mb-2">Diverse Fleet Capability</h4>
               <p className="text-transport-gray">Our versatile fleet handles everything from bulk materials to temperature-sensitive goods.</p>
@@ -99,6 +99,27 @@ const Services = () => {
             <div className="text-center">
               <h4 className="font-semibold text-lg mb-2">Nationwide Coverage</h4>
               <p className="text-transport-gray">Comprehensive transport network covering urban centers and remote locations.</p>
+            </div>
+          </div>
+          
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h4 className="font-bold text-xl mb-4 text-transport-blue text-center">Our Fleet Equipment</h4>
+            <p className="text-center text-transport-gray mb-4">
+              Me First Group operates a modern fleet equipped with various trailer types to meet diverse transport requirements:
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center">
+                <h5 className="font-semibold text-lg mb-2">Tautliner Superlink</h5>
+                <p className="text-transport-gray">Versatile enclosed trailers perfect for general freight, consumer goods, and weather-sensitive cargo.</p>
+              </div>
+              <div className="text-center">
+                <h5 className="font-semibold text-lg mb-2">Side Tipper</h5>
+                <p className="text-transport-gray">Specialized for bulk materials like mining commodities, aggregates, and construction materials.</p>
+              </div>
+              <div className="text-center">
+                <h5 className="font-semibold text-lg mb-2">Flatbed Trailers</h5>
+                <p className="text-transport-gray">Ideal for oversized loads, machinery, construction equipment, and irregularly shaped cargo.</p>
+              </div>
             </div>
           </div>
         </div>
