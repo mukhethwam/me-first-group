@@ -16,10 +16,10 @@ const Hero = () => {
       <div className="container mx-auto px-4 py-28 md:py-36 relative z-10">
         <div className="max-w-3xl animate-fade-in">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-            Heavy Duty Transport for Mining Industries
+            Professional Transport Solutions for All Industries
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-100">
-            Specialized 34-ton side tipper trucks for efficient transport of manganese, chrome, coal, and other mining commodities.
+            Specialized transport services for mining commodities, cement, groceries, fertilizers, fresh produce, and various industrial goods with our modern fleet.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <a 
