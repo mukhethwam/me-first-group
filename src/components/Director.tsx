@@ -1,6 +1,6 @@
 
 import React from "react";
-import { User, Briefcase, Handshake, UserRound, ExternalLink, Award, GraduationCap, Building, Clock, MapPin, TrendingUp } from "lucide-react";
+import { User, Briefcase, Handshake, UserRound, ExternalLink, MapPin, Clock } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Director = () => {
@@ -36,7 +36,7 @@ const Director = () => {
                 </div>
                 <div className="flex items-center justify-center text-sm text-gray-600">
                   <Clock size={16} className="mr-1" />
-                  <span>15+ Years in Transport Industry</span>
+                  <span>3+ Years in Transport Industry</span>
                 </div>
               </div>
             </div>
@@ -52,7 +52,7 @@ const Director = () => {
                 </h4>
                 <p className="text-lg mb-4 leading-relaxed">
                   Mr. M.E Masevhe is a visionary leader and entrepreneur who founded Me First Group with a clear mission to 
-                  revolutionize the transport industry in South Africa. With over 15 years of hands-on experience in logistics 
+                  revolutionize the transport industry in South Africa. With over 3 years of hands-on experience in logistics 
                   and transportation, he has built the company from the ground up into a trusted partner for mining, 
                   construction, and agricultural sectors.
                 </p>
@@ -60,90 +60,6 @@ const Director = () => {
                   His deep understanding of the South African transport landscape, combined with his commitment to innovation 
                   and safety, has positioned Me First Group as a leader in specialized transport solutions across multiple industries.
                 </p>
-              </div>
-
-              {/* Education & Qualifications */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h4 className="text-xl font-bold text-transport-blue mb-4 flex items-center">
-                  <GraduationCap className="mr-2" size={24} />
-                  Education & Qualifications
-                </h4>
-                <div className="space-y-3">
-                  <div className="flex items-start">
-                    <div className="w-2 h-2 bg-transport-orange rounded-full mt-2 mr-3"></div>
-                    <div>
-                      <p className="font-semibold">Transport & Logistics Management Certification</p>
-                      <p className="text-gray-600 text-sm">University of Johannesburg - 2009</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-2 h-2 bg-transport-orange rounded-full mt-2 mr-3"></div>
-                    <div>
-                      <p className="font-semibold">Heavy Vehicle Operations License</p>
-                      <p className="text-gray-600 text-sm">Department of Transport - Current</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-2 h-2 bg-transport-orange rounded-full mt-2 mr-3"></div>
-                    <div>
-                      <p className="font-semibold">Business Management Diploma</p>
-                      <p className="text-gray-600 text-sm">Damelin Business School - 2008</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-2 h-2 bg-transport-orange rounded-full mt-2 mr-3"></div>
-                    <div>
-                      <p className="font-semibold">Mining Safety & Compliance Certification</p>
-                      <p className="text-gray-600 text-sm">Mine Health & Safety Council - 2010</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Career Journey & Experience */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h4 className="text-xl font-bold text-transport-blue mb-4 flex items-center">
-                  <Building className="mr-2" size={24} />
-                  Career Journey & Experience
-                </h4>
-                <div className="space-y-4">
-                  <div className="border-l-4 border-transport-orange pl-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h5 className="font-bold text-lg">Founder & Executive Director</h5>
-                      <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">2015 - Present</span>
-                    </div>
-                    <p className="text-transport-orange font-semibold mb-2">Me First Group</p>
-                    <p className="text-gray-700">
-                      Founded Me First Group with a vision to provide reliable, safe, and efficient transport solutions. 
-                      Grew the company from a single vehicle operation to a comprehensive fleet serving major mining companies, 
-                      construction firms, and agricultural businesses across South Africa.
-                    </p>
-                  </div>
-
-                  <div className="border-l-4 border-gray-300 pl-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h5 className="font-bold">Senior Fleet Manager</h5>
-                      <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">2012 - 2015</span>
-                    </div>
-                    <p className="text-gray-600 font-semibold mb-2">Anglo American Platinum</p>
-                    <p className="text-gray-700">
-                      Managed a fleet of 50+ vehicles serving mining operations. Implemented safety protocols and 
-                      efficiency improvements that reduced operational costs by 25% while maintaining zero safety incidents.
-                    </p>
-                  </div>
-
-                  <div className="border-l-4 border-gray-300 pl-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h5 className="font-bold">Transport Operations Supervisor</h5>
-                      <span className="text-sm text-gray-600 bg-gray-100 px-2 py-1 rounded">2009 - 2012</span>
-                    </div>
-                    <p className="text-gray-600 font-semibold mb-2">Imperial Logistics</p>
-                    <p className="text-gray-700">
-                      Supervised daily transport operations for mining and construction clients. Developed route optimization 
-                      strategies and driver training programs that improved delivery efficiency by 30%.
-                    </p>
-                  </div>
-                </div>
               </div>
 
               {/* Leadership Philosophy */}
@@ -176,44 +92,6 @@ const Director = () => {
                     <p className="text-center text-sm text-gray-700">
                       "Our people are our greatest asset. Fair treatment, continuous training, and growth opportunities drive our success."
                     </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Achievements & Recognition */}
-              <div className="bg-white p-6 rounded-lg shadow-md">
-                <h4 className="text-xl font-bold text-transport-blue mb-4 flex items-center">
-                  <Award className="mr-2" size={24} />
-                  Key Achievements & Industry Recognition
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-start space-x-3">
-                    <TrendingUp className="text-transport-orange mt-1" size={20} />
-                    <div>
-                      <p className="font-semibold">300% Business Growth</p>
-                      <p className="text-sm text-gray-600">Achieved consistent year-over-year growth since company founding</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <Award className="text-transport-orange mt-1" size={20} />
-                    <div>
-                      <p className="font-semibold">Zero Safety Incidents</p>
-                      <p className="text-sm text-gray-600">Maintained perfect safety record across all operations for 5+ years</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <Building className="text-transport-orange mt-1" size={20} />
-                    <div>
-                      <p className="font-semibold">50+ Client Partnerships</p>
-                      <p className="text-sm text-gray-600">Built trusted relationships with major industry players</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <UserRound className="text-transport-orange mt-1" size={20} />
-                    <div>
-                      <p className="font-semibold">100+ Jobs Created</p>
-                      <p className="text-sm text-gray-600">Contributed to community development through employment opportunities</p>
-                    </div>
                   </div>
                 </div>
               </div>
