@@ -75,6 +75,7 @@ const Footer = () => {
               <p className="mb-2">Springs, 1559, South Africa</p>
               <p className="mb-2">Phone: 078 171 7615 / 072 018 8078</p>
               <p className="mb-2">Email: mefirstgp@gmail.com</p>
+              <p className="mb-2">Email: mukhethwa@mefirstgroup.co.za</p>
               <div className="flex items-center">
                 <Globe size={16} className="mr-2" />
                 <a 
