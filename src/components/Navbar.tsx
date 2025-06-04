@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, Phone, MapPin, Truck, Users } from "lucide-react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
@@ -8,31 +7,45 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Throttle scroll events to prevent vibration
-  const throttleScroll = useCallback(() => {
-    let ticking = false;
-    
-    const updateScrollState = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 10);
-      ticking = false;
-    };
-
-    return () => {
-      if (!ticking) {
-        requestAnimationFrame(updateScrollState);
-        ticking = true;
-      }
-    };
-  }, []);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const handleScroll = throttleScroll();
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Clear any existing timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      
+      // Only update if scroll position has changed significantly (reduces jitter)
+      const scrollDifference = Math.abs(currentScrollY - lastScrollY.current);
+      if (scrollDifference < 2) return;
+      
+      // Use RAF for smooth updates
+      requestAnimationFrame(() => {
+        const shouldBeScrolled = currentScrollY > 10;
+        if (shouldBeScrolled !== isScrolled) {
+          setIsScrolled(shouldBeScrolled);
+        }
+        lastScrollY.current = currentScrollY;
+      });
+    };
+
+    // Initial check
+    handleScroll();
+    
+    // Add scroll listener with passive option for better performance
     window.addEventListener("scroll", handleScroll, { passive: true });
     
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [throttleScroll]);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, [isScrolled]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -58,15 +71,15 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`bg-white sticky top-0 z-50 transition-all duration-200 ease-out ${isScrolled ? 'shadow-md' : ''}`}>
+    <nav className={`bg-white sticky top-0 z-50 transition-shadow duration-300 ease-out ${isScrolled ? 'shadow-lg' : ''}`}>
       <div className="container mx-auto px-4">
-        <div className={`flex justify-between items-center transition-all duration-200 ease-out ${isScrolled ? 'py-2' : 'py-4'}`}>
+        <div className={`flex justify-between items-center transition-all duration-300 ease-out ${isScrolled ? 'py-2' : 'py-4'}`}>
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <img 
                 src="/lovable-uploads/5e0c66c3-0eee-4e98-8870-06dde2529bcb.png" 
                 alt="Me First Group" 
-                className={`transition-all duration-200 ease-out ${isScrolled ? 'h-10' : 'h-12'} w-auto`}
+                className={`transition-all duration-300 ease-out ${isScrolled ? 'h-10' : 'h-12'} w-auto`}
               />
             </Link>
           </div>
